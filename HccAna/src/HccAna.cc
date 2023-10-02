@@ -375,7 +375,7 @@ private:
     float massErrH_vtx;*/
 
     // MET
-    float met; float met_phi;
+    float met; float met_phi; float met_pt;
     float met_jesup, met_phi_jesup, met_jesdn, met_phi_jesdn;
     float met_uncenup, met_phi_uncenup, met_uncendn, met_phi_uncendn;
 
@@ -412,6 +412,7 @@ private:
     vector<double> AK4PuppiJets_eta;
     vector<double> AK4PuppiJets_phi;
     vector<double> AK4PuppiJets_mass;
+ 
 
     vector<float> jet_pfParticleNetAK4JetTags_probb, jet_pfParticleNetAK4JetTags_probc, jet_pfParticleNetAK4JetTags_probuds,jet_pfParticleNetAK4JetTags_probg, jet_pfParticleNetAK4JetTags_probtauh;  
     vector<float> jet_pfParticleNetAK4JetTags_CvsB, jet_pfParticleNetAK4JetTags_CvsL, jet_pfParticleNetAK4JetTags_CvsAll,jet_pfParticleNetAK4JetTags_BvsC, jet_pfParticleNetAK4JetTags_BvsL, jet_pfParticleNetAK4JetTags_BvsAll;  
@@ -483,7 +484,7 @@ private:
     float absdeltarapidity_hleadingjet_pt30_eta4p7_jesup; float absdeltarapidity_hleadingjet_pt30_eta4p7_jesdn;
     float absdeltarapidity_hleadingjet_pt30_eta4p7_jerup; float absdeltarapidity_hleadingjet_pt30_eta4p7_jerdn;
     float DijetMass, DijetDEta, DijetFisher;
-
+    //float JetMET_puppi;
     // merged jets
     vector<int>   mergedjet_iscleanH4l;
     vector<float> mergedjet_pt; vector<float> mergedjet_eta; vector<float> mergedjet_phi; vector<float> mergedjet_mass;
@@ -618,7 +619,7 @@ private:
     vector<float> AK4PuppiJets_eta_float;
     vector<float> AK4PuppiJets_phi_float;
     vector<float> AK4PuppiJets_mass_float;
-	
+ 
     vector<float> HLTJet80_pt_float;
     vector<float> HLTJet80_eta_float;
     vector<float> HLTJet80_phi_float;
@@ -1434,7 +1435,7 @@ jetCorrParameterSet.validKeys(keys);
     jet_pfMassIndependentDeepDoubleBvLV2JetTags_probHbb.clear(); jet_pfMassIndependentDeepDoubleCvLV2JetTags_probHcc.clear(); jet_pfMassIndependentDeepDoubleCvBV2JetTags_probHcc.clear();
     
     // MET
-    met=-1.0; met_phi=9999.0;
+    met=-1.0; met_phi=9999.0; met_pt=-1.0;
     met_jesup=-1.0; met_phi_jesup=9999.0; met_jesdn=-1.0; met_phi_jesdn=9999.0; 
     met_uncenup=-1.0; met_phi_uncenup=9999.0; met_uncendn=-1.0; met_phi_uncendn=9999.0; 
 
@@ -1845,18 +1846,19 @@ if(trigConditionData && verbose)
 // }
         //MET
         if (verbose) {cout<<"get met value"<<endl;}
-        /*if (!mets->empty()) {
+        if (!mets->empty()) {
             met = (*mets)[0].et();
+            met_pt = (*mets)[0].pt();
             met_phi = (*mets)[0].phi();
-            met_jesup = (*mets)[0].shiftedPt(pat::MET::JetEnUp);
+            /*met_jesup = (*mets)[0].shiftedPt(pat::MET::JetEnUp);
             met_phi_jesup = (*mets)[0].shiftedPhi(pat::MET::JetEnUp);
             met_jesdn = (*mets)[0].shiftedPt(pat::MET::JetEnDown);
             met_phi_jesdn = (*mets)[0].shiftedPhi(pat::MET::JetEnDown);
             met_uncenup = (*mets)[0].shiftedPt(pat::MET::UnclusteredEnUp);
             met_phi_uncenup = (*mets)[0].shiftedPhi(pat::MET::UnclusteredEnUp);
             met_uncendn = (*mets)[0].shiftedPt(pat::MET::UnclusteredEnDown);
-            met_phi_uncendn = (*mets)[0].shiftedPhi(pat::MET::UnclusteredEnDown);        
-        }*/
+            met_phi_uncendn = (*mets)[0].shiftedPhi(pat::MET::UnclusteredEnDown);*/        
+        }
 
         if (verbose) cout<<"start lepton analysis"<<endl;           
         vector<pat::Electron> AllElectrons; 
@@ -2484,15 +2486,16 @@ void HccAna::bookPassedEventTree(TString treeName, TTree *tree)
 
     // MET
     tree->Branch("met",&met,"met/F");
+    tree->Branch("met_pt",&met_pt,"met_pt/F");
     tree->Branch("met_phi",&met_phi,"met_phi/F");
-    tree->Branch("met_jesup",&met_jesup,"met_jesup/F");
+    /*tree->Branch("met_jesup",&met_jesup,"met_jesup/F");
     tree->Branch("met_phi_jesup",&met_phi_jesup,"met_phi_jesup/F");
     tree->Branch("met_jesdn",&met_jesdn,"met_jesdn/F");
     tree->Branch("met_phi_jesdn",&met_phi_jesdn,"met_phi_jesdn/F");
     tree->Branch("met_uncenup",&met_uncenup,"met_uncenup/F");
     tree->Branch("met_phi_uncenup",&met_phi_uncenup,"met_phi_uncenup/F");
     tree->Branch("met_uncendn",&met_uncendn,"met_uncendn/F");
-    tree->Branch("met_phi_uncendn",&met_phi_uncendn,"met_phi_uncendn/F");
+    tree->Branch("met_phi_uncendn",&met_phi_uncendn,"met_phi_uncendn/F");*/
 
     // Jets
     tree->Branch("n_jets", &n_jets);
@@ -2588,6 +2591,7 @@ void HccAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("AK4PuppiJets_eta",&AK4PuppiJets_eta_float);
     tree->Branch("AK4PuppiJets_phi",&AK4PuppiJets_phi_float);
     tree->Branch("AK4PuppiJets_mass",&AK4PuppiJets_mass_float);
+
    
     //ParticleNet discriminants
     tree->Branch("jet_pfParticleNetAK4JetTags_probb", &jet_pfParticleNetAK4JetTags_probb);	
@@ -3107,7 +3111,8 @@ void HccAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSetup& 
       jet_pfDeepCSVAK4JetTags_probbb.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfDeepCSVJetTags:probbb")); 
       jet_pfDeepCSVAK4JetTags_probc.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfDeepCSVJetTags:probc")); 
       jet_pfDeepCSVAK4JetTags_probudsg.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfDeepCSVJetTags:probudsg"));
-      
+
+
       /*bool passPFtightID_LepVeto = false;
 
       float NHF = AK4PuppiJets->at(ijet).neutralHadronEnergyFraction();
