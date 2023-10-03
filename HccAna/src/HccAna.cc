@@ -518,9 +518,9 @@ private:
     edm::EDGetTokenT<reco::VertexCollection> vertexSrc_;
     edm::EDGetTokenT<reco::BeamSpot> beamSpotSrc_;
     edm::EDGetTokenT<std::vector<reco::Conversion> > conversionSrc_;
-    edm::EDGetTokenT<double> muRhoSrc_;
-    edm::EDGetTokenT<double> elRhoSrc_;
-    edm::EDGetTokenT<double> rhoSrcSUS_;
+    //edm::EDGetTokenT<double> muRhoSrc_;
+    //edm::EDGetTokenT<double> elRhoSrc_;
+    //edm::EDGetTokenT<double> rhoSrcSUS_;
     edm::EDGetTokenT<std::vector<PileupSummaryInfo> > pileupSrc_;
     edm::EDGetTokenT<pat::PackedCandidateCollection> pfCandsSrc_;
    // edm::EDGetTokenT<edm::View<pat::PFParticle> > fsrPhotonsSrc_;
@@ -571,7 +571,6 @@ private:
     bool verbose;
 
     int year;///use to choose Muon BDT
-    bool isCode4l;
 
 edm::ESGetToken<JetCorrectorParametersCollection, JetCorrectionsRecord> mPayloadToken;
 
@@ -632,9 +631,9 @@ HccAna::HccAna(const edm::ParameterSet& iConfig) :
     vertexSrc_(consumes<reco::VertexCollection>(iConfig.getUntrackedParameter<edm::InputTag>("vertexSrc"))),
     beamSpotSrc_(consumes<reco::BeamSpot>(iConfig.getUntrackedParameter<edm::InputTag>("beamSpotSrc"))),
     conversionSrc_(consumes<std::vector<reco::Conversion> >(iConfig.getUntrackedParameter<edm::InputTag>("conversionSrc"))),
-    muRhoSrc_(consumes<double>(iConfig.getUntrackedParameter<edm::InputTag>("muRhoSrc"))),
-    elRhoSrc_(consumes<double>(iConfig.getUntrackedParameter<edm::InputTag>("elRhoSrc"))),
-    rhoSrcSUS_(consumes<double>(iConfig.getUntrackedParameter<edm::InputTag>("rhoSrcSUS"))),
+    //muRhoSrc_(consumes<double>(iConfig.getUntrackedParameter<edm::InputTag>("muRhoSrc"))),
+    //elRhoSrc_(consumes<double>(iConfig.getUntrackedParameter<edm::InputTag>("elRhoSrc"))),
+    //rhoSrcSUS_(consumes<double>(iConfig.getUntrackedParameter<edm::InputTag>("rhoSrcSUS"))),
     pileupSrc_(consumes<std::vector<PileupSummaryInfo> >(iConfig.getUntrackedParameter<edm::InputTag>("pileupSrc"))),
     pfCandsSrc_(consumes<pat::PackedCandidateCollection>(iConfig.getUntrackedParameter<edm::InputTag>("pfCandsSrc"))),
    // fsrPhotonsSrc_(consumes<edm::View<pat::PFParticle> >(iConfig.getUntrackedParameter<edm::InputTag>("fsrPhotonsSrc"))),
@@ -708,14 +707,11 @@ HccAna::HccAna(const edm::ParameterSet& iConfig) :
     // 2017
     // 2018
     // to select correct training
-    isCode4l(iConfig.getUntrackedParameter<bool>("isCode4l",true)),
 mPayloadToken    {esConsumes(edm::ESInputTag("", iConfig.getParameter<std::string>("payload")))}
 {
   
     if(!isMC){reweightForPU = false;}
     
-//     if(!isCode4l)
-//     	std::cout<<"OK"<<std::endl;
 
     nEventsTotal=0.0;
     sumWeightsTotal=0.0;
