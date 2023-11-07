@@ -8,15 +8,15 @@ import datetime
 import argparse
 parser = argparse.ArgumentParser(description="Options to give to the script")
 # Positional arguments
-parser.add_argument("dataset", type=str, choices=['data', 'data_control', 'MC'], help="Specify if data or Monte Carlo")
+parser.add_argument("dataset", type=str, choices=['data', 'data_control', 'MC', 'MC_control'], help="Specify if data or Monte Carlo")
 parser.add_argument("anatype", type=str, choices=['Hcc', 'control'], help="Specify analysis type")
 #parser.add_argument("--run", type=str, default='', choices=['2022B', '2022C_0', '2022C_1', '2022C_2', '2022C_3', '2022C_4', '2022C_5', '2022C_6', '2022C_7', '2022D-v1_0', '2022D-v1_1', '2022D-v1_2', '2022D-v1_3', '2022D-v1_4', '2022D-v1_5', '2022D-v1_6', '2022D-v1_7', '2022D-v2_0', '2022D-v2_1', '2022D-v2_2', '2022D-v2_3', '2022D-v2_4', '2022D-v2_5', '2022D-v2_6', '2022D-v2_7', '2022E_0', '2022E_1', '2022E_2', '2022E_3', '2022E_4', '2022E_5', '2022E_6', '2022E_7', '2022F_0', '2022F_1', '2022F_2', '2022F_3', '2022F_4', '2022F_5', '2022F_6', '2022F_7', '2022G_0', '2022G_1', '2022G_2', '2022G_3', '2022G_4', '2022G_5', '2022G_6', '2022G_7'], help="run in data")
-parser.add_argument("--run", type=str, default='', choices=['2022B', '2022C', '2022D', '2022D', '2022E', '2022F', '2022G'], help="run in data")
+parser.add_argument("--run", type=str, default='', choices=['2023D', '2023C', '2022B', '2022C', '2022D', '2022D', '2022E', '2022F', '2022G'], help="run in data")
 # Optional Arguments
 parser.add_argument("--outName", type=str, default="test", help="Specify name for output files")
 parser.add_argument("--n", type=int, default=255, help="number of .root files per job")
-parser.add_argument("--EE",type=str, default='preEE', choices=['preEE','postEE'], help="specify if it is simulated with preEE or postEE conditions")
-parser.add_argument("--MCprocess", type=str, default='', choices=['Zqq_HT-200-400', 'Zqq_HT-400-600', 'Zqq_HT-600-800', 'Zqq_HT-800-inf', 'QCD_PT-120-170', 'QCD_PT-170-300', 'QCD_PT-300-470', 'QCD_PT-470-600', 'QCD_PT-600-800', 'QCD_PT-800-1000', 'QCD_PT-1000-1400', 'QCD_PT-1400-1800', 'QCD_PT-1800-2400', 'QCD_PT-2400-3200'], help="process in Monte Carlo")
+parser.add_argument("--EE",type=str, default='postEE', choices=['preEE','postEE'], help="specify if it is simulated with preEE or postEE conditions")
+parser.add_argument("--MCprocess", type=str, default='', choices=['VBFHCC', 'QCD', 'Zqq_HT-200-400', 'Zqq_HT-400-600', 'Zqq_HT-600-800', 'Zqq_HT-800-inf', 'QCD_PT-120-170', 'QCD_PT-170-300', 'QCD_PT-300-470', 'QCD_PT-470-600', 'QCD_PT-600-800', 'QCD_PT-800-1000', 'QCD_PT-1000-1400', 'QCD_PT-1400-1800', 'QCD_PT-1800-2400', 'QCD_PT-2400-3200'], help="process in Monte Carlo")
 args = parser.parse_args()
 
 #prepare output filename  and option string
@@ -32,11 +32,15 @@ elif args.dataset == 'MC':
    out_filename = 'AnalysedTree_'+args.dataset+'_'+args.MCprocess+'_'+args.anatype
    temp = '_'+args.anatype
    option_string = ' "'+args.dataset+temp.replace("_Hcc","")+'" "'+args.MCprocess+'"'
+elif args.dataset == 'MC_control':
+   out_filename = 'AnalysedTree_'+args.dataset+'_'+args.MCprocess+'_'+args.anatype
+   temp = '_'+args.anatype
+   option_string = ' "'+args.dataset+temp.replace("_control","")+'" "'+args.MCprocess+'"'
 
 #startTime = datetime.datetime.now().strftime("%Y%m%d_%H%M")
 
 # Create target Directory if don't exist
-if args.dataset == 'MC':
+if args.dataset == 'MC' or args.dataset == 'MC_control':
    output_name = args.MCprocess+"_"+args.anatype+"_"+args.outName
    #output_name = args.MCprocess+"_"+args.anatype+"_"+args.EE+"_"+args.outName
 else: 
@@ -62,11 +66,17 @@ if args.anatype == 'Hcc':
       path = '/lustre/cms/store/user/azaza/JetMET/DataRun3_EraF_ntuple/230405_155207'
    if args.dataset == 'data' and args.run == '2022G':
       path = '/lustre/cms/store/user/azaza/JetMET/DataRun3_EraG_ntuple/230405_155244'
+   if args.dataset == 'data' and args.run == '2023C':
+      path = '/lustre/cms/store/user/azaza/Data2023_CD_Oct23_v1/ERAC'
+   if args.dataset == 'data' and args.run == '2023D':
+      path = '/lustre/cms/store/user/azaza/Data2023_CD_Oct23_v1/ERAD'
 
 if args.anatype == 'control':
-   #if args.dataset == 'data_control' and args.run == '2022B':
-   if args.dataset == 'data_control':
-      path = ''
+   if args.dataset == 'data_control' and args.run == '2023C':
+   #if args.dataset == 'data_control':
+      path = '/lustre/cms/store/user/azaza/JetMET/ScaleFactors_Ntuples'
+   if args.dataset == 'MC_control':
+      path = '/lustre/cms/store/user/azaza/QCD2023_ScaleFactors'
 
 if args.EE == 'preEE':
    if args.dataset == 'MC' and args.MCprocess == 'QCD_PT-120-170':
@@ -104,6 +114,9 @@ if args.EE == 'preEE':
 
 
 if args.EE == 'postEE':
+   if args.dataset == 'MC' and args.MCprocess == 'VBFHCC':
+      path =  '/lustre/cms/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/VBFHToCC_130X_muRun3_2023_realistic_v8_ntuple/230613_142000'
+
    if args.dataset == 'MC' and args.MCprocess == 'QCD_PT-120-170':
       path = '/lustre/cms/store/user/azaza/QCD_PT-120to170_TuneCP5_13p6TeV_pythia8/crab_QCD_PT-120to170_TuneCP5_13p6TeV_pythia8_Run3Summer22EEMiniAODv3/230405_183617'
    if args.dataset == 'MC' and args.MCprocess == 'QCD_PT-170-300':

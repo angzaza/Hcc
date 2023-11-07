@@ -8,12 +8,13 @@
 #include <TMVA/Reader.h>
 
 
-void myAnalizer::TreeFin_Init(TTree *&tree, Double_t &isMC, Double_t &lumi, Double_t &run, Double_t &evt, Double_t &puFactor, Double_t &pt_jetC1, Double_t &pt_jetC2, Double_t &pt_jetVBF1, Double_t &pt_jetVBF2, Double_t &eta_jetC1, Double_t &eta_jetC2, Double_t &eta_jetVBF1, Double_t &eta_jetVBF2, Double_t &CvsAll_jetC1, Double_t &CvsAll_jetC2, Double_t &CvsB_jetC1, Double_t &CvsB_jetC2, Double_t &CvsL_jetC1, Double_t &CvsL_jetC2){
+void myAnalizer::TreeFin_Init(TTree *&tree, Double_t &isMC, Double_t &lumi, Double_t &run, Double_t &evt,int &entry, Double_t &puFactor, Double_t &pt_jetC1, Double_t &pt_jetC2, Double_t &pt_jetVBF1, Double_t &pt_jetVBF2, Double_t &eta_jetC1, Double_t &eta_jetC2, Double_t &eta_jetVBF1, Double_t &eta_jetVBF2, Double_t &CvsAll_jetC1, Double_t &CvsAll_jetC2, Double_t &CvsB_jetC1, Double_t &CvsB_jetC2, Double_t &CvsL_jetC1, Double_t &CvsL_jetC2, Double_t &mqq, Double_t &Deta_qq, Double_t &Dphi_qq, Double_t  &Alpha_qq, Double_t &qgl_VBF1, Double_t &qgl_VBF2, Double_t &pz_4jets, Double_t &pt_norm, Double_t &DR_HiggsVBF1, Double_t &DR_HiggsVBF2, Double_t &Dphi_qq_cc, int &njets, Double_t &jetEne_sum, Double_t  &jetPt_sum, Double_t &mCC){
 		// Set tree branches
 		tree->Branch("isMC", &isMC);
 		tree->Branch("lumi", &lumi);
 		tree->Branch("run", &run);
 		tree->Branch("evt", &evt);
+		tree->Branch("entry", &entry);
 		tree->Branch("puFactor", &puFactor);
     tree->Branch("pt_jetC1", &pt_jetC1);
     tree->Branch("pt_jetC2", &pt_jetC2);
@@ -29,6 +30,21 @@ void myAnalizer::TreeFin_Init(TTree *&tree, Double_t &isMC, Double_t &lumi, Doub
     tree->Branch("CvsB_jetC2", &CvsB_jetC2);
     tree->Branch("CvsL_jetC1", &CvsL_jetC1);
     tree->Branch("CvsL_jetC2", &CvsL_jetC2);
+    tree->Branch("mqq", &mqq);
+    tree->Branch("Deta_qq", &Deta_qq);
+    tree->Branch("Dphi_qq", &Dphi_qq);
+    tree->Branch("Alpha_qq", &Alpha_qq);
+    tree->Branch("qgl_VBF1", &qgl_VBF1);
+    tree->Branch("qgl_VBF2", &qgl_VBF2);
+    tree->Branch("pz_4jets", &pz_4jets);
+    tree->Branch("pt_norm", &pt_norm);
+    tree->Branch("DR_HiggsVBF1", &DR_HiggsVBF1);
+    tree->Branch("DR_HiggsVBF2", &DR_HiggsVBF2);
+    tree->Branch("Dphi_qq_cc", &Dphi_qq_cc);
+    tree->Branch("njets", &njets);
+    tree->Branch("jetEne_sum", &jetEne_sum);
+    tree->Branch("jetPt_sum", &jetPt_sum);
+    tree->Branch("mCC", &mCC);
 }
 
 

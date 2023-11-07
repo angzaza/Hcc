@@ -1,5 +1,5 @@
 #include "myAnalizer.C"
-//#include "myAnalizer_control.C"
+#include "myAnalizer_control.C"
 #include <TROOT.h>
 #include <stdio.h>
 #include <iostream>
@@ -18,11 +18,11 @@ int main(int narg, char** arg){
     TString fileout = "";
 
     // Check input arguments
-    if(strcmp(type, "MC") != 0 && strcmp(type, "data") != 0 && strcmp(type, "data_control") != 0 ){
-        cout << "The first argument is wrong! Please choose among 'MC', 'data', 'data_control'" << endl;
+    if(strcmp(type, "MC") != 0 && strcmp(type, "data") != 0 && strcmp(type, "data_control") != 0 && strcmp(type, "MC_control") != 0 ){
+        cout << "The first argument is wrong! Please choose among 'MC', 'data', 'data_control', 'MC_control'" << endl;
         //return -1;
     }
-    if( strcmp(type, "MC") == 0 && (strcmp(datasetName, "QCD_PT-120-170") != 0 && strcmp(datasetName, "QCD_PT-170-300") != 0 && strcmp(datasetName, "QCD_PT-300-470") != 0 && strcmp(datasetName, "QCD_PT-470-600") != 0 && strcmp(datasetName, "QCD_PT-600-800") != 0 && strcmp(datasetName, "QCD_PT-800-1000") != 0 &&  strcmp(datasetName, "QCD_PT-1000-1400") != 0 && strcmp(datasetName, "QCD_PT-1400-1800") != 0 && strcmp(datasetName, "QCD_PT-1800-2400") !=0  && strcmp(datasetName, "QCD_PT-2400-3200") != 0 &&  strcmp(datasetName, "Zqq_HT-200-400") != 0 && strcmp(datasetName, "Zqq_HT-400-600") != 0 && strcmp(datasetName, "Zqq_HT-600-800") != 0 && strcmp(datasetName, "Zqq_HT-800-inf") != 0  ) ){
+    if( strcmp(type, "MC") == 0 && (strcmp(datasetName, "VBFHCC") != 0 && strcmp(datasetName, "QCD") != 0 && strcmp(datasetName, "QCD_PT-120-170") != 0 && strcmp(datasetName, "QCD_PT-170-300") != 0 && strcmp(datasetName, "QCD_PT-300-470") != 0 && strcmp(datasetName, "QCD_PT-470-600") != 0 && strcmp(datasetName, "QCD_PT-600-800") != 0 && strcmp(datasetName, "QCD_PT-800-1000") != 0 &&  strcmp(datasetName, "QCD_PT-1000-1400") != 0 && strcmp(datasetName, "QCD_PT-1400-1800") != 0 && strcmp(datasetName, "QCD_PT-1800-2400") !=0  && strcmp(datasetName, "QCD_PT-2400-3200") != 0 &&  strcmp(datasetName, "Zqq_HT-200-400") != 0 && strcmp(datasetName, "Zqq_HT-400-600") != 0 && strcmp(datasetName, "Zqq_HT-600-800") != 0 && strcmp(datasetName, "Zqq_HT-800-inf") != 0  ) ){
     //if( strcmp(type, "MC") == 0 && (strcmp(datasetName, "QCD_PT-120-170") != 0 && strcmp(datasetName, "QCD_PT-170-300") != 0 && strcmp(datasetName, "QCD_PT-300-470") != 0 && strcmp(datasetName, "QCD_PT-470-600") != 0 && strcmp(datasetName, "QCD_PT-600-800") != 0 && strcmp(datasetName, "QCD_PT-800-1000") != 0 &&  strcmp(datasetName, "QCD_PT-1000-1400") != 0 && strcmp(datasetName, "QCD_PT-1800-2400") !=0  && strcmp(datasetName, "QCD_PT-2400-3200") != 0  ) ){
         cout << "The second argument is wrong!" << endl;
         return -1;
@@ -92,15 +92,24 @@ int main(int narg, char** arg){
         class_data.Loop_Hcc(type, datasetName);
     }
     
-    /*if (strcmp(type, "data_control") == 0){
-        cout << "Control channel analysis on data" << endl;
+   if (strcmp(type, "data_control") == 0){
+        cout << "Control plots on data" << endl;
         cout << "Data " << datasetName << endl << endl;
-        TChain* chain = new TChain("Tree3Mu/ntuple");
-        //AddFile_data_control_control
-        //OutFile_data_control_control
+        TChain* chain = new TChain("Ana/passedEvents");
+        //AddFile_data_control
+        //OutFile_data_control
         myAnalizer_control class_data(chain, fileout);
-        class_data.Loop_DsPhiPi(type, datasetName); 
-    }*/
+        class_data.Loop_control(type, datasetName); 
+    }
+   if (strcmp(type, "MC_control") == 0){
+        cout << "Control plots on data" << endl;
+        cout << "Data " << datasetName << endl << endl;
+        TChain* chain = new TChain("Ana/passedEvents");
+        //AddFile_MC_control
+        //OutFile_MC_control
+        myAnalizer_control class_data(chain, fileout);
+        class_data.Loop_control(type, datasetName); 
+    }
 
     return 0;
 }

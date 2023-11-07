@@ -15,7 +15,6 @@
 // Header file for the classes stored in the TTree if any.
 #include "vector"
 #include "vector"
-#include "vector"
 #include "string"
 #include <iostream>
 #include <TH1.h>
@@ -66,11 +65,6 @@ public :
    vector<int>     *Trigger_l1decision;
    vector<string>  *Trigger_hltname;
    vector<int>     *Trigger_hltdecision;
-   vector<int>     *lep_id;
-   vector<float>   *lep_pt;
-   vector<float>   *lep_eta;
-   vector<float>   *lep_phi;
-   vector<float>   *lep_mass;
    vector<int>     *Ele_id;
    vector<double>  *Ele_pt;
    vector<bool>    *Ele_isPassID;
@@ -92,33 +86,15 @@ public :
    vector<double>  *Muon_mass;
    vector<double>  *Muon_dxy;
    vector<double>  *Muon_dz;
+   vector<bool>    *Muon_PassLooseID;
    vector<int>     *AK4lep_id;
    vector<double>  *AK4lep_pt;
    vector<double>  *AK4lep_eta;
    vector<double>  *AK4lep_phi;
    vector<double>  *AK4lep_mass;
    Float_t         met;
+   Float_t         met_pt;
    Float_t         met_phi;
-   Float_t         met_jesup;
-   Float_t         met_phi_jesup;
-   Float_t         met_jesdn;
-   Float_t         met_phi_jesdn;
-   Float_t         met_uncenup;
-   Float_t         met_phi_uncenup;
-   Float_t         met_uncendn;
-   Float_t         met_phi_uncendn;
-   Int_t           n_jets;
-   vector<float>   *jet_pt;
-   vector<float>   *jet_eta;
-   vector<float>   *jet_phi;
-   vector<float>   *jet_csv_cTag_vsL;
-   vector<float>   *jet_csv_cTag_vsB;
-   vector<float>   *jet_mass;
-   vector<int>     *jet_isbtag;
-   vector<float>   *jet_pfDeepCSVJetTags_probb;
-   vector<float>   *jet_pfDeepFlavourJetTags_probbb;
-   vector<float>   *jet_pfDeepFlavourJetTags_probc;
-   vector<float>   *jet_pfDeepFlavourJetTags_probuds;
    vector<float>   *AK4PuppiJets_pt;
    vector<float>   *AK4PuppiJets_eta;
    vector<float>   *AK4PuppiJets_phi;
@@ -128,6 +104,13 @@ public :
    vector<float>   *jet_pfParticleNetAK4JetTags_probuds;
    vector<float>   *jet_pfParticleNetAK4JetTags_probg;
    vector<float>   *jet_pfParticleNetAK4JetTags_probtauh;
+   vector<float>   *jet_pfParticleNetAK4JetTags_CvsB;
+   vector<float>   *jet_pfParticleNetAK4JetTags_CvsL;
+   vector<float>   *jet_pfParticleNetAK4JetTags_CvsAll;
+   vector<float>   *jet_pfParticleNetAK4JetTags_BvsC;
+   vector<float>   *jet_pfParticleNetAK4JetTags_BvsL;
+   vector<float>   *jet_pfParticleNetAK4JetTags_BvsAll;
+   vector<float>   *jet_pfParticleNetAK4JetTags_QvsG;
    vector<float>   *jet_pfDeepJetAK4JetTags_probb;
    vector<float>   *jet_pfDeepJetAK4JetTags_probbb;
    vector<float>   *jet_pfDeepJetAK4JetTags_problepb;
@@ -167,6 +150,27 @@ public :
    vector<float>   *jet_pfMassIndependentDeepDoubleBvLV2JetTags_probHbb;
    vector<float>   *jet_pfMassIndependentDeepDoubleCvLV2JetTags_probHcc;
    vector<float>   *jet_pfMassIndependentDeepDoubleCvBV2JetTags_probHcc;
+   vector<float>   *HLTJet80_pt;
+   vector<float>   *HLTJet80_eta;
+   vector<float>   *HLTJet80_phi;
+   vector<float>   *HLTJet60_pt;
+   vector<float>   *HLTJet60_eta;
+   vector<float>   *HLTJet60_phi;
+   vector<float>   *HLTJet80_MatchedCalo_pt;
+   vector<float>   *HLTJet80_MatchedCalo_eta;
+   vector<float>   *HLTJet80_MatchedCalo_phi;
+   vector<float>   *HLTJet60_MatchedCalo_pt;
+   vector<float>   *HLTJet60_MatchedCalo_eta;
+   vector<float>   *HLTJet60_MatchedCalo_phi;
+   vector<float>   *HLTAK4PFJetLoose_pt;
+   vector<float>   *HLTAK4PFJetLoose_eta;
+   vector<float>   *HLTAK4PFJetLoose_phi;
+   vector<float>   *HLTAK4PFJetTight_pt;
+   vector<float>   *HLTAK4PFJetTight_eta;
+   vector<float>   *HLTAK4PFJetTight_phi;
+   vector<float>   *HLTAK4PFJet_pt;
+   vector<float>   *HLTAK4PFJet_eta;
+   vector<float>   *HLTAK4PFJet_phi;
    vector<float>   *hltjetForBTag_pt;
    vector<float>   *hltjetForBTag_eta;
    vector<float>   *hltjetForBTag_phi;
@@ -190,6 +194,7 @@ public :
    vector<float>   *L1muon_mass;
    vector<int>     *L1muon_qual;
    Float_t         L1ht;
+   Int_t           EventCat;
    vector<float>   *quark_pt;
    vector<float>   *quark_eta;
    vector<float>   *quark_phi;
@@ -204,6 +209,7 @@ public :
    vector<float>   *GENjet_eta;
    vector<float>   *GENjet_phi;
    vector<float>   *GENjet_mass;
+
 
    // List of branches
    TBranch        *b_Run;   //!
@@ -233,11 +239,6 @@ public :
    TBranch        *b_Trigger_l1decision;   //!
    TBranch        *b_Trigger_hltname;   //!
    TBranch        *b_Trigger_hltdecision;   //!
-   TBranch        *b_lep_id;   //!
-   TBranch        *b_lep_pt;   //!
-   TBranch        *b_lep_eta;   //!
-   TBranch        *b_lep_phi;   //!
-   TBranch        *b_lep_mass;   //!
    TBranch        *b_Ele_id;   //!
    TBranch        *b_Ele_pt;   //!
    TBranch        *b_Ele_isPassID;   //!
@@ -259,33 +260,15 @@ public :
    TBranch        *b_Muon_mass;   //!
    TBranch        *b_Muon_dxy;   //!
    TBranch        *b_Muon_dz;   //!
+   TBranch        *b_Muon_PassLooseID;   //!
    TBranch        *b_AK4lep_id;   //!
    TBranch        *b_AK4lep_pt;   //!
    TBranch        *b_AK4lep_eta;   //!
    TBranch        *b_AK4lep_phi;   //!
    TBranch        *b_AK4lep_mass;   //!
    TBranch        *b_met;   //!
+   TBranch        *b_met_pt;   //!
    TBranch        *b_met_phi;   //!
-   TBranch        *b_met_jesup;   //!
-   TBranch        *b_met_phi_jesup;   //!
-   TBranch        *b_met_jesdn;   //!
-   TBranch        *b_met_phi_jesdn;   //!
-   TBranch        *b_met_uncenup;   //!
-   TBranch        *b_met_phi_uncenup;   //!
-   TBranch        *b_met_uncendn;   //!
-   TBranch        *b_met_phi_uncendn;   //!
-   TBranch        *b_n_jets;   //!
-   TBranch        *b_jet_pt;   //!
-   TBranch        *b_jet_eta;   //!
-   TBranch        *b_jet_phi;   //!
-   TBranch        *b_jet_csv_cTag_vsL;   //!
-   TBranch        *b_jet_csv_cTag_vsB;   //!
-   TBranch        *b_jet_mass;   //!
-   TBranch        *b_jet_isbtag;   //!
-   TBranch        *b_jet_pfDeepCSVJetTags_probb;   //!
-   TBranch        *b_jet_pfDeepFlavourJetTags_probbb;   //!
-   TBranch        *b_jet_pfDeepFlavourJetTags_probc;   //!
-   TBranch        *b_jet_pfDeepFlavourJetTags_probuds;   //!
    TBranch        *b_AK4PuppiJets_pt;   //!
    TBranch        *b_AK4PuppiJets_eta;   //!
    TBranch        *b_AK4PuppiJets_phi;   //!
@@ -295,6 +278,13 @@ public :
    TBranch        *b_jet_pfParticleNetAK4JetTags_probuds;   //!
    TBranch        *b_jet_pfParticleNetAK4JetTags_probg;   //!
    TBranch        *b_jet_pfParticleNetAK4JetTags_probtauh;   //!
+   TBranch        *b_jet_pfParticleNetAK4JetTags_CvsB;   //!
+   TBranch        *b_jet_pfParticleNetAK4JetTags_CvsL;   //!
+   TBranch        *b_jet_pfParticleNetAK4JetTags_CvsAll;   //!
+   TBranch        *b_jet_pfParticleNetAK4JetTags_BvsC;   //!
+   TBranch        *b_jet_pfParticleNetAK4JetTags_BvsL;   //!
+   TBranch        *b_jet_pfParticleNetAK4JetTags_BvsAll;   //!
+   TBranch        *b_jet_pfParticleNetAK4JetTags_QvsG;   //!
    TBranch        *b_jet_pfDeepJetAK4JetTags_probb;   //!
    TBranch        *b_jet_pfDeepJetAK4JetTags_probbb;   //!
    TBranch        *b_jet_pfDeepJetAK4JetTags_problepb;   //!
@@ -334,6 +324,27 @@ public :
    TBranch        *b_jet_pfMassIndependentDeepDoubleBvLV2JetTags_probHbb;   //!
    TBranch        *b_jet_pfMassIndependentDeepDoubleCvLV2JetTags_probHcc;   //!
    TBranch        *b_jet_pfMassIndependentDeepDoubleCvBV2JetTags_probHcc;   //!
+   TBranch        *b_HLTJet80_pt;   //!
+   TBranch        *b_HLTJet80_eta;   //!
+   TBranch        *b_HLTJet80_phi;   //!
+   TBranch        *b_HLTJet60_pt;   //!
+   TBranch        *b_HLTJet60_eta;   //!
+   TBranch        *b_HLTJet60_phi;   //!
+   TBranch        *b_HLTJet80_MatchedCalo_pt;   //!
+   TBranch        *b_HLTJet80_MatchedCalo_eta;   //!
+   TBranch        *b_HLTJet80_MatchedCalo_phi;   //!
+   TBranch        *b_HLTJet60_MatchedCalo_pt;   //!
+   TBranch        *b_HLTJet60_MatchedCalo_eta;   //!
+   TBranch        *b_HLTJet60_MatchedCalo_phi;   //!
+   TBranch        *b_HLTAK4PFJetLoose_pt;   //!
+   TBranch        *b_HLTAK4PFJetLoose_eta;   //!
+   TBranch        *b_HLTAK4PFJetLoose_phi;   //!
+   TBranch        *b_HLTAK4PFJetTight_pt;   //!
+   TBranch        *b_HLTAK4PFJetTight_eta;   //!
+   TBranch        *b_HLTAK4PFJetTight_phi;   //!
+   TBranch        *b_HLTAK4PFJet_pt;   //!
+   TBranch        *b_HLTAK4PFJet_eta;   //!
+   TBranch        *b_HLTAK4PFJet_phi;   //!
    TBranch        *b_hltjetForBTag_pt;   //!
    TBranch        *b_hltjetForBTag_eta;   //!
    TBranch        *b_hltjetForBTag_phi;   //!
@@ -357,6 +368,7 @@ public :
    TBranch        *b_L1muon_mass;   //!
    TBranch        *b_L1muon_qual;   //!
    TBranch        *b_L1ht;   //!
+   TBranch        *b_EventCat;   //!
    TBranch        *b_quark_pt;   //!
    TBranch        *b_quark_eta;   //!
    TBranch        *b_quark_phi;   //!
@@ -372,6 +384,7 @@ public :
    TBranch        *b_GENjet_phi;   //!
    TBranch        *b_GENjet_mass;   //!
 
+
    myAnalizer(TTree *tree, TString fname);
    virtual ~myAnalizer();
    virtual Int_t    Cut(Long64_t entry);
@@ -383,7 +396,7 @@ public :
    virtual void     Show(Long64_t entry = -1);
    virtual void     Fill_CutName(TString listCut[NCUTS]);
    virtual void     Draw_CutEffCanvas(TCanvas *canv, TH1I *hist, Int_t cut[NCUTS], TString listCut[NCUTS]);
-   virtual void			TreeFin_Init(TTree *&tree, Double_t &isMC, Double_t &lumi, Double_t &run, Double_t &evt, Double_t &puFactor, Double_t &pt_jetC1, Double_t &pt_jetC2, Double_t &pt_jetVBF1, Double_t &pt_jetVBF2, Double_t &eta_jetC1, Double_t &eta_jetC2, Double_t &eta_jetVBF1, Double_t &eta_jetVBF2, Double_t &CvsAll_jetC1, Double_t &CvsAll_jetC2, Double_t &CvsB_jetC1, Double_t &CvsB_jetC2, Double_t &CvsL_jetC1, Double_t &CvsL_jetC2);
+   virtual void			TreeFin_Init(TTree *&tree, Double_t &isMC, Double_t &lumi, Double_t &run, Double_t &evt, int &entry,Double_t &puFactor, Double_t &pt_jetC1, Double_t &pt_jetC2, Double_t &pt_jetVBF1, Double_t &pt_jetVBF2, Double_t &eta_jetC1, Double_t &eta_jetC2, Double_t &eta_jetVBF1, Double_t &eta_jetVBF2, Double_t &CvsAll_jetC1, Double_t &CvsAll_jetC2, Double_t &CvsB_jetC1, Double_t &CvsB_jetC2, Double_t &CvsL_jetC1, Double_t &CvsL_jetC2, Double_t &mqq, Double_t &Deta_qq, Double_t &Dphi_qq, Double_t  &Alpha_qq, Double_t &qgl_VBF1, Double_t &qgl_VBF2, Double_t &pz_4jets, Double_t &pt_norm, Double_t &DR_HiggsVBF1, Double_t &DR_HiggsVBF2, Double_t &Dphi_qq_cc, int &njets, Double_t &jetEne_sum, Double_t  &jetPt_sum, Double_t &mCC);
 };
 
 #endif
@@ -433,16 +446,11 @@ void myAnalizer::Init(TTree *tree)
    // (once per file to be processed).
 
    // Set object pointer
-   triggersPassed = 0;
+ triggersPassed = 0;
    Trigger_l1name = 0;
    Trigger_l1decision = 0;
    Trigger_hltname = 0;
    Trigger_hltdecision = 0;
-   lep_id = 0;
-   lep_pt = 0;
-   lep_eta = 0;
-   lep_phi = 0;
-   lep_mass = 0;
    Ele_id = 0;
    Ele_pt = 0;
    Ele_isPassID = 0;
@@ -464,22 +472,12 @@ void myAnalizer::Init(TTree *tree)
    Muon_mass = 0;
    Muon_dxy = 0;
    Muon_dz = 0;
+   Muon_PassLooseID = 0;
    AK4lep_id = 0;
    AK4lep_pt = 0;
    AK4lep_eta = 0;
    AK4lep_phi = 0;
    AK4lep_mass = 0;
-   jet_pt = 0;
-   jet_eta = 0;
-   jet_phi = 0;
-   jet_csv_cTag_vsL = 0;
-   jet_csv_cTag_vsB = 0;
-   jet_mass = 0;
-   jet_isbtag = 0;
-   jet_pfDeepCSVJetTags_probb = 0;
-   jet_pfDeepFlavourJetTags_probbb = 0;
-   jet_pfDeepFlavourJetTags_probc = 0;
-   jet_pfDeepFlavourJetTags_probuds = 0;
    AK4PuppiJets_pt = 0;
    AK4PuppiJets_eta = 0;
    AK4PuppiJets_phi = 0;
@@ -489,6 +487,13 @@ void myAnalizer::Init(TTree *tree)
    jet_pfParticleNetAK4JetTags_probuds = 0;
    jet_pfParticleNetAK4JetTags_probg = 0;
    jet_pfParticleNetAK4JetTags_probtauh = 0;
+   jet_pfParticleNetAK4JetTags_CvsB = 0;
+   jet_pfParticleNetAK4JetTags_CvsL = 0;
+   jet_pfParticleNetAK4JetTags_CvsAll = 0;
+   jet_pfParticleNetAK4JetTags_BvsC = 0;
+   jet_pfParticleNetAK4JetTags_BvsL = 0;
+   jet_pfParticleNetAK4JetTags_BvsAll = 0;
+   jet_pfParticleNetAK4JetTags_QvsG = 0;
    jet_pfDeepJetAK4JetTags_probb = 0;
    jet_pfDeepJetAK4JetTags_probbb = 0;
    jet_pfDeepJetAK4JetTags_problepb = 0;
@@ -526,6 +531,27 @@ void myAnalizer::Init(TTree *tree)
    jet_pfMassIndependentDeepDoubleBvLV2JetTags_probHbb = 0;
    jet_pfMassIndependentDeepDoubleCvLV2JetTags_probHcc = 0;
    jet_pfMassIndependentDeepDoubleCvBV2JetTags_probHcc = 0;
+   HLTJet80_pt = 0;
+   HLTJet80_eta = 0;
+   HLTJet80_phi = 0;
+   HLTJet60_pt = 0;
+   HLTJet60_eta = 0;
+   HLTJet60_phi = 0;
+   HLTJet80_MatchedCalo_pt = 0;
+   HLTJet80_MatchedCalo_eta = 0;
+   HLTJet80_MatchedCalo_phi = 0;
+   HLTJet60_MatchedCalo_pt = 0;
+   HLTJet60_MatchedCalo_eta = 0;
+   HLTJet60_MatchedCalo_phi = 0;
+   HLTAK4PFJetLoose_pt = 0;
+   HLTAK4PFJetLoose_eta = 0;
+   HLTAK4PFJetLoose_phi = 0;
+   HLTAK4PFJetTight_pt = 0;
+   HLTAK4PFJetTight_eta = 0;
+   HLTAK4PFJetTight_phi = 0;
+   HLTAK4PFJet_pt = 0;
+   HLTAK4PFJet_eta = 0;
+   HLTAK4PFJet_phi = 0;
    hltjetForBTag_pt = 0;
    hltjetForBTag_eta = 0;
    hltjetForBTag_phi = 0;
@@ -557,6 +583,7 @@ void myAnalizer::Init(TTree *tree)
    GENjet_eta = 0;
    GENjet_phi = 0;
    GENjet_mass = 0;
+
    // Set branch addresses and branch pointers
    if (!tree) return;
    fChain = tree;
@@ -590,11 +617,6 @@ void myAnalizer::Init(TTree *tree)
    fChain->SetBranchAddress("Trigger_l1decision", &Trigger_l1decision, &b_Trigger_l1decision);
    fChain->SetBranchAddress("Trigger_hltname", &Trigger_hltname, &b_Trigger_hltname);
    fChain->SetBranchAddress("Trigger_hltdecision", &Trigger_hltdecision, &b_Trigger_hltdecision);
-   fChain->SetBranchAddress("lep_id", &lep_id, &b_lep_id);
-   fChain->SetBranchAddress("lep_pt", &lep_pt, &b_lep_pt);
-   fChain->SetBranchAddress("lep_eta", &lep_eta, &b_lep_eta);
-   fChain->SetBranchAddress("lep_phi", &lep_phi, &b_lep_phi);
-   fChain->SetBranchAddress("lep_mass", &lep_mass, &b_lep_mass);
    fChain->SetBranchAddress("Ele_id", &Ele_id, &b_Ele_id);
    fChain->SetBranchAddress("Ele_pt", &Ele_pt, &b_Ele_pt);
    fChain->SetBranchAddress("Ele_isPassID", &Ele_isPassID, &b_Ele_isPassID);
@@ -616,33 +638,15 @@ void myAnalizer::Init(TTree *tree)
    fChain->SetBranchAddress("Muon_mass", &Muon_mass, &b_Muon_mass);
    fChain->SetBranchAddress("Muon_dxy", &Muon_dxy, &b_Muon_dxy);
    fChain->SetBranchAddress("Muon_dz", &Muon_dz, &b_Muon_dz);
+   fChain->SetBranchAddress("Muon_PassLooseID", &Muon_PassLooseID, &b_Muon_PassLooseID);
    fChain->SetBranchAddress("AK4lep_id", &AK4lep_id, &b_AK4lep_id);
    fChain->SetBranchAddress("AK4lep_pt", &AK4lep_pt, &b_AK4lep_pt);
    fChain->SetBranchAddress("AK4lep_eta", &AK4lep_eta, &b_AK4lep_eta);
    fChain->SetBranchAddress("AK4lep_phi", &AK4lep_phi, &b_AK4lep_phi);
    fChain->SetBranchAddress("AK4lep_mass", &AK4lep_mass, &b_AK4lep_mass);
    fChain->SetBranchAddress("met", &met, &b_met);
+   fChain->SetBranchAddress("met_pt", &met_pt, &b_met_pt);
    fChain->SetBranchAddress("met_phi", &met_phi, &b_met_phi);
-   fChain->SetBranchAddress("met_jesup", &met_jesup, &b_met_jesup);
-   fChain->SetBranchAddress("met_phi_jesup", &met_phi_jesup, &b_met_phi_jesup);
-   fChain->SetBranchAddress("met_jesdn", &met_jesdn, &b_met_jesdn);
-   fChain->SetBranchAddress("met_phi_jesdn", &met_phi_jesdn, &b_met_phi_jesdn);
-   fChain->SetBranchAddress("met_uncenup", &met_uncenup, &b_met_uncenup);
-   fChain->SetBranchAddress("met_phi_uncenup", &met_phi_uncenup, &b_met_phi_uncenup);
-   fChain->SetBranchAddress("met_uncendn", &met_uncendn, &b_met_uncendn);
-   fChain->SetBranchAddress("met_phi_uncendn", &met_phi_uncendn, &b_met_phi_uncendn);
-   fChain->SetBranchAddress("n_jets", &n_jets, &b_n_jets);
-   fChain->SetBranchAddress("jet_pt", &jet_pt, &b_jet_pt);
-   fChain->SetBranchAddress("jet_eta", &jet_eta, &b_jet_eta);
-   fChain->SetBranchAddress("jet_phi", &jet_phi, &b_jet_phi);
-   fChain->SetBranchAddress("jet_csv_cTag_vsL", &jet_csv_cTag_vsL, &b_jet_csv_cTag_vsL);
-   fChain->SetBranchAddress("jet_csv_cTag_vsB", &jet_csv_cTag_vsB, &b_jet_csv_cTag_vsB);
-   fChain->SetBranchAddress("jet_mass", &jet_mass, &b_jet_mass);
-   fChain->SetBranchAddress("jet_isbtag", &jet_isbtag, &b_jet_isbtag);
-   fChain->SetBranchAddress("jet_pfDeepCSVJetTags_probb", &jet_pfDeepCSVJetTags_probb, &b_jet_pfDeepCSVJetTags_probb);
-   fChain->SetBranchAddress("jet_pfDeepFlavourJetTags_probbb", &jet_pfDeepFlavourJetTags_probbb, &b_jet_pfDeepFlavourJetTags_probbb);
-   fChain->SetBranchAddress("jet_pfDeepFlavourJetTags_probc", &jet_pfDeepFlavourJetTags_probc, &b_jet_pfDeepFlavourJetTags_probc);
-   fChain->SetBranchAddress("jet_pfDeepFlavourJetTags_probuds", &jet_pfDeepFlavourJetTags_probuds, &b_jet_pfDeepFlavourJetTags_probuds);
    fChain->SetBranchAddress("AK4PuppiJets_pt", &AK4PuppiJets_pt, &b_AK4PuppiJets_pt);
    fChain->SetBranchAddress("AK4PuppiJets_eta", &AK4PuppiJets_eta, &b_AK4PuppiJets_eta);
    fChain->SetBranchAddress("AK4PuppiJets_phi", &AK4PuppiJets_phi, &b_AK4PuppiJets_phi);
@@ -652,6 +656,13 @@ void myAnalizer::Init(TTree *tree)
    fChain->SetBranchAddress("jet_pfParticleNetAK4JetTags_probuds", &jet_pfParticleNetAK4JetTags_probuds, &b_jet_pfParticleNetAK4JetTags_probuds);
    fChain->SetBranchAddress("jet_pfParticleNetAK4JetTags_probg", &jet_pfParticleNetAK4JetTags_probg, &b_jet_pfParticleNetAK4JetTags_probg);
    fChain->SetBranchAddress("jet_pfParticleNetAK4JetTags_probtauh", &jet_pfParticleNetAK4JetTags_probtauh, &b_jet_pfParticleNetAK4JetTags_probtauh);
+   fChain->SetBranchAddress("jet_pfParticleNetAK4JetTags_CvsB", &jet_pfParticleNetAK4JetTags_CvsB, &b_jet_pfParticleNetAK4JetTags_CvsB);
+   fChain->SetBranchAddress("jet_pfParticleNetAK4JetTags_CvsL", &jet_pfParticleNetAK4JetTags_CvsL, &b_jet_pfParticleNetAK4JetTags_CvsL);
+   fChain->SetBranchAddress("jet_pfParticleNetAK4JetTags_CvsAll", &jet_pfParticleNetAK4JetTags_CvsAll, &b_jet_pfParticleNetAK4JetTags_CvsAll);
+   fChain->SetBranchAddress("jet_pfParticleNetAK4JetTags_BvsC", &jet_pfParticleNetAK4JetTags_BvsC, &b_jet_pfParticleNetAK4JetTags_BvsC);
+   fChain->SetBranchAddress("jet_pfParticleNetAK4JetTags_BvsL", &jet_pfParticleNetAK4JetTags_BvsL, &b_jet_pfParticleNetAK4JetTags_BvsL);
+   fChain->SetBranchAddress("jet_pfParticleNetAK4JetTags_BvsAll", &jet_pfParticleNetAK4JetTags_BvsAll, &b_jet_pfParticleNetAK4JetTags_BvsAll);
+   fChain->SetBranchAddress("jet_pfParticleNetAK4JetTags_QvsG", &jet_pfParticleNetAK4JetTags_QvsG, &b_jet_pfParticleNetAK4JetTags_QvsG);
    fChain->SetBranchAddress("jet_pfDeepJetAK4JetTags_probb", &jet_pfDeepJetAK4JetTags_probb, &b_jet_pfDeepJetAK4JetTags_probb);
    fChain->SetBranchAddress("jet_pfDeepJetAK4JetTags_probbb", &jet_pfDeepJetAK4JetTags_probbb, &b_jet_pfDeepJetAK4JetTags_probbb);
    fChain->SetBranchAddress("jet_pfDeepJetAK4JetTags_problepb", &jet_pfDeepJetAK4JetTags_problepb, &b_jet_pfDeepJetAK4JetTags_problepb);
@@ -691,6 +702,27 @@ void myAnalizer::Init(TTree *tree)
    fChain->SetBranchAddress("jet_pfMassIndependentDeepDoubleBvLV2JetTags_probHbb", &jet_pfMassIndependentDeepDoubleBvLV2JetTags_probHbb, &b_jet_pfMassIndependentDeepDoubleBvLV2JetTags_probHbb);
    fChain->SetBranchAddress("jet_pfMassIndependentDeepDoubleCvLV2JetTags_probHcc", &jet_pfMassIndependentDeepDoubleCvLV2JetTags_probHcc, &b_jet_pfMassIndependentDeepDoubleCvLV2JetTags_probHcc);
    fChain->SetBranchAddress("jet_pfMassIndependentDeepDoubleCvBV2JetTags_probHcc", &jet_pfMassIndependentDeepDoubleCvBV2JetTags_probHcc, &b_jet_pfMassIndependentDeepDoubleCvBV2JetTags_probHcc);
+   fChain->SetBranchAddress("HLTJet80_pt", &HLTJet80_pt, &b_HLTJet80_pt);
+   fChain->SetBranchAddress("HLTJet80_eta", &HLTJet80_eta, &b_HLTJet80_eta);
+   fChain->SetBranchAddress("HLTJet80_phi", &HLTJet80_phi, &b_HLTJet80_phi);
+   fChain->SetBranchAddress("HLTJet60_pt", &HLTJet60_pt, &b_HLTJet60_pt);
+   fChain->SetBranchAddress("HLTJet60_eta", &HLTJet60_eta, &b_HLTJet60_eta);
+   fChain->SetBranchAddress("HLTJet60_phi", &HLTJet60_phi, &b_HLTJet60_phi);
+   fChain->SetBranchAddress("HLTJet80_MatchedCalo_pt", &HLTJet80_MatchedCalo_pt, &b_HLTJet80_MatchedCalo_pt);
+   fChain->SetBranchAddress("HLTJet80_MatchedCalo_eta", &HLTJet80_MatchedCalo_eta, &b_HLTJet80_MatchedCalo_eta);
+   fChain->SetBranchAddress("HLTJet80_MatchedCalo_phi", &HLTJet80_MatchedCalo_phi, &b_HLTJet80_MatchedCalo_phi);
+   fChain->SetBranchAddress("HLTJet60_MatchedCalo_pt", &HLTJet60_MatchedCalo_pt, &b_HLTJet60_MatchedCalo_pt);
+   fChain->SetBranchAddress("HLTJet60_MatchedCalo_eta", &HLTJet60_MatchedCalo_eta, &b_HLTJet60_MatchedCalo_eta);
+   fChain->SetBranchAddress("HLTJet60_MatchedCalo_phi", &HLTJet60_MatchedCalo_phi, &b_HLTJet60_MatchedCalo_phi);
+   fChain->SetBranchAddress("HLTAK4PFJetLoose_pt", &HLTAK4PFJetLoose_pt, &b_HLTAK4PFJetLoose_pt);
+   fChain->SetBranchAddress("HLTAK4PFJetLoose_eta", &HLTAK4PFJetLoose_eta, &b_HLTAK4PFJetLoose_eta);
+   fChain->SetBranchAddress("HLTAK4PFJetLoose_phi", &HLTAK4PFJetLoose_phi, &b_HLTAK4PFJetLoose_phi);
+   fChain->SetBranchAddress("HLTAK4PFJetTight_pt", &HLTAK4PFJetTight_pt, &b_HLTAK4PFJetTight_pt);
+   fChain->SetBranchAddress("HLTAK4PFJetTight_eta", &HLTAK4PFJetTight_eta, &b_HLTAK4PFJetTight_eta);
+   fChain->SetBranchAddress("HLTAK4PFJetTight_phi", &HLTAK4PFJetTight_phi, &b_HLTAK4PFJetTight_phi);
+   fChain->SetBranchAddress("HLTAK4PFJet_pt", &HLTAK4PFJet_pt, &b_HLTAK4PFJet_pt);
+   fChain->SetBranchAddress("HLTAK4PFJet_eta", &HLTAK4PFJet_eta, &b_HLTAK4PFJet_eta);
+   fChain->SetBranchAddress("HLTAK4PFJet_phi", &HLTAK4PFJet_phi, &b_HLTAK4PFJet_phi);
    fChain->SetBranchAddress("hltjetForBTag_pt", &hltjetForBTag_pt, &b_hltjetForBTag_pt);
    fChain->SetBranchAddress("hltjetForBTag_eta", &hltjetForBTag_eta, &b_hltjetForBTag_eta);
    fChain->SetBranchAddress("hltjetForBTag_phi", &hltjetForBTag_phi, &b_hltjetForBTag_phi);
@@ -714,6 +746,7 @@ void myAnalizer::Init(TTree *tree)
    fChain->SetBranchAddress("L1muon_mass", &L1muon_mass, &b_L1muon_mass);
    fChain->SetBranchAddress("L1muon_qual", &L1muon_qual, &b_L1muon_qual);
    fChain->SetBranchAddress("L1ht", &L1ht, &b_L1ht);
+   fChain->SetBranchAddress("EventCat", &EventCat, &b_EventCat);
    fChain->SetBranchAddress("quark_pt", &quark_pt, &b_quark_pt);
    fChain->SetBranchAddress("quark_eta", &quark_eta, &b_quark_eta);
    fChain->SetBranchAddress("quark_phi", &quark_phi, &b_quark_phi);
@@ -728,6 +761,7 @@ void myAnalizer::Init(TTree *tree)
    fChain->SetBranchAddress("GENjet_eta", &GENjet_eta, &b_GENjet_eta);
    fChain->SetBranchAddress("GENjet_phi", &GENjet_phi, &b_GENjet_phi);
    fChain->SetBranchAddress("GENjet_mass", &GENjet_mass, &b_GENjet_mass);
+
    Notify();
 }
 
