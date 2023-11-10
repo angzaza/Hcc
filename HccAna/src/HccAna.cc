@@ -306,18 +306,18 @@ private:
     vector<float> pdfWeights;
     int posNNPDF;
     float pdfRMSup, pdfRMSdown, pdfENVup, pdfENVdown;
+
     // lepton variables
-    vector<double> lep_pt; vector<double> lep_eta; vector<double> lep_phi; vector<double> lep_mass; vector<int> lep_ID;
     //vector<double> ALLlep_pt; vector<double> ALLlep_eta; vector<double> ALLlep_phi; vector<double> ALLlep_mass; vector<int> ALLlep_id;
-    vector<double> Ele_pt; vector<double> Ele_eta; vector<double> Ele_phi; vector<double> Ele_mass; vector<double> Ele_dxy; vector<double> Ele_dz; vector<int> Ele_id; vector<double> Ele_hcalIso; vector<double> Ele_ecalIso; vector<double> Ele_trackIso; vector<bool> Ele_isEB; vector<double> Ele_IsoCal; 
+    vector<double> Ele_pt; vector<double> Ele_eta; vector<double> Ele_phi; vector<double> Ele_mass; vector<double> Ele_dxy; vector<double> Ele_dz; vector<int> Ele_id; vector<double> Ele_hcalIso; vector<double> Ele_ecalIso; vector<double> Ele_trackIso; vector<bool> Ele_isEB; vector<double> Ele_IsoCal; vector<double> Ele_03_Neutral; 
 /*vector<double> Ele_PF_Iso_R04;*/ vector<bool> Ele_isPassID;
     vector<double> Muon_pt; vector<double> Muon_eta; vector<double> Muon_phi; vector<double> Muon_mass; vector<double> Muon_dxy; vector<double> Muon_dz; vector<int> Muon_id; vector<double> Muon_PF_Iso_R04; vector<bool> Muon_PassLooseID;
     vector<double> AK4lep_pt; vector<double> AK4lep_eta; vector<double> AK4lep_phi; vector<double> AK4lep_mass; vector<int> AK4lep_id;
 
     // MET
-    float met; float met_phi; float met_pt;
-    float met_jesup, met_phi_jesup, met_jesdn, met_phi_jesdn;
-    float met_uncenup, met_phi_uncenup, met_uncendn, met_phi_uncendn;
+    float met; float met_pt; float met_phi;
+    //float met_jesup, met_phi_jesup, met_jesdn, met_phi_jesdn;
+    //float met_uncenup, met_phi_uncenup, met_uncendn, met_phi_uncendn;
 
     //L1 HT
     float L1ht;
@@ -336,7 +336,7 @@ private:
     vector<double> hltAK4PFJetsCorrected_phi;
     vector<double> hltAK4PFJetsCorrected_mass;
    
-    //HLT jets for trigger SFs
+    //HLT jets for turn on curves
     //HLT_PFJet80
     vector<double> HLTJet80_pt, HLTJet80_eta, HLTJet80_phi;
     vector<double> HLTJet60_pt, HLTJet60_eta, HLTJet60_phi;
@@ -352,7 +352,6 @@ private:
     vector<double> AK4PuppiJets_eta;
     vector<double> AK4PuppiJets_phi;
     vector<double> AK4PuppiJets_mass;
- 
 
     vector<float> jet_pfParticleNetAK4JetTags_probb, jet_pfParticleNetAK4JetTags_probc, jet_pfParticleNetAK4JetTags_probuds,jet_pfParticleNetAK4JetTags_probg, jet_pfParticleNetAK4JetTags_probtauh;  
     vector<float> jet_pfParticleNetAK4JetTags_CvsB, jet_pfParticleNetAK4JetTags_CvsL, jet_pfParticleNetAK4JetTags_CvsAll,jet_pfParticleNetAK4JetTags_BvsC, jet_pfParticleNetAK4JetTags_BvsL, jet_pfParticleNetAK4JetTags_BvsAll, jet_pfParticleNetAK4JetTags_QvsG;  
@@ -377,7 +376,10 @@ private:
 	vector<float> jet_pfMassDecorrelatedParticleNetJetTags_probXbb, jet_pfMassDecorrelatedParticleNetJetTags_probXcc, jet_pfMassDecorrelatedParticleNetJetTags_probXqq, jet_pfMassDecorrelatedParticleNetJetTags_probQCDbb, jet_pfMassDecorrelatedParticleNetJetTags_probQCDcc, jet_pfMassDecorrelatedParticleNetJetTags_probQCDb, jet_pfMassDecorrelatedParticleNetJetTags_probQCDc, jet_pfMassDecorrelatedParticleNetJetTags_probQCDothers;
     vector<float> jet_pfMassIndependentDeepDoubleBvLV2JetTags_probHbb, jet_pfMassIndependentDeepDoubleCvLV2JetTags_probHcc, jet_pfMassIndependentDeepDoubleCvBV2JetTags_probHcc;
 
-    // L1 info
+    // Jets
+    vector<int>    jet_iscleanH4l;
+    int jet1index, jet2index;
+
 	vector<double> L1jet_pt; vector<double> L1jet_eta; vector<double> L1jet_phi; vector<double> L1jet_mass;
     vector<double> L1muon_pt; vector<double> L1muon_eta; vector<double> L1muon_phi; vector<double> L1muon_mass;
 	vector<int> L1muon_qual;	
@@ -401,31 +403,11 @@ private:
     float GENabsrapidity_leadingjet_pt30_eta4p7; float GENabsdeltarapidity_hleadingjet_pt30_eta4p7;
     int lheNb, lheNj, nGenStatus2bHad;
 
-
-    vector<float> lep_pt_float, lep_eta_float, lep_phi_float, lep_mass_float;
     int n_jets=0;
     vector<float> hltjetForBTag_pt_float, hltjetForBTag_eta_float, hltjetForBTag_phi_float, hltjetForBTag_mass_float;
     vector<float> hltAK4PFJetsCorrected_pt_float, hltAK4PFJetsCorrected_eta_float, hltAK4PFJetsCorrected_phi_float, hltAK4PFJetsCorrected_mass_float;
     vector<float> hltAK8PFJetsCorrected_pt_float, hltAK8PFJetsCorrected_eta_float, hltAK8PFJetsCorrected_phi_float, hltAK8PFJetsCorrected_mass_float;
-    vector<float> jet_pt_float, jet_eta_float, jet_phi_float, jet_mass_float, jet_pt_raw_float;
-    
-    vector<float>  jet_csv_cTag_vsL_float, jet_csv_cTag_vsB_float;
-    vector<float> jet_jesup_pt_float, jet_jesup_eta_float; 
-    vector<float> jet_jesup_phi_float, jet_jesup_mass_float;
-    vector<float> jet_jesdn_pt_float, jet_jesdn_eta_float;
-    vector<float> jet_jesdn_phi_float, jet_jesdn_mass_float;
-    vector<float> jet_jerup_pt_float, jet_jerup_eta_float;
-    vector<float> jet_jerup_phi_float, jet_jerup_mass_float;
-    vector<float> jet_jerdn_pt_float, jet_jerdn_eta_float;
-    vector<float> jet_jerdn_phi_float, jet_jerdn_mass_float;
-    vector<float> fsrPhotons_pt_float, fsrPhotons_pterr_float;
-    vector<float> fsrPhotons_eta_float, fsrPhotons_phi_float, fsrPhotons_mass_float;
-    /*vector<float> GENlep_pt_float, GENlep_eta_float;
-    vector<float> GENlep_phi_float, GENlep_mass_float;
-    vector<float> GENH_pt_float, GENH_eta_float;
-    vector<float> GENH_phi_float, GENH_mass_float;
-    vector<float> GENZ_pt_float, GENZ_eta_float;
-    vector<float> GENZ_phi_float, GENZ_mass_float;*/
+
     int n_GENjets=0;
     vector<float> GENjet_pt_float, GENjet_eta_float;
     vector<float> GENjet_phi_float, GENjet_mass_float;
@@ -437,7 +419,8 @@ private:
     vector<float> AK4PuppiJets_eta_float;
     vector<float> AK4PuppiJets_phi_float;
     vector<float> AK4PuppiJets_mass_float;
- 
+    vector<float> AK4PuppiJets_qgl;
+	
     vector<float> HLTJet80_pt_float;
     vector<float> HLTJet80_eta_float;
     vector<float> HLTJet80_phi_float;
@@ -488,9 +471,8 @@ private:
 
     //Input edm
     edm::EDGetTokenT<edm::View<pat::Electron> > elecSrc_;
-    //edm::EDGetTokenT<edm::View<pat::Electron> > elecUnSSrc_;
+    edm::EDGetTokenT<edm::View<pat::Electron> > elecUnSSrc_;
     edm::EDGetTokenT<edm::View<pat::Muon> > muonSrc_;
-    //edm::EDGetTokenT<edm::View<pat::Tau> > tauSrc_;
     //edm::EDGetTokenT<edm::View<pat::Photon> > photonSrc_;
     //edm::EDGetTokenT<edm::View<pat::Jet> > jetSrc_;
     edm::EDGetTokenT<edm::View<pat::Jet> > AK4PuppiJetSrc_;
@@ -509,7 +491,7 @@ private:
     edm::EDGetTokenT<edm::ValueMap<float> > axis2Src_;
     edm::EDGetTokenT<edm::ValueMap<int> > multSrc_;
     edm::EDGetTokenT<edm::ValueMap<float> > ptDSrc_;
-    edm::EDGetTokenT<edm::View<pat::Jet> > mergedjetSrc_;
+    //edm::EDGetTokenT<edm::View<pat::Jet> > mergedjetSrc_;
     edm::EDGetTokenT<edm::View<pat::MET> > metSrc_;
     //edm::InputTag triggerSrc_;
     edm::EDGetTokenT<edm::TriggerResults> triggerSrc_;
@@ -518,12 +500,12 @@ private:
     edm::EDGetTokenT<reco::VertexCollection> vertexSrc_;
     edm::EDGetTokenT<reco::BeamSpot> beamSpotSrc_;
     edm::EDGetTokenT<std::vector<reco::Conversion> > conversionSrc_;
-    //edm::EDGetTokenT<double> muRhoSrc_;
-    //edm::EDGetTokenT<double> elRhoSrc_;
-    //edm::EDGetTokenT<double> rhoSrcSUS_;
+    edm::EDGetTokenT<double> muRhoSrc_;
+    edm::EDGetTokenT<double> elRhoSrc_;
+    edm::EDGetTokenT<double> rhoSrcSUS_;
     edm::EDGetTokenT<std::vector<PileupSummaryInfo> > pileupSrc_;
     edm::EDGetTokenT<pat::PackedCandidateCollection> pfCandsSrc_;
-   // edm::EDGetTokenT<edm::View<pat::PFParticle> > fsrPhotonsSrc_;
+    edm::EDGetTokenT<edm::View<pat::PFParticle> > fsrPhotonsSrc_;
     edm::EDGetTokenT<reco::GenParticleCollection> prunedgenParticlesSrc_;
     edm::EDGetTokenT<edm::View<pat::PackedGenParticle> > packedgenParticlesSrc_;
     edm::EDGetTokenT<edm::View<reco::GenJet> > genJetsSrc_;
@@ -571,6 +553,7 @@ private:
     bool verbose;
 
     int year;///use to choose Muon BDT
+    bool isCode4l;
 
 edm::ESGetToken<JetCorrectorParametersCollection, JetCorrectionsRecord> mPayloadToken;
 
@@ -600,9 +583,8 @@ HccAna::HccAna(const edm::ParameterSet& iConfig) :
     histContainer_(),
     elecSrc_(consumes<edm::View<pat::Electron> >(iConfig.getUntrackedParameter<edm::InputTag>("electronSrc"))),
     //elecSrc_(consumes<edm::View<pat::Electron> >(iConfig.getUntrackedParameter<edm::InputTag>("electronUnSSrc"))),
-    //elecUnSSrc_(consumes<edm::View<pat::Electron> >(iConfig.getUntrackedParameter<edm::InputTag>("electronUnSSrc"))),
+    elecUnSSrc_(consumes<edm::View<pat::Electron> >(iConfig.getUntrackedParameter<edm::InputTag>("electronUnSSrc"))),
     muonSrc_(consumes<edm::View<pat::Muon> >(iConfig.getUntrackedParameter<edm::InputTag>("muonSrc"))),
-    //tauSrc_(consumes<edm::View<pat::Tau> >(iConfig.getUntrackedParameter<edm::InputTag>("tauSrc"))),
     //photonSrc_(consumes<edm::View<pat::Photon> >(iConfig.getUntrackedParameter<edm::InputTag>("photonSrc"))),
     //jetSrc_(consumes<edm::View<pat::Jet> >(iConfig.getUntrackedParameter<edm::InputTag>("jetSrc"))),
     AK4PuppiJetSrc_(consumes<edm::View<pat::Jet> >(iConfig.getParameter<edm::InputTag>("AK4PuppiJetSrc"))),
@@ -631,12 +613,12 @@ HccAna::HccAna(const edm::ParameterSet& iConfig) :
     vertexSrc_(consumes<reco::VertexCollection>(iConfig.getUntrackedParameter<edm::InputTag>("vertexSrc"))),
     beamSpotSrc_(consumes<reco::BeamSpot>(iConfig.getUntrackedParameter<edm::InputTag>("beamSpotSrc"))),
     conversionSrc_(consumes<std::vector<reco::Conversion> >(iConfig.getUntrackedParameter<edm::InputTag>("conversionSrc"))),
-    //muRhoSrc_(consumes<double>(iConfig.getUntrackedParameter<edm::InputTag>("muRhoSrc"))),
-    //elRhoSrc_(consumes<double>(iConfig.getUntrackedParameter<edm::InputTag>("elRhoSrc"))),
-    //rhoSrcSUS_(consumes<double>(iConfig.getUntrackedParameter<edm::InputTag>("rhoSrcSUS"))),
+    muRhoSrc_(consumes<double>(iConfig.getUntrackedParameter<edm::InputTag>("muRhoSrc"))),
+    elRhoSrc_(consumes<double>(iConfig.getUntrackedParameter<edm::InputTag>("elRhoSrc"))),
+    rhoSrcSUS_(consumes<double>(iConfig.getUntrackedParameter<edm::InputTag>("rhoSrcSUS"))),
     pileupSrc_(consumes<std::vector<PileupSummaryInfo> >(iConfig.getUntrackedParameter<edm::InputTag>("pileupSrc"))),
     pfCandsSrc_(consumes<pat::PackedCandidateCollection>(iConfig.getUntrackedParameter<edm::InputTag>("pfCandsSrc"))),
-   // fsrPhotonsSrc_(consumes<edm::View<pat::PFParticle> >(iConfig.getUntrackedParameter<edm::InputTag>("fsrPhotonsSrc"))),
+    fsrPhotonsSrc_(consumes<edm::View<pat::PFParticle> >(iConfig.getUntrackedParameter<edm::InputTag>("fsrPhotonsSrc"))),
     prunedgenParticlesSrc_(consumes<reco::GenParticleCollection>(iConfig.getUntrackedParameter<edm::InputTag>("prunedgenParticlesSrc"))),
     packedgenParticlesSrc_(consumes<edm::View<pat::PackedGenParticle> >(iConfig.getUntrackedParameter<edm::InputTag>("packedgenParticlesSrc"))),
     genJetsSrc_(consumes<edm::View<reco::GenJet> >(iConfig.getUntrackedParameter<edm::InputTag>("genJetsSrc"))),
@@ -697,7 +679,7 @@ HccAna::HccAna(const edm::ParameterSet& iConfig) :
     doTriggerMatching(iConfig.getUntrackedParameter<bool>("doTriggerMatching",!isMC)),
     checkOnlySingle(iConfig.getUntrackedParameter<bool>("checkOnlySingle",false)),
     triggerList(iConfig.getUntrackedParameter<std::vector<std::string>>("triggerList")),
-    //skimLooseLeptons(iConfig.getUntrackedParameter<int>("skimLooseLeptons",2)),    
+    skimLooseLeptons(iConfig.getUntrackedParameter<int>("skimLooseLeptons",2)),    
     skimTightLeptons(iConfig.getUntrackedParameter<int>("skimTightLeptons",2)),    
     verbose(iConfig.getUntrackedParameter<bool>("verbose",false)),
     year(iConfig.getUntrackedParameter<int>("year",2018)),
@@ -707,11 +689,11 @@ HccAna::HccAna(const edm::ParameterSet& iConfig) :
     // 2017
     // 2018
     // to select correct training
-mPayloadToken    {esConsumes(edm::ESInputTag("", iConfig.getParameter<std::string>("payload")))}
+    isCode4l(iConfig.getUntrackedParameter<bool>("isCode4l",true)),
+    mPayloadToken    {esConsumes(edm::ESInputTag("", iConfig.getParameter<std::string>("payload")))}
 {
   
     if(!isMC){reweightForPU = false;}
-    
 
     nEventsTotal=0.0;
     sumWeightsTotal=0.0;
@@ -719,12 +701,88 @@ mPayloadToken    {esConsumes(edm::ESInputTag("", iConfig.getParameter<std::strin
     histContainer_["NEVENTS"]=fs->make<TH1F>("nEvents","nEvents in Sample",2,0,2);
     histContainer_["SUMWEIGHTS"]=fs->make<TH1F>("sumWeights","sum Weights of Sample",2,0,2);
     histContainer_["SUMWEIGHTSPU"]=fs->make<TH1F>("sumWeightsPU","sum Weights and PU of Sample",2,0,2);
-    histContainer_["NVTX"]=fs->make<TH1F>("nVtx","Number of Vertices",36,-0.5,35.5);
-    histContainer_["NVTX_RW"]=fs->make<TH1F>("nVtx_ReWeighted","Number of Vertices",36,-0.5,35.5);
-    histContainer_["NINTERACT"]=fs->make<TH1F>("nInteractions","Number of True Interactions",61,-0.5,60.5);
-    histContainer_["NINTERACT_RW"]=fs->make<TH1F>("nInteraction_ReWeighted","Number of True Interactions",61,-0.5,60.5);
+    histContainer_["NVTX"]=fs->make<TH1F>("nVtx","Number of Vertices",76,-0.5,75.5);
+    histContainer_["NVTX_RW"]=fs->make<TH1F>("nVtx_ReWeighted","Number of Vertices",76,-0.5,75.5);
+    histContainer_["NINTERACT"]=fs->make<TH1F>("nInteractions","Number of True Interactions",81,-0.5,80.5);
+    histContainer_["NINTERACT_RW"]=fs->make<TH1F>("nInteraction_ReWeighted","Number of True Interactions",81,-0.5,80.5);
 
     passedEventsTree_All = new TTree("passedEvents","passedEvents");
+
+    tableEwk = readFile_and_loadEwkTable("ZZBG");  //LUIGI 
+
+	int YEAR = year - 2016 + 1;
+	if(year == 20165) YEAR = 1;
+	if(year == 20160) YEAR = 0;
+    if(year == 2022 || year == 2023) YEAR = 3; //DA MODIFICARE
+   
+    //string elec_scalefac_Cracks_name_161718[3] = {"egammaEffi.txt_EGM2D_cracks.root", "egammaEffi.txt_EGM2D_Moriond2018v1_gap.root", "egammaEffi.txt_EGM2D_Moriond2019_v1_gap.root"};
+    /*string elec_scalefac_Cracks_name_161718[4] = {"ElectronSF_UL2016preVFP_gap.root", "ElectronSF_UL2016postVFP_gap.root", "ElectronSF_UL2017_gap.root", "ElectronSF_UL2018_gap.root"};
+    edm::FileInPath elec_scalefacFileInPathCracks(("Hcc/HccAna/data/"+elec_scalefac_Cracks_name_161718[YEAR]).c_str());
+    TFile *fElecScalFacCracks = TFile::Open(elec_scalefacFileInPathCracks.fullPath().c_str());
+    hElecScaleFac_Cracks = (TH2F*)fElecScalFacCracks->Get("EGamma_SF2D");    
+    //string elec_scalefac_name_161718[3] = {"egammaEffi.txt_EGM2D.root", "egammaEffi.txt_EGM2D_Moriond2018v1.root", "egammaEffi.txt_EGM2D_Moriond2019_v1.root"};
+    string elec_scalefac_name_161718[4] = {"ElectronSF_UL2016preVFP_nogap.root", "ElectronSF_UL2016postVFP_nogap.root", "ElectronSF_UL2017_nogap.root", "ElectronSF_UL2018_nogap.root"};
+    edm::FileInPath elec_scalefacFileInPath(("Hcc/HccAna/data/"+elec_scalefac_name_161718[YEAR]).c_str());
+    TFile *fElecScalFac = TFile::Open(elec_scalefacFileInPath.fullPath().c_str());
+    hElecScaleFac = (TH2F*)fElecScalFac->Get("EGamma_SF2D");    
+
+    //string elec_Gsfscalefac_name_161718[3] = {"egammaEffi.txt_EGM2D_GSF.root", "egammaEffi.txt_EGM2D_Moriond2018v1_runBCDEF_passingRECO.root", "Ele_Reco_2018.root"};//was previous;
+    string elec_Gsfscalefac_name_161718[4] = {"egammaEffi_ptAbove20.txt_EGM2D_UL2016preVFP.root", "egammaEffi_ptAbove20.txt_EGM2D_UL2016postVFP.root", "egammaEffi_ptAbove20.txt_EGM2D_UL2017.root", "egammaEffi_ptAbove20.txt_EGM2D_UL2018.root"};
+    edm::FileInPath elec_GsfscalefacFileInPath(("Hcc/HccAna/data/"+elec_Gsfscalefac_name_161718[YEAR]).c_str());
+    TFile *fElecScalFacGsf = TFile::Open(elec_GsfscalefacFileInPath.fullPath().c_str());
+    hElecScaleFacGsf = (TH2F*)fElecScalFacGsf->Get("EGamma_SF2D");
+
+    //string elec_GsfLowETscalefac_name_161718[3]= {"", "egammaEffi.txt_EGM2D_Moriond2018v1_runBCDEF_passingRECO_lowEt.root", "Ele_Reco_LowEt_2018.root"};//was previous
+    string elec_GsfLowETscalefac_name_161718[4]= {"egammaEffi_ptBelow20.txt_EGM2D_UL2016preVFP.root", "egammaEffi_ptBelow20.txt_EGM2D_UL2016postVFP.root", "egammaEffi_ptBelow20.txt_EGM2D_UL2017.root", "egammaEffi_ptBelow20.txt_EGM2D_UL2018.root"};
+    edm::FileInPath elec_GsfLowETscalefacFileInPath(("Hcc/HccAna/data/"+elec_GsfLowETscalefac_name_161718[YEAR]).c_str());
+    TFile *fElecScalFacGsfLowET = TFile::Open(elec_GsfLowETscalefacFileInPath.fullPath().c_str());
+    hElecScaleFacGsfLowET = (TH2F*)fElecScalFacGsfLowET->Get("EGamma_SF2D");
+
+    //string mu_scalefac_name_161718[3] = {"final_HZZ_Moriond17Preliminary_v4.root", "ScaleFactors_mu_Moriond2018_final.root", "final_HZZ_muon_SF_2018RunA2D_ER_2702.root"};//was previous; 
+//         string mu_scalefac_name_161718[3] = {"final_HZZ_SF_2016_legacy_mupogsysts.root", "final_HZZ_SF_2017_rereco_mupogsysts_3010.root", "final_HZZ_SF_2018_rereco_mupogsysts_3010.root"};
+//         string mu_scalefac_name_161718[4] = {"final_HZZ_muon_SF_2016RunB2H_legacy_newLoose_newIso_paper.root", "final_HZZ_muon_SF_2016RunB2H_legacy_newLoose_newIso_paper.root", "final_HZZ_muon_SF_2017_newLooseIso_mupogSysts_paper.root", "final_HZZ_muon_SF_2018RunA2D_ER_newLoose_newIso_paper.root"};
+        string mu_scalefac_name_161718[4] = {"final_HZZ_SF_2016UL_mupogsysts_newLoose.root","final_HZZ_SF_2016UL_mupogsysts_newLoose.root","final_HZZ_SF_2017UL_mupogsysts_newLoose.root","final_HZZ_SF_2018UL_mupogsysts_newLoose.root"};
+    edm::FileInPath mu_scalefacFileInPath(("Hcc/HccAna/data/"+mu_scalefac_name_161718[YEAR]).c_str());
+    TFile *fMuScalFac = TFile::Open(mu_scalefacFileInPath.fullPath().c_str());
+    hMuScaleFac = (TH2F*)fMuScalFac->Get("FINAL");
+    hMuScaleFacUnc = (TH2F*)fMuScalFac->Get("ERROR");*/
+
+    //string pileup_name_161718[3] = {"puWeightsMoriond17_v2.root", "puWeightsMoriond18.root", "pu_weights_2018.root"};///was previous
+//    string pileup_name_161718[3] = {"pu_weights_2016.root", "pu_weights_2017.root", "pu_weights_2018.root"};
+    string pileup_name_161718[4] = {"pileup_UL_2016_1plusShift.root", "pileup_UL_2016_1plusShift.root", "pileup_UL_2017_1plusShift.root", "pileup_UL_2018_1plusShift.root"};
+    edm::FileInPath pileup_FileInPath(("Hcc/HccAna/data/"+pileup_name_161718[YEAR]).c_str());
+    TFile *f_pileup = TFile::Open(pileup_FileInPath.fullPath().c_str());
+    h_pileup = (TH1D*)f_pileup->Get("weights");
+    h_pileupUp = (TH1D*)f_pileup->Get("weights_varUp");
+    h_pileupDn = (TH1D*)f_pileup->Get("weights_varDn");
+
+    /*string bTagEffi_name_161718[4] = {"bTagEfficiencies_2016.root", "bTagEfficiencies_2016.root", "bTagEfficiencies_2017.root", "bTagEfficiencies_2018.root"};
+    edm::FileInPath BTagEffiInPath(("Hcc/HccAna/data/"+bTagEffi_name_161718[YEAR]).c_str());
+    TFile *fbTagEffi = TFile::Open(BTagEffiInPath.fullPath().c_str());
+    hbTagEffi = (TH2F*)fbTagEffi->Get("eff_b_M_ALL");
+    hcTagEffi = (TH2F*)fbTagEffi->Get("eff_c_M_ALL");
+    hudsgTagEffi = (TH2F*)fbTagEffi->Get("eff_udsg_M_ALL");
+
+    //BTag calibration
+//     string csv_name_161718[4] = {"DeepCSV_2016LegacySF_V1.csv", "DeepCSV_2016LegacySF_V1.csv", "DeepCSV_106XUL17SF_V2p1.csv", "DeepCSV_106XUL18SF.csv"};
+    string csv_name_161718[4] = {"DeepCSV_106XUL16preVFPSF_v1_hzz.csv", "DeepCSV_106XUL16postVFPSF_v2_hzz.csv", "wp_deepCSV_106XUL17_v3_hzz.csv", "wp_deepCSV_106XUL18_v2_hzz.csv"};
+    edm::FileInPath btagfileInPath(("Hcc/HccAna/data/"+csv_name_161718[YEAR]).c_str());
+
+
+bool validate = true; // HARDCODED --> IT COULD BE FALSE!!!
+    BTagCalibration calib("DeepCSV", btagfileInPath.fullPath().c_str(), validate);
+    reader = new BTagCalibrationReader(BTagEntry::OP_MEDIUM,  // operating point
+                                       "central",             // central sys type
+                                       {"up", "down"});      // other sys types
+   
+
+    reader->load(calib,                // calibration instance
+                BTagEntry::FLAV_B,    // btag flavour
+                "comb");               // measurement type
+
+    if(year==2018)    {EleBDT_name_161718 = "ElectronMVAEstimatorRun2Fall17IsoV1Values"; BTagCut=0.4184; heepID_name_161718 = "heepElectronID-HEEPV70";}
+    if(year==2017)    {EleBDT_name_161718 = "ElectronMVAEstimatorRun2Summer17ULIdIsoValues"; BTagCut=0.4941; heepID_name_161718 = "heepElectronID-HEEPV70";}
+    if(year==20165 || year==20160)    {EleBDT_name_161718 = "ElectronMVAEstimatorRun2Summer16ULIdIsoValues"; BTagCut=0.6321; heepID_name_161718 = "heepElectronID-HEEPV70";}*/
 
 }
 
@@ -783,21 +841,16 @@ HccAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     if (verbose) cout<<electrons->size()<<" total electrons in the collection"<<endl;
 
     // electron before scale/smearing corrections
-    //edm::Handle<edm::View<pat::Electron> > electronsUnS;
-    //iEvent.getByToken(elecUnSSrc_,electronsUnS);
+    edm::Handle<edm::View<pat::Electron> > electronsUnS;
+    iEvent.getByToken(elecUnSSrc_,electronsUnS);
 
     // muon collection
     edm::Handle<edm::View<pat::Muon> > muons;
     iEvent.getByToken(muonSrc_,muons);
     if (verbose) cout<<muons->size()<<" total muons in the collection"<<endl;
 
-    // tau collection
-    /*edm::Handle<edm::View<pat::Tau> > taus;
-    iEvent.getByToken(tauSrc_,taus);
-    if (verbose) cout<<taus->size()<<" total taus in the collection"<<endl;
-
     // photon collection 
-    edm::Handle<edm::View<pat::Photon> > photons;
+    /*edm::Handle<edm::View<pat::Photon> > photons;
     iEvent.getByToken(photonSrc_,photons);
     if (verbose) cout<<photons->size()<<" total photons in the collection"<<endl;*/
   
@@ -832,8 +885,8 @@ HccAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     iEvent.getByToken(pfCandsSrc_,pfCands);
 
     // FSR Photons
-    //edm::Handle<edm::View<pat::PFParticle> > photonsForFsr;
-    //iEvent.getByToken(fsrPhotonsSrc_,photonsForFsr);
+    edm::Handle<edm::View<pat::PFParticle> > photonsForFsr;
+    iEvent.getByToken(fsrPhotonsSrc_,photonsForFsr);
   
     // Jets
     //edm::Handle<edm::View<pat::Jet> > jets;
@@ -844,8 +897,8 @@ HccAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     iEvent.getByToken(AK4PuppiJetSrc_ ,AK4PuppiJets);
 
 	// Puppi AK8jets with ParticleNet taggers
-	edm::Handle<edm::View<pat::Jet> > AK8PuppiJets;
-	iEvent.getByToken(AK8PuppiJetSrc_ ,AK8PuppiJets);
+	     edm::Handle<edm::View<pat::Jet> > AK8PuppiJets;
+	    iEvent.getByToken(AK8PuppiJetSrc_ ,AK8PuppiJets);
 	
     //L1 Jets                                       
     //edm::Handle<BXVector<l1t::Jet>> bxvCaloJets;
@@ -929,7 +982,7 @@ HccAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  }
       cout<<"haveJetTags"<<haveJetTags<<endl;*/
 		
-    /*if (!jecunc) {
+    if (!jecunc) {
 
 
 
@@ -950,40 +1003,8 @@ jetCorrParameterSet.validKeys(keys);
 
 
         jecunc.reset(new JetCorrectionUncertainty(jetCorrParameters));
-    }*/
+    }
 
-
-//JME::JetResolution::Token resolution_pt_token;
-//res_pt_config = "AK4PFchs_pt";
-//resolution_pt_token = esConsumes(edm::ESInputTag("", res_pt_config));
-//resolution_pt = JME::JetResolution::get(iSetup, resolution_pt_token);
-
-//JME::JetResolution::Token resolution_phi_token;
-//res_phi_config = "AK4PFchs_phi";
-//resolution_phi_token = esConsumes(edm::ESInputTag("", res_phi_config));
-//resolution_phi = JME::JetResolution::get(iSetup, resolution_phi_token);
-
-//JME::JetResolutionScaleFactor::Token resolution_sf_token;
-//res_sf_config = "AK4PFchs_sf";
-//resolution_sf_token = esConsumes(edm::ESInputTag("", res_sf_config));
-//resolution_sf = JME::JetResolutionScaleFactor::get(iSetup, resolution_sf_token);
-
-
-
-    /*edm::Handle<edm::ValueMap<float> > qgHandle;
-    iEvent.getByToken(qgTagSrc_, qgHandle);
-
-    edm::Handle<edm::ValueMap<float> > axis2Handle;
-    iEvent.getByToken(axis2Src_, axis2Handle);
-
-    edm::Handle<edm::ValueMap<int> > multHandle;
-    iEvent.getByToken(multSrc_, multHandle);
-
-    edm::Handle<edm::ValueMap<float> > ptDHandle;
-    iEvent.getByToken(ptDSrc_, ptDHandle);*/
- 
-    //edm::Handle<edm::View<pat::Jet> > mergedjets;
-    //iEvent.getByToken(mergedjetSrc_,mergedjets);
 
     // GEN collections
     edm::Handle<reco::GenParticleCollection> prunedgenParticles;
@@ -1043,10 +1064,9 @@ jetCorrParameterSet.validKeys(keys);
     pdfRMSup=1.0; pdfRMSdown=1.0; pdfENVup=1.0; pdfENVdown=1.0;
 
     //lepton variables
-    lep_pt.clear(); lep_eta.clear(); lep_phi.clear(); lep_mass.clear(); lep_ID.clear();    
 	
 	//ALLlep_pt.clear(); ALLlep_eta.clear(); ALLlep_phi.clear(); ALLlep_mass.clear(); ALLlep_id.clear();
-	Ele_pt.clear(); Ele_eta.clear(); Ele_phi.clear(); Ele_mass.clear(); Ele_dxy.clear(); Ele_dz.clear(); Ele_id.clear(); Ele_hcalIso.clear(); Ele_ecalIso.clear(); Ele_trackIso.clear(); Ele_isEB.clear(); Ele_IsoCal.clear(); /*Ele_PF_Iso_R04.clear();*/ Ele_isPassID.clear();
+	Ele_pt.clear(); Ele_eta.clear(); Ele_phi.clear(); Ele_mass.clear(); Ele_dxy.clear(); Ele_dz.clear(); Ele_id.clear(); Ele_hcalIso.clear(); Ele_ecalIso.clear(); Ele_trackIso.clear(); Ele_isEB.clear(); Ele_IsoCal.clear(); /*Ele_PF_Iso_R04.clear();*/ Ele_isPassID.clear(); Ele_03_Neutral.clear();
     Muon_pt.clear(); Muon_eta.clear(); Muon_phi.clear(); Muon_mass.clear(); Muon_dxy.clear(); Muon_dz.clear(); Muon_id.clear(); Muon_PF_Iso_R04.clear(); Muon_PassLooseID.clear();
     AK4lep_pt.clear(); AK4lep_eta.clear(); AK4lep_phi.clear(); AK4lep_mass.clear(); AK4lep_id.clear();
 		
@@ -1099,7 +1119,12 @@ jetCorrParameterSet.validKeys(keys);
     AK4PuppiJets_mass.clear();
 
     jet_pfParticleNetAK4JetTags_probb.clear(); jet_pfParticleNetAK4JetTags_probc.clear(); jet_pfParticleNetAK4JetTags_probuds.clear(); jet_pfParticleNetAK4JetTags_probg.clear(); jet_pfParticleNetAK4JetTags_probtauh.clear();
-    jet_pfParticleNetAK4JetTags_CvsB.clear(); jet_pfParticleNetAK4JetTags_CvsL.clear(); jet_pfParticleNetAK4JetTags_CvsAll.clear(); jet_pfParticleNetAK4JetTags_BvsC.clear(); jet_pfParticleNetAK4JetTags_BvsL.clear(); jet_pfParticleNetAK4JetTags_BvsAll.clear(); jet_pfParticleNetAK4JetTags_QvsG.clear();
+    jet_pfParticleNetAK4JetTags_CvsB.clear(); jet_pfParticleNetAK4JetTags_CvsL.clear(); jet_pfParticleNetAK4JetTags_CvsAll.clear(); jet_pfParticleNetAK4JetTags_BvsC.clear(); jet_pfParticleNetAK4JetTags_BvsL.clear(); jet_pfParticleNetAK4JetTags_BvsAll.clear();  jet_pfParticleNetAK4JetTags_QvsG.clear();
+
+
+
+
+
 
     jet_pfDeepJetAK4JetTags_probb.clear(); jet_pfDeepJetAK4JetTags_probbb.clear(); jet_pfDeepJetAK4JetTags_problepb.clear(); jet_pfDeepJetAK4JetTags_probc.clear(); jet_pfDeepJetAK4JetTags_probuds.clear(); jet_pfDeepJetAK4JetTags_probg.clear();
 
@@ -1120,14 +1145,12 @@ jetCorrParameterSet.validKeys(keys);
     jet_pfMassIndependentDeepDoubleBvLV2JetTags_probHbb.clear(); jet_pfMassIndependentDeepDoubleCvLV2JetTags_probHcc.clear(); jet_pfMassIndependentDeepDoubleCvBV2JetTags_probHcc.clear();
     
     // MET
-    met=-1.0; met_phi=9999.0; met_pt=-1.0;
-    met_jesup=-1.0; met_phi_jesup=9999.0; met_jesdn=-1.0; met_phi_jesdn=9999.0; 
-    met_uncenup=-1.0; met_phi_uncenup=9999.0; met_uncendn=-1.0; met_phi_uncendn=9999.0; 
+    met=-1.0;  met_pt=-1.0; met_phi=9999.0;
+    //met_jesup=-1.0; met_phi_jesup=9999.0; met_jesdn=-1.0; met_phi_jesdn=9999.0; 
+    //met_uncenup=-1.0; met_phi_uncenup=9999.0; met_uncendn=-1.0; met_phi_uncendn=9999.0; 
 
-    // L1 Jets
     L1jet_pt.clear(); L1jet_eta.clear(); L1jet_phi.clear(); L1jet_mass.clear();
     L1muon_pt.clear(); L1muon_eta.clear(); L1muon_phi.clear(); L1muon_mass.clear(); L1muon_qual.clear();
-
 
     // -------------------------
     // GEN level information
@@ -1156,24 +1179,16 @@ jetCorrParameterSet.validKeys(keys);
 
     // Event Category
     EventCat=-1;
-		
-    lep_pt_float.clear(); lep_eta_float.clear(); lep_phi_float.clear(); lep_mass_float.clear();
 
     hltjetForBTag_pt_float.clear(); hltjetForBTag_eta_float.clear(); hltjetForBTag_phi_float.clear(); hltjetForBTag_mass_float.clear();
     hltAK4PFJetsCorrected_pt_float.clear(); hltAK4PFJetsCorrected_eta_float.clear(); hltAK4PFJetsCorrected_phi_float.clear(); hltAK4PFJetsCorrected_mass_float.clear();
 
-    jet_pt_float.clear(); jet_eta_float.clear(); jet_phi_float.clear(); jet_mass_float.clear(); jet_pt_raw_float.clear(); 
-    jet_csv_cTag_vsL_float.clear(); jet_csv_cTag_vsB_float.clear();
-    jet_jesup_pt_float.clear(); jet_jesup_eta_float.clear(); jet_jesup_phi_float.clear(); jet_jesup_mass_float.clear();
-    jet_jesdn_pt_float.clear(); jet_jesdn_eta_float.clear(); jet_jesdn_phi_float.clear(); jet_jesdn_mass_float.clear();
-    jet_jerup_pt_float.clear(); jet_jerup_eta_float.clear(); jet_jerup_phi_float.clear(); jet_jerup_mass_float.clear();
-    jet_jerdn_pt_float.clear(); jet_jerdn_eta_float.clear(); jet_jerdn_phi_float.clear();  jet_jerdn_mass_float.clear();
-    fsrPhotons_pt_float.clear(); fsrPhotons_pterr_float.clear(); fsrPhotons_eta_float.clear(); fsrPhotons_phi_float.clear(); fsrPhotons_mass_float.clear();
     L1jet_pt_float.clear(); L1jet_eta_float.clear(); L1jet_phi_float.clear(); L1jet_mass_float.clear();
     L1muon_pt_float.clear(); L1muon_eta_float.clear(); L1muon_phi_float.clear(); L1muon_mass_float.clear();
 
     AK4PuppiJets_pt_float.clear(); AK4PuppiJets_eta_float.clear(); AK4PuppiJets_phi_float.clear(); AK4PuppiJets_mass_float.clear();
 	AK8PuppiJets_pt_float.clear(); AK8PuppiJets_eta_float.clear(); AK8PuppiJets_phi_float.clear(); AK8PuppiJets_mass_float.clear();
+    AK4PuppiJets_qgl.clear();
 
     HLTJet80_pt_float.clear();  HLTJet80_eta_float.clear(); HLTJet80_phi_float.clear();
     HLTJet60_pt_float.clear();  HLTJet60_eta_float.clear(); HLTJet60_phi_float.clear();
@@ -1327,12 +1342,28 @@ jetCorrParameterSet.validKeys(keys);
     if (firstEntry) cout<<"triggersPassed: "<<triggersPassed<<endl;
     //cout<<"triggersPassed: "<<triggersPassed<<endl;
     firstEntry = false;
-
+    // check if any of the triggers in the user list have passed
+    bool passedSingleEl=false;
+    bool passedSingleMu=false;
+    bool passedAnyOther=false;
     for (unsigned int i=0; i<triggerList.size(); ++i) {
         if (strstr(triggersPassed.c_str(),triggerList.at(i).c_str())) {
             passedTrig=true;
+            if (!isMC) {
+								//cout<<"bbb"<<endl;
+                if (strstr(triggerList.at(i).c_str(),"_WP")) passedSingleEl=true;
+                if (strstr(triggerList.at(i).c_str(),"HLT_Iso")) passedSingleMu=true;
+                if (strstr(triggerList.at(i).c_str(),"CaloIdL")) passedAnyOther=true;
+                if (strstr(triggerList.at(i).c_str(),"TrkIsoVVL")) passedAnyOther=true;
+                if (strstr(triggerList.at(i).c_str(),"Triple")) passedAnyOther=true;
+            }
         }
     }
+    
+    bool passedOnlySingle=((passedSingleEl && !passedAnyOther) || (passedSingleMu && !passedSingleEl && !passedAnyOther));
+    bool trigConditionData = ( passedTrig && (!checkOnlySingle || (checkOnlySingle && passedOnlySingle)) );
+if(trigConditionData && verbose)
+	std::cout<<""<<std::endl;
 
 //    bool trigConditionData = true;
         
@@ -1348,8 +1379,7 @@ jetCorrParameterSet.validKeys(keys);
         theVertex=(int)i; break;
     }        
 
-    //if (verbose) std::cout<<"vtx: "<<theVertex<<" trigConditionData "<<trigConditionData<<" passedTrig "<<passedTrig<<std::endl;
-    if (verbose) std::cout<<"vtx: "<<theVertex<<" passedTrig "<<passedTrig<<std::endl;
+    if (verbose) std::cout<<"vtx: "<<theVertex<<" trigConditionData "<<trigConditionData<<" passedTrig "<<passedTrig<<std::endl;
  
     //if(theVertex >= 0 && (isMC || (!isMC && trigConditionData)) )  {
     if(theVertex >= 0 && (isMC || (!isMC )) )  {
@@ -1416,26 +1446,13 @@ jetCorrParameterSet.validKeys(keys);
         helper.cleanOverlappingTaus(recoMuons,recoElectrons,AllTaus,isoCutMu,isoCutEl,muRho,elRho);
         recoTaus = helper.goodTaus2015(AllTaus,_tauPtCut);
         recoPhotons = helper.goodPhotons2015(AllPhotons,_phoPtCut,year);*/
-
-                 
-        // Jets
-        if (verbose) cout<<"begin filling jet candidates"<<endl;
-                
-        vector<pat::Jet> goodJets;
-        vector<float> patJetQGTagger, patJetaxis2, patJetptD;
-        vector<float> goodJetQGTagger, goodJetaxis2, goodJetptD; 
-        vector<int> patJetmult, goodJetmult;
-                
-
        
         if (verbose) cout<<"before vector assign"<<std::endl;
-				//setTreeVariables(iEvent, iSetup, goodJets, goodJetQGTagger,goodJetaxis2, goodJetptD, goodJetmult, selectedMergedJets, AK4PuppiJets,  hltAK4PFJetsCorrected, bxvCaloJets, bxvCaloMuons, bxvCaloHT, AllMuons, AllElectrons);
-
-	    setTreeVariables(iEvent, iSetup, AK4PuppiJets, AK8PuppiJets,  AllMuons, AllElectrons, PV);
-	    //setTreeVariables(iEvent, iSetup, goodJets, selectedMergedJets, AK4PuppiJets, AK8PuppiJets, bxvCaloJets, bxvCaloMuons, bxvCaloHT, AllMuons, AllElectrons, PV);
-				
+        //cout<<"event: "<<iEvent.id().event()<<endl;
+	    setTreeVariables(iEvent, iSetup,AK4PuppiJets, AK8PuppiJets,  AllMuons, AllElectrons, PV);
+		//setTreeVariables(iEvent, iSetup, goodJets, selectedMergedJets, AK4PuppiJets, AK8PuppiJets, bxvCaloJets, bxvCaloMuons, bxvCaloHT, AllMuons, AllElectrons, PV);		
         //setTreeVariables(iEvent, iSetup, goodJets, goodJetQGTagger,goodJetaxis2, goodJetptD, goodJetmult, selectedMergedJets, hltjetsForBTag,  hltAK4PFJetsCorrected, pfJetTagCollectionParticleNetprobc , pfJetTagCollectionParticleNetprobb , pfJetTagCollectionParticleNetprobuds , pfJetTagCollectionParticleNetprobg ,pfJetTagCollectionParticleNetprobtauh ,  bxvCaloJets, bxvCaloMuons, bxvCaloHT, AllMuons, AllElectrons);
-				//setTreeVariables(iEvent, iSetup, goodJets, goodJetQGTagger,goodJetaxis2, goodJetptD, goodJetmult, selectedMergedJets, bxvCaloJets, bxvCaloMuons, bxvCaloHT, AllMuons, AllElectrons);
+
       	if (verbose) cout<<"finshed setting tree variables"<<endl;
 
 
@@ -1539,11 +1556,6 @@ jetCorrParameterSet.validKeys(keys);
           HLTAK4PFJet_phi.push_back(TriggerObj_AK4PFJets.at(t).phi());
           //cout<<" hlt jet pt: "<<TriggerObj_AK4PFJetsTight.at(t).pt()<<endl;
         }
-        lep_pt_float.assign(lep_pt.begin(),lep_pt.end());
-      	lep_eta_float.assign(lep_eta.begin(),lep_eta.end());
-      	lep_phi_float.assign(lep_phi.begin(),lep_phi.end());
-      	lep_mass_float.assign(lep_mass.begin(),lep_mass.end());
-   
 
         quark_pt_float.assign(quark_pt.begin(),quark_pt.end());
         quark_eta_float.assign(quark_eta.begin(),quark_eta.end());
@@ -1575,7 +1587,7 @@ jetCorrParameterSet.validKeys(keys);
         AK4PuppiJets_phi_float.assign(AK4PuppiJets_phi.begin(), AK4PuppiJets_phi.end()); 
         AK4PuppiJets_mass_float.assign(AK4PuppiJets_mass.begin(), AK4PuppiJets_mass.end());
 
-     	AK8PuppiJets_pt_float.assign(AK8PuppiJets_pt.begin(), AK8PuppiJets_pt.end()); 
+    	AK8PuppiJets_pt_float.assign(AK8PuppiJets_pt.begin(), AK8PuppiJets_pt.end()); 
 	    AK8PuppiJets_eta_float.assign(AK8PuppiJets_eta.begin(), AK8PuppiJets_eta.end()); 
         AK8PuppiJets_phi_float.assign(AK8PuppiJets_phi.begin(), AK8PuppiJets_phi.end()); 
         AK8PuppiJets_mass_float.assign(AK8PuppiJets_mass.begin(), AK8PuppiJets_mass.end());
@@ -1767,25 +1779,11 @@ void HccAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("Trigger_hltdecision",&Trigger_hltdecision);
 		
 
-    /*tree->Branch("passedFullSelection",&passedFullSelection,"passedFullSelection/O");
-    tree->Branch("passedZ4lSelection",&passedZ4lSelection,"passedZ4lSelection/O");
-    tree->Branch("passedQCDcut",&passedQCDcut,"passedQCDcut/O");
-    tree->Branch("genWeight",&genWeight,"genWeight/F");
-    tree->Branch("qcdWeights",&qcdWeights);
-    tree->Branch("nnloWeights",&nnloWeights);
-    tree->Branch("pdfWeights",&pdfWeights);
-    tree->Branch("pdfRMSup",&pdfRMSup,"pdfRMSup/F");
-    tree->Branch("pdfRMSdown",&pdfRMSdown,"pdfRMSdown/F");
-    tree->Branch("pdfENVup",&pdfENVup,"pdfENVup/F");
-    tree->Branch("pdfENVdown",&pdfENVdown,"pdfENVdown/F");
-    tree->Branch("pileupWeight",&pileupWeight,"pileupWeight/F");
-    tree->Branch("pileupWeightUp",&pileupWeightUp,"pileupWeightUp/F");
-    tree->Branch("pileupWeightDn",&pileupWeightDn,"pileupWeightDn/F");
-    tree->Branch("dataMCWeight",&dataMCWeight,"dataMCWeight/F");
-    tree->Branch("eventWeight",&eventWeight,"eventWeight/F");
-    tree->Branch("prefiringWeight",&prefiringWeight,"prefiringWeight/F");
-    tree->Branch("crossSection",&crossSection,"crossSection/F");*/
-
+    //tree->Branch("ALLlep_id",&ALLlep_id);
+    //tree->Branch("ALLlep_pt",&ALLlep_pt);
+    //tree->Branch("ALLlep_eta",&ALLlep_eta);
+    //tree->Branch("ALLlep_phi",&ALLlep_phi);
+    //tree->Branch("ALLlep_mass",&ALLlep_mass);
     tree->Branch("Ele_id",&Ele_id);
     tree->Branch("Ele_pt",&Ele_pt);
     tree->Branch("Ele_isPassID",&Ele_isPassID);
@@ -1799,6 +1797,7 @@ void HccAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("Ele_trackIso", &Ele_trackIso);
     tree->Branch("Ele_isEB", &Ele_isEB);
     tree->Branch("Ele_IsoCal", &Ele_IsoCal);
+    tree->Branch("Ele_03_Neutral", &Ele_03_Neutral);
 
     //tree->Branch("Ele_PF_Iso_R04",&Ele_PF_Iso_R04);
     tree->Branch("Muon_id",&Muon_id);
@@ -1830,14 +1829,17 @@ void HccAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("met_uncendn",&met_uncendn,"met_uncendn/F");
     tree->Branch("met_phi_uncendn",&met_phi_uncendn,"met_phi_uncendn/F");*/
 
+    // Jets
+    tree->Branch("n_jets", &n_jets);
 
     // Puppi AK4jets with ParticleNet taggers
     tree->Branch("AK4PuppiJets_pt",&AK4PuppiJets_pt_float);
     tree->Branch("AK4PuppiJets_eta",&AK4PuppiJets_eta_float);
     tree->Branch("AK4PuppiJets_phi",&AK4PuppiJets_phi_float);
-    tree->Branch("AK4PuppiJets_mass",&AK4PuppiJets_mass_float);
+    tree->Branch("AK4PuppiJets_mass",&AK4PuppiJets_mass_float);   
+    tree->Branch("AK4PuppiJets_qgl",&AK4PuppiJets_qgl);   
 
-   
+
     //ParticleNet discriminants
     tree->Branch("jet_pfParticleNetAK4JetTags_probb", &jet_pfParticleNetAK4JetTags_probb);	
     tree->Branch("jet_pfParticleNetAK4JetTags_probc", &jet_pfParticleNetAK4JetTags_probc);	
@@ -1851,8 +1853,7 @@ void HccAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("jet_pfParticleNetAK4JetTags_BvsC", &jet_pfParticleNetAK4JetTags_BvsC);	
     tree->Branch("jet_pfParticleNetAK4JetTags_BvsL", &jet_pfParticleNetAK4JetTags_BvsL);	
     tree->Branch("jet_pfParticleNetAK4JetTags_BvsAll", &jet_pfParticleNetAK4JetTags_BvsAll);
-    tree->Branch("jet_pfParticleNetAK4JetTags_QvsG", &jet_pfParticleNetAK4JetTags_QvsG);
-    	
+    tree->Branch("jet_pfParticleNetAK4JetTags_QvsG", &jet_pfParticleNetAK4JetTags_QvsG);	
     //DeepJet discriminants
     tree->Branch("jet_pfDeepJetAK4JetTags_probb",&jet_pfDeepJetAK4JetTags_probb);
     tree->Branch("jet_pfDeepJetAK4JetTags_probbb",&jet_pfDeepJetAK4JetTags_probbb);
@@ -1963,6 +1964,7 @@ void HccAna::bookPassedEventTree(TString treeName, TTree *tree)
 		
     //L1 HT
     tree->Branch("L1ht",&L1ht, "L1ht/F");
+	
 
     // Event Category
     tree->Branch("EventCat",&EventCat,"EventCat/I");
@@ -1971,8 +1973,7 @@ void HccAna::bookPassedEventTree(TString treeName, TTree *tree)
     // GEN level information                                                                                                                                                                            
     // -------------------------                                                                                                                                                                        
     //Event variables
-    //tree->Branch("GENfinalState",&GENfinalState,"GENfinalState/I");*/
-
+    tree->Branch("GENfinalState",&GENfinalState,"GENfinalState/I");
 
     //quark
     tree->Branch("quark_pt", &quark_pt_float);
@@ -1993,9 +1994,6 @@ void HccAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("GENjet_eta",&GENjet_eta_float);
     tree->Branch("GENjet_phi",&GENjet_phi_float);
     tree->Branch("GENjet_mass",&GENjet_mass_float);
-    //tree->Branch("nGenStatus2bHad",&nGenStatus2bHad,"nGenStatus2bHad/I");*/
-
-
 
 }
 
@@ -2037,51 +2035,54 @@ void HccAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSetup& 
     using namespace std;
 
 	for(unsigned int jmu=0; jmu<AllMuons.size(); jmu++){
-       		/*ALLlep_pt.push_back(AllMuons[jmu].pt());
-          	ALLlep_eta.push_back(AllMuons[jmu].eta());
-          	ALLlep_phi.push_back(AllMuons[jmu].phi());
-          	ALLlep_mass.push_back(AllMuons[jmu].mass());
-          	ALLlep_id.push_back(AllMuons[jmu].pdgId());*/
-            Muon_pt.push_back(AllMuons[jmu].pt());
-            Muon_eta.push_back(AllMuons[jmu].eta());
-            Muon_phi.push_back(AllMuons[jmu].phi());
-            Muon_mass.push_back(AllMuons[jmu].mass());
-            Muon_dxy.push_back(AllMuons[jmu].innerTrack()->dxy(ver->position()));
-            Muon_dz.push_back(AllMuons[jmu].innerTrack()->dz(ver->position()));
-            Muon_id.push_back(AllMuons[jmu].pdgId());
-            Muon_PF_Iso_R04.push_back((AllMuons[jmu].pfIsolationR04().sumChargedHadronPt + TMath::Max(AllMuons[jmu].pfIsolationR04().sumNeutralHadronEt + AllMuons[jmu].pfIsolationR04().sumPhotonEt - AllMuons[jmu].pfIsolationR04().sumPUPt/2.0,0.0))/AllMuons[jmu].pt());
-            Muon_PassLooseID.push_back(AllMuons[jmu].isLooseMuon());
-//                if(AllMuons[jmu].pt()>20 && abs(AllMuons[jmu].eta())<2.4 && AllMuons[jmu].isLooseMuon() && Mu_PF_Iso_R04<0.4 ){Nmu=Nmu+1;}
+        /*ALLlep_pt.push_back(AllMuons[jmu].pt());
+        ALLlep_eta.push_back(AllMuons[jmu].eta());
+        ALLlep_phi.push_back(AllMuons[jmu].phi());
+        ALLlep_mass.push_back(AllMuons[jmu].mass());
+        ALLlep_id.push_back(AllMuons[jmu].pdgId());*/
+        Muon_pt.push_back(AllMuons[jmu].pt());
+        Muon_eta.push_back(AllMuons[jmu].eta());
+        Muon_phi.push_back(AllMuons[jmu].phi());
+        Muon_mass.push_back(AllMuons[jmu].mass());
+        Muon_dxy.push_back(AllMuons[jmu].innerTrack()->dxy(ver->position()));
+        Muon_dz.push_back(AllMuons[jmu].innerTrack()->dz(ver->position()));
+        Muon_id.push_back(AllMuons[jmu].pdgId());
+        Muon_PF_Iso_R04.push_back((AllMuons[jmu].pfIsolationR04().sumChargedHadronPt + TMath::Max(AllMuons[jmu].pfIsolationR04().sumNeutralHadronEt + AllMuons[jmu].pfIsolationR04().sumPhotonEt - AllMuons[jmu].pfIsolationR04().sumPUPt/2.0,0.0))/AllMuons[jmu].pt());
+        Muon_PassLooseID.push_back(AllMuons[jmu].isLooseMuon());
+//      if(AllMuons[jmu].pt()>20 && abs(AllMuons[jmu].eta())<2.4 && AllMuons[jmu].isLooseMuon() && Mu_PF_Iso_R04<0.4 ){Nmu=Nmu+1;}
         }
 
 	for(unsigned int jel=0; jel<AllElectrons.size(); jel++){
-        	/*ALLlep_pt.push_back(AllElectrons[jel].pt());
-          	ALLlep_eta.push_back(AllElectrons[jel].eta());
-          	ALLlep_phi.push_back(AllElectrons[jel].phi());
-          	ALLlep_mass.push_back(AllElectrons[jel].mass());
-          	ALLlep_id.push_back(AllElectrons[jel].pdgId());*/
-            Ele_pt.push_back(AllElectrons[jel].pt());
-            Ele_eta.push_back(AllElectrons[jel].eta());
-            Ele_phi.push_back(AllElectrons[jel].phi());
-            Ele_mass.push_back(AllElectrons[jel].mass());
-            Ele_dxy.push_back(AllElectrons[jel].gsfTrack()->dxy(ver->position()));
-            Ele_dz.push_back(AllElectrons[jel].gsfTrack()->dz(ver->position()));
-            Ele_hcalIso.push_back(AllElectrons[jel].dr03TkSumPt() / AllElectrons[jel].pt());
-            Ele_ecalIso.push_back(AllElectrons[jel].dr03EcalRecHitSumEt() / AllElectrons[jel].pt()); 
-            Ele_trackIso.push_back(AllElectrons[jel].dr03HcalTowerSumEt()/ AllElectrons[jel].pt()); 
-            Ele_isEB.push_back(AllElectrons[jel].isEB()); 
-            if(AllElectrons[jel].isEB()==true){
-              Ele_IsoCal.push_back((std::max(0., AllElectrons[jel].dr03EcalRecHitSumEt() - 1.) + AllElectrons[jel].dr03HcalTowerSumEt()) /AllElectrons[jel].pt());
-            } //-1 -> pedestal subtraction needed only in the barrel
-            else{
-              Ele_IsoCal.push_back((AllElectrons[jel].dr03EcalRecHitSumEt() + AllElectrons[jel].dr03HcalTowerSumEt()) /AllElectrons[jel].pt());
-            }
+        /*ALLlep_pt.push_back(AllElectrons[jel].pt());
+        ALLlep_eta.push_back(AllElectrons[jel].eta());
+        ALLlep_phi.push_back(AllElectrons[jel].phi());
+        ALLlep_mass.push_back(AllElectrons[jel].mass());
+        ALLlep_id.push_back(AllElectrons[jel].pdgId());*/
+        Ele_pt.push_back(AllElectrons[jel].pt());
+        Ele_eta.push_back(AllElectrons[jel].eta());
+        Ele_phi.push_back(AllElectrons[jel].phi());
+        Ele_mass.push_back(AllElectrons[jel].mass());
+        Ele_dxy.push_back(AllElectrons[jel].gsfTrack()->dxy(ver->position()));
+        Ele_dz.push_back(AllElectrons[jel].gsfTrack()->dz(ver->position()));
+        Ele_hcalIso.push_back(AllElectrons[jel].dr03TkSumPt() / AllElectrons[jel].pt());
+        Ele_ecalIso.push_back(AllElectrons[jel].dr03EcalRecHitSumEt() / AllElectrons[jel].pt()); 
+        Ele_trackIso.push_back(AllElectrons[jel].dr03HcalTowerSumEt()/ AllElectrons[jel].pt()); 
+        Ele_isEB.push_back(AllElectrons[jel].isEB()); 
+        if(AllElectrons[jel].isEB()==true){
+            Ele_IsoCal.push_back((std::max(0., AllElectrons[jel].dr03EcalRecHitSumEt() - 1.) + AllElectrons[jel].dr03HcalTowerSumEt()) /AllElectrons[jel].pt());
+        } //-1 -> pedestal subtraction needed only in the barrel
+        else{
+            Ele_IsoCal.push_back((AllElectrons[jel].dr03EcalRecHitSumEt() + AllElectrons[jel].dr03HcalTowerSumEt()) /AllElectrons[jel].pt());
+        }
+        double El_03_Neutral = AllElectrons[jel].ecalPFClusterIso();
+        El_03_Neutral += AllElectrons[jel].hcalPFClusterIso();
+        Ele_03_Neutral.push_back(El_03_Neutral);
 
-            Ele_id.push_back(AllElectrons[jel].pdgId());
-            //Ele_PF_Iso_R04.push_back((AllElectrons[jel].setIsolation04().sumChargedHadronPt + TMath::Max(AllElectrons[jel].setIsolation04().sumNeutralHadronEt + AllElectrons[jel].setIsolation04().sumPhotonEt - AllElectrons[jel].setIsolation04().sumPUPt/2.0,0.0))/AllElectrons[jel].pt());
-            Ele_isPassID.push_back(AllElectrons[jel].electronID("cutBasedElectronID-Fall17-94X-V2-veto"));
+        Ele_id.push_back(AllElectrons[jel].pdgId());
+         //Ele_PF_Iso_R04.push_back((AllElectrons[jel].setIsolation04().sumChargedHadronPt + TMath::Max(AllElectrons[jel].setIsolation04().sumNeutralHadronEt + AllElectrons[jel].setIsolation04().sumPhotonEt - AllElectrons[jel].setIsolation04().sumPUPt/2.0,0.0))/AllElectrons[jel].pt());
+        Ele_isPassID.push_back(AllElectrons[jel].electronID("cutBasedElectronID-Fall17-94X-V2-veto"));
 //                if(AllElectrons[jel].pt()>20 && abs(AllElectrons[jel].eta())<2.4 && isPassID){Ne=Ne+1;}
-         }
+        }
        	
     //L1 jets Variables
     /*for (std::vector<l1t::Jet>::const_iterator l1jet = bxvCaloJets->begin(0); l1jet != bxvCaloJets->end(0); ++l1jet) {
@@ -2132,14 +2133,14 @@ void HccAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSetup& 
       AK8PuppiJets_softdropmass.push_back(AK8PuppiJets->at(jjet).userFloat("ak8PFJetsPuppiSoftDropMass"));
 
       if(AK8PuppiJets->at(jjet).pt()>leadingAK8_pt){
-             subleadingAK8_pt = leadingAK8_pt;
-             leadingAK8_pt=AK8PuppiJets->at(jjet).pt();
-             subleadingAK8_pt_idx = leadingAK8_pt_idx;
-             leadingAK8_pt_idx=jjet;}
+        subleadingAK8_pt = leadingAK8_pt;
+        leadingAK8_pt=AK8PuppiJets->at(jjet).pt();
+        subleadingAK8_pt_idx = leadingAK8_pt_idx;
+        leadingAK8_pt_idx=jjet;}
 
       if(AK8PuppiJets->at(jjet).pt()<leadingAK8_pt && AK8PuppiJets->at(jjet).pt()>subleadingAK8_pt){
-             subleadingAK8_pt = AK8PuppiJets->at(jjet).pt();
-             subleadingAK8_pt_idx = jjet;}
+        subleadingAK8_pt = AK8PuppiJets->at(jjet).pt();
+        subleadingAK8_pt_idx = jjet;}
 
       jet_pfParticleNetJetTags_probZbb.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probZbb"));
       jet_pfParticleNetJetTags_probZcc.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probZcc"));
@@ -2156,7 +2157,7 @@ void HccAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSetup& 
       jet_pfMassDecorrelatedParticleNetJetTags_probXbb.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfMassDecorrelatedParticleNetJetTags:probXbb"));
       jet_pfMassDecorrelatedParticleNetJetTags_probXcc.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfMassDecorrelatedParticleNetJetTags:probXcc"));
       //std::cout<<"Prob Xbb: "<<AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetFromMiniAODAK8JetTags:probXbb")<<std::endl;
-      jet_pfMassDecorrelatedParticleNetJetTags_probXqq.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfMassDecorrelatedParticleNetJetTags:probXqq"));
+    	jet_pfMassDecorrelatedParticleNetJetTags_probXqq.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfMassDecorrelatedParticleNetJetTags:probXqq"));
       jet_pfMassDecorrelatedParticleNetJetTags_probQCDbb.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfMassDecorrelatedParticleNetJetTags:probQCDbb"));
       jet_pfMassDecorrelatedParticleNetJetTags_probQCDcc.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfMassDecorrelatedParticleNetJetTags:probQCDcc"));
       jet_pfMassDecorrelatedParticleNetJetTags_probQCDb.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfMassDecorrelatedParticleNetJetTags:probQCDb"));
@@ -2177,28 +2178,66 @@ void HccAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSetup& 
       AK4PuppiJets_phi.push_back(AK4PuppiJets->at(ijet).phi());
       AK4PuppiJets_mass.push_back(AK4PuppiJets->at(ijet).mass());
 
-      //cout<<"QGL score: "<<AK4PuppiJets->at(ijet).userFloat("QGTagger:qgLikelihood");
+      // Tight JetID
+      /*double nhf   = AK4PuppiJets->at(ijet).neutralHadronEnergyFraction();
+      double nef   = AK4PuppiJets->at(ijet).neutralEmEnergyFraction();
+      double chf   = AK4PuppiJets->at(ijet).chargedHadronEnergyFraction();;
+      int NumConst = AK4PuppiJets->at(ijet).chargedMultiplicity() + AK4PuppiJets->at(ijet).neutralMultiplicity();
+      int CharMult = AK4PuppiJets->at(ijet).chargedMultiplicity();
+      int NeutMult = AK4PuppiJets->at(ijet).neutralMultiplicity();*/
+
+      //if (!isTight(AK4PuppiJets->at(ijet).eta(), nhf, nef, chf, NumConst, CharMult, NeutMult)) continue;
       
-      jet_pfParticleNetAK4JetTags_probb.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralJetTags:probb"));
-      jet_pfParticleNetAK4JetTags_probc.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralJetTags:probc"));
-      jet_pfParticleNetAK4JetTags_probuds.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralJetTags:probuds"));
-      jet_pfParticleNetAK4JetTags_probg.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralJetTags:probg"));
-      jet_pfParticleNetAK4JetTags_probtauh.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralJetTags:probtauh"));
+      float QvsG=-1.;
 
-      //cout<<"PNET CvsB: "<<AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralDiscriminatorsJetTags:CvsB")<<endl; 
+      if(year==2023){
 
-      jet_pfParticleNetAK4JetTags_CvsB.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralDiscriminatorsJetTags:CvsB"));
-      jet_pfParticleNetAK4JetTags_CvsL.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralDiscriminatorsJetTags:CvsL"));
-      jet_pfParticleNetAK4JetTags_CvsAll.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralDiscriminatorsJetTags:CvsAll"));
-      //std::cout<<"probc: "<<AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralJetTags:probc")<<std::endl;
-      jet_pfParticleNetAK4JetTags_BvsC.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralDiscriminatorsJetTags:BvsC"));
-      jet_pfParticleNetAK4JetTags_BvsL.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralDiscriminatorsJetTags:BvsL"));
-      jet_pfParticleNetAK4JetTags_BvsAll.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralDiscriminatorsJetTags:BvsAll"));
-      float QvsG=AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralDiscriminatorsJetTags:QvsG");
-      if(fabs(AK4PuppiJets->at(ijet).eta())>=2.5){
-        QvsG=AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiForwardJetTags:QvsG");
-      } 
-      jet_pfParticleNetAK4JetTags_QvsG.push_back(QvsG);
+        jet_pfParticleNetAK4JetTags_probb.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralJetTags:probb"));
+        //jet_pfParticleNetAK4JetTags_probb.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetAK4JetTags:probb"));
+        jet_pfParticleNetAK4JetTags_probc.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralJetTags:probc"));
+        jet_pfParticleNetAK4JetTags_probuds.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralJetTags:probuds"));
+        jet_pfParticleNetAK4JetTags_probg.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralJetTags:probg"));
+        jet_pfParticleNetAK4JetTags_probtauh.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralJetTags:probtauh"));
+
+        jet_pfParticleNetAK4JetTags_CvsB.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralDiscriminatorsJetTags:CvsB"));
+        jet_pfParticleNetAK4JetTags_CvsL.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralDiscriminatorsJetTags:CvsL"));
+        jet_pfParticleNetAK4JetTags_CvsAll.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralDiscriminatorsJetTags:CvsAll"));
+        //std::cout<<"probc: "<<AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralJetTags:probc")<<std::endl;
+        jet_pfParticleNetAK4JetTags_BvsC.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralDiscriminatorsJetTags:BvsC"));
+        jet_pfParticleNetAK4JetTags_BvsL.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralDiscriminatorsJetTags:BvsL"));
+        jet_pfParticleNetAK4JetTags_BvsAll.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralDiscriminatorsJetTags:BvsAll"));
+        QvsG=AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralDiscriminatorsJetTags:QvsG");
+        if(fabs(AK4PuppiJets->at(ijet).eta())>=2.5){
+          QvsG=AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiForwardDiscriminatorsJetTags:QvsG");
+        }
+        jet_pfParticleNetAK4JetTags_QvsG.push_back(QvsG);
+      }
+
+      else{
+        jet_pfParticleNetAK4JetTags_probb.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetAK4JetTags:probb"));
+        jet_pfParticleNetAK4JetTags_probc.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetAK4JetTags:probc"));
+        jet_pfParticleNetAK4JetTags_probuds.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetAK4JetTags:probuds"));
+        jet_pfParticleNetAK4JetTags_probg.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetAK4JetTags:probg"));
+        jet_pfParticleNetAK4JetTags_probtauh.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetAK4JetTags:probtauh"));
+
+        jet_pfParticleNetAK4JetTags_CvsB.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetAK4DiscriminatorsJetTags:CvsB"));
+        jet_pfParticleNetAK4JetTags_CvsL.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetAK4DiscriminatorsJetTags:CvsL"));
+        jet_pfParticleNetAK4JetTags_CvsAll.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetAK4DiscriminatorsJetTags:CvsAll"));
+        //std::cout<<"probc: "<<AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetAK4DiscriminatorsJetTags:probc")<<std::endl;
+        jet_pfParticleNetAK4JetTags_BvsC.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetAK4DiscriminatorsJetTags:BvsC"));
+        jet_pfParticleNetAK4JetTags_BvsL.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetAK4DiscriminatorsJetTags:BvsL"));
+        jet_pfParticleNetAK4JetTags_BvsAll.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetAK4DiscriminatorsJetTags:BvsAll"));
+        QvsG=AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetAK4DiscriminatorsJetTags:QvsG");
+        //if(fabs(AK4PuppiJets->at(ijet).eta())>=2.5){
+        //  QvsG=AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiForwardJetTags:QvsG");
+        //}
+        jet_pfParticleNetAK4JetTags_QvsG.push_back(QvsG);
+
+      }
+
+      float qgl= AK4PuppiJets->at(ijet).userFloat("QGTagger:qgLikelihood");
+      AK4PuppiJets_qgl.push_back(qgl);
+      //cout<<"qgl: "<< qgl<<"     pt: "<<AK4PuppiJets->at(ijet).pt()<<"     eta: "<<AK4PuppiJets->at(ijet).eta()<<endl;
 
       jet_pfDeepJetAK4JetTags_probb.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfDeepFlavourJetTags:probb")); 
       jet_pfDeepJetAK4JetTags_probbb.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfDeepFlavourJetTags:probbb")); 
@@ -2211,8 +2250,7 @@ void HccAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSetup& 
       jet_pfDeepCSVAK4JetTags_probbb.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfDeepCSVJetTags:probbb")); 
       jet_pfDeepCSVAK4JetTags_probc.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfDeepCSVJetTags:probc")); 
       jet_pfDeepCSVAK4JetTags_probudsg.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfDeepCSVJetTags:probudsg"));
-
-
+      
       /*bool passPFtightID_LepVeto = false;
 
       float NHF = AK4PuppiJets->at(ijet).neutralHadronEnergyFraction();
@@ -2271,6 +2309,8 @@ void HccAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSetup& 
              }
       }*/
      //end Zbb event selection
+
+
      //hlt jets
      //std::cout<<"hltPFJetForBtag size: "<< hltjets->size()<<std::endl;
      //std::cout<<"pfJetTagCollection: "<<pfJetTagCollection->size()<<std::endl;
