@@ -18,8 +18,8 @@ def parseOptions():
 
     # input options
     parser.add_option('-t', '--tag', dest='TAG', type='string',default='', help='tag to be appended to the results, default is an empty string')
-    parser.add_option('-d', '--datasets', dest='DATASETS', type='string', default='dataset_2023.txt', help='txt file with datasets to run over')
-    parser.add_option('-c', '--cfg', dest='CONFIGFILE', type='string', default='/afs/cern.ch/work/a/azaza/HccAna/CMSSW_13_0_10/src/Hcc/HccAna/python/crab/crabConfig_TEMPLATE_Data.py', help='configuration template')
+    parser.add_option('-d', '--datasets', dest='DATASETS', type='string', default='dataset_2023C.txt', help='txt file with datasets to run over')
+    parser.add_option('-c', '--cfg', dest='CONFIGFILE', type='string', default='/afs/cern.ch/work/a/azaza/HccAna/CMSSW_13_0_13/src/Hcc/HccAna/python/crab/crabConfig_TEMPLATE_Data.py', help='configuration template')
     parser.add_option('-s', '--substring', dest='SUBSTRING', type='string', default='', help='only submit datasets with this string in the name')
 
     # store options and arguments as global variables
