@@ -1,0 +1,1 @@
+/VBFHto2C_M-125_TuneCP5_13p6TeV_powheg-pythia8/Run3Winter23MiniAOD-GTv3Digi_GTv3_MiniGTv3_126X_mcRun3_2023_forPU65_v3-v2/MINIAODSIM 1.0

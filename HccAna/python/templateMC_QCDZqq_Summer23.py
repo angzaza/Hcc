@@ -64,7 +64,7 @@ process.source = cms.Source("PoolSource",fileNames = myfilelist,
 
 process.TFileService = cms.Service("TFileService",
                                    #fileName = cms.string("prova.root',")
-                                   fileName = cms.string("out_QCDZqq_Summer23.root")
+                                   fileName = cms.string("out_MC_Summer23.root")
 )
 
 # jet energy corrections
