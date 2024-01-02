@@ -18,6 +18,7 @@ struct jet_struct{
   float CvsL;
   float CvsB;
   float QGL;
+  float QvsG;
   bool c_tagged;
 };
 
@@ -27,6 +28,13 @@ bool compareByCvsAll(const jet_struct &a, const jet_struct &b){
 
 bool compareByCvsL(const jet_struct &a, const jet_struct &b){
   return a.CvsL > b.CvsL;
+}
+
+bool ApplyVeto(TH2D* histo, double eta, double phi){
+  int binX = histo->GetXaxis()->FindBin(eta);
+  int binY = histo->GetYaxis()->FindBin(phi);
+  if (histo->GetBinContent(binX, binY) != 0) return false;
+  else return true;
 }
 
 
@@ -71,6 +79,7 @@ void myAnalizer::Loop_Hcc(TString type, TString datasetName)
    bool match_gen_quark=false;
    bool match_hlt_gen=false;
    bool trigger_VBFPNet=false;
+   bool Apply_jetVeto=true;
 
    vector<float> hltjet_pt;
 
@@ -86,6 +95,46 @@ void myAnalizer::Loop_Hcc(TString type, TString datasetName)
    std::vector<jet_struct> AK4puppi_VBF;
    bool passed_selection=false;
    //
+   //
+   //
+   // integrated lumi in fb ////////////
+   float Lumi_2023C=17.981;
+
+   // cross sections in fb////////////////
+   //
+   // VBFHcc
+   float XS_VBFHcc = 120.8438;
+   float XSerr_VBFHcc = 0.;
+
+   // TTBar 
+   float XS_TTto2L2Nu = 7.62e+05;
+   float XSerr_TTto2L2Nu = 1.35e+02;
+
+   // QCD Zqq
+   float XS_Zto2Q_HT200_400 = 1.09e+06;
+   float XSerr_Zto2Q_HT200_400 = 6.01e+03;
+    
+   float XS_Zto2Q_HT400_600 = 1.24e+05;
+   float XSerr_Zto2Q_HT400_600 = 5.03e+02;
+
+   float XS_Zto2Q_HT600_800 = 2.78e+04;
+   float XSerr_Zto2Q_HT600_800 = 1.57e+02;
+
+   float XS_Zto2Q_HT800 = 1.45e+04;
+   float XSerr_Zto2Q_HT800 = 7.30e+01;
+
+   // QCD Wqq
+   float XS_Wto2Q_HT200_400 = 2.74e+06 ;
+   float XSerr_Wto2Q_HT200_400 = 1.17e+04;
+    
+   float XS_Wto2Q_HT400_600 = 3.01e+05;
+   float XSerr_Wto2Q_HT400_600 = 1.32e+03;
+
+   float XS_Wto2Q_HT600_800 = 6.50e+04;
+   float XSerr_Wto2Q_HT600_800 = 2.72e+02;
+
+   float XS_Wto2Q_HT800 = 3.21e+04;
+   float XSerr_Wto2Q_HT800 = 1.74e+02;
 
    float ParticleNet_CvsAll_value, ParticleNet_CvsB_value, ParticleNet_CvsL_value;
    TH1I *hCutEffEvt = new TH1I("CutEff_NEvents", "CutEff_NEvents", NCUTS, 0.5, (NCUTS+0.5));
@@ -125,10 +174,13 @@ void myAnalizer::Loop_Hcc(TString type, TString datasetName)
 
    double isMC = -99;
    double run_n = 0, lumi_n = 0, evt_n = 0, pileupFactor=0;
+   double XS = 1.;
+   double XS_err = 1.;
    bool HLT_passed=false;
+   double Lumi=-1.;
 
    double pt_jetC1=0, pt_jetC2=0, pt_jetVBF1=0, pt_jetVBF2=0, eta_jetC1=0, eta_jetC2=0, eta_jetVBF1=0, eta_jetVBF2=0, CvsAll_jetC1=0, CvsAll_jetC2=0, CvsB_jetC1=0, CvsB_jetC2=0, CvsL_jetC1=0, CvsL_jetC2=0;
-   double mqq=0, Deta_qq=0, Dphi_qq=0, Alpha_qq=0, qgl_VBF1=0, qgl_VBF2=0, pz_4jets=0, pt_norm=0, DR_HiggsVBF1=0, DR_HiggsVBF2=0,  Dphi_qq_cc=0, jetEne_sum=0, jetPt_sum=0, mCC=0;
+   double mqq=0, Deta_qq=0, Dphi_qq=0, Alpha_qq=0, qgl_VBF1=0, qgl_VBF2=0, QvsG_VBF1=0, QvsG_VBF2=0, pz_4jets=0, pt_norm=0, DR_HiggsVBF1=0, DR_HiggsVBF2=0,  Dphi_qq_cc=0, jetEne_sum=0, jetPt_sum=0, mCC=0;
    int njets=0;
    int entry=0;
    int cutevt[NCUTS] = {0};
@@ -142,15 +194,82 @@ void myAnalizer::Loop_Hcc(TString type, TString datasetName)
    fout->cd();
    TTree *tree = new TTree("FinalTree","FinalTree");
    //initialize output tree
-   TreeFin_Init(tree, isMC, lumi_n, run_n, evt_n, entry, pileupFactor, pt_jetC1, pt_jetC2, pt_jetVBF1, pt_jetVBF2, eta_jetC1, eta_jetC2, eta_jetVBF1, eta_jetVBF2, CvsAll_jetC1, CvsAll_jetC2, CvsB_jetC1, CvsB_jetC2, CvsL_jetC1, CvsL_jetC2, mqq, Deta_qq, Dphi_qq, Alpha_qq, qgl_VBF1, qgl_VBF2, pz_4jets, pt_norm, DR_HiggsVBF1, DR_HiggsVBF2  ,Dphi_qq_cc, njets, jetEne_sum, jetPt_sum, mCC);
+   TreeFin_Init(tree, isMC, lumi_n, run_n, evt_n, entry, XS, XS_err, Lumi, pileupFactor, pt_jetC1, pt_jetC2, pt_jetVBF1, pt_jetVBF2, eta_jetC1, eta_jetC2, eta_jetVBF1, eta_jetVBF2, CvsAll_jetC1, CvsAll_jetC2, CvsB_jetC1, CvsB_jetC2, CvsL_jetC1, CvsL_jetC2, mqq, Deta_qq, Dphi_qq, Alpha_qq, qgl_VBF1, qgl_VBF2, QvsG_VBF1, QvsG_VBF2, pz_4jets, pt_norm, DR_HiggsVBF1, DR_HiggsVBF2  ,Dphi_qq_cc, njets, jetEne_sum, jetPt_sum, mCC);
+
+   //name of the jet veto map file
+   TString vetoMapFile;
+   TFile* vetoFile;
+   TH2D* vetoMapHisto;
+   if(datasetName.Contains("2023C") || datasetName.Contains("_Summer23_")){
+     vetoMapFile="/lustrehome/azaza/HccAnalysis/CMSSW_12_4_3/src/Analysis/jet_VetoMaps/Summer23Prompt23_RunC_v1.root";
+     cout<<"aa"<<endl;
+   }
+   if(Apply_jetVeto==true){
+     vetoFile = new TFile(vetoMapFile);
+     if (!vetoFile || vetoFile->IsZombie()) {
+       std::cerr << "Error: Could not open veto map file!" << std::endl;
+       return;
+     }  
+
+     vetoMapHisto = dynamic_cast<TH2D*>(vetoFile->Get("jetvetomap"));
+     if (!vetoMapHisto) {
+       std::cerr << "Error: Could not retrieve TH2D histogram from file!" << std::endl;
+       vetoFile->Close();
+       return;
+      }
+   }
+   
 
    if(datasetName.Contains("2023")) isMC=0;
-    else{
-        if(datasetName.Contains("QCD")) isMC=1;
+   else{
+        if(datasetName.Contains("VBFHCC")) isMC=1;
        // if(datasetName.Contains("Bp")) isMC=2;
        // if(datasetName.Contains("B0")) isMC=3;
     }
-   
+
+   if(datasetName.Contains("VBFHCC")){
+      XS = XS_VBFHcc;
+      XS_err = XSerr_VBFHcc;
+   }
+   if(datasetName.Contains("TTto2L2Nu")){
+      XS = XS_TTto2L2Nu;
+      XS_err = XSerr_TTto2L2Nu;
+   }
+   if(datasetName.Contains("Wqq_HT-200-400")){
+      XS = XS_Wto2Q_HT200_400;
+      XS_err = XSerr_Wto2Q_HT200_400;
+   }
+   if(datasetName.Contains("Wqq_HT-400-600")){
+      XS = XS_Wto2Q_HT400_600;
+      XS_err = XSerr_Wto2Q_HT400_600;
+   }
+   if(datasetName.Contains("Wqq_HT-600-800")){
+      XS = XS_Wto2Q_HT600_800;
+      XS_err = XSerr_Wto2Q_HT600_800;
+   }
+   if(datasetName.Contains("Wqq_HT-800")){
+      XS = XS_Wto2Q_HT800;
+      XS_err = XSerr_Wto2Q_HT800;
+   }
+   if(datasetName.Contains("Zqq_HT-200-400")){
+      XS = XS_Zto2Q_HT200_400;
+      XS_err = XSerr_Zto2Q_HT200_400;
+   }
+   if(datasetName.Contains("Zqq_HT-400-600")){
+      XS = XS_Zto2Q_HT400_600;
+      XS_err = XSerr_Zto2Q_HT400_600;
+   }
+   if(datasetName.Contains("Zqq_HT-600-800")){
+      XS = XS_Zto2Q_HT600_800;
+      XS_err = XSerr_Zto2Q_HT600_800;
+   }
+   if(datasetName.Contains("Zqq_HT-800")){
+      XS = XS_Zto2Q_HT800;
+      XS_err = XSerr_Zto2Q_HT800;
+   }
+
+   if(datasetName.Contains("2023C")) Lumi=Lumi_2023C; //fb
+
    if (fChain == 0) return;
 
    //Long64_t nentries = 1000;
@@ -164,7 +283,7 @@ void myAnalizer::Loop_Hcc(TString type, TString datasetName)
       Long64_t ientry = LoadTree(jentry);
       if (ientry < 0) break;
       entry=jentry;
-     // cout<<"evt: "<<entry<<endl;
+      cout<<"evt: "<<entry<<endl;
       nb = fChain->GetEntry(jentry);   nbytes += nb;
       // if (Cut(ientry) < 0) continue;
       bool Eff_counter[NCUTS] = {false};
@@ -189,6 +308,7 @@ void myAnalizer::Loop_Hcc(TString type, TString datasetName)
         //if( (hltName.Contains("HLT_QuadPFJet103_88_75_15_v") || hltName.Contains("HLT_QuadPFJet105_88_76_15_v") || hltName.Contains("HLT_QuadPFJet111_90_80_15_v") || hltName.Contains("HLT PFJet80_v") || hltName.Contains("HLT_QuadPFJet103_88_75_15_PFBTagDeepJet_1p3_VBF2_v") || hltName.Contains("HLT_QuadPFJet105_88_76_15_PFBTagDeepJet_1p3_VBF2_v") || hltName.Contains("HLT_QuadPFJet111_90_80_15_PFBTagDeepJet_1p3_VBF2_v") || hltName.Contains("HLT_QuadPFJet103_88_75_15_DoublePFBTagDeepJet_1p3_7p7_VBF1_v") || hltName.Contains("HLT_QuadPFJet105_88_76_15_DoublePFBTagDeepJet_1p3_7p7_VBF1_v") || hltName.Contains("HLT_QuadPFJet111_90_80_15_DoublePFBTagDeepJet_1p3_7p7_VBF1_v")) && Trigger_hltdecision->at(h) == 1){
         if( hltName.Contains("HLT_QuadPFJet100_88_70_30_PNet1CvsAll0p5_VBF3Tight_v") && Trigger_hltdecision->at(h) == 1 ){
            HLT_passed = true;
+           cout<<"trigger passed"<<endl;
          }
       }
 
@@ -200,28 +320,40 @@ void myAnalizer::Loop_Hcc(TString type, TString datasetName)
       if(HLT_passed==true){
         Eff_counter[1] = true;
 
-        bool veto=false;
+        bool LeptonVeto=false;
         //veto on electrons and muons
         for(unsigned int iele=0; iele< Ele_pt->size(); iele++){
           if(Ele_pt->at(iele)<7.0 || fabs(Ele_eta->at(iele)>2.5) || fabs(Ele_dxy->at(iele))>0.05 || fabs(Ele_dz->at(iele))>0.2) continue;
           if(Ele_IsoCal->at(iele)<=0.4){
-            veto=true;
+            LeptonVeto=true;
             break;
           }
         }
-        if(veto==false){
+        if(LeptonVeto==false){
           for(unsigned int imu=0; imu< Muon_pt->size(); imu++){
             if(Muon_pt->at(imu)<5.0 || fabs(Muon_eta->at(imu)>2.5) || fabs(Muon_dxy->at(imu))>0.25 || fabs(Muon_dz->at(imu))>1.0) continue;
             if(Muon_PF_Iso_R04->at(imu)<=0.4){
-              veto=true;
+              LeptonVeto=true;
               break;
             }
           }
         } 
-        if(veto==false){
+        if(LeptonVeto==false && met_pt<170.){
+          //cout<<"veto false"<<endl;
           //Eff_counter[2] = true;
+
+         bool JetVetoed=false;
+
           //cycle on AK4 puppi jets
           for(unsigned int ijet=0; ijet< AK4PuppiJets_pt->size();ijet++){
+
+            if(Apply_jetVeto==true){
+              if(!ApplyVeto(vetoMapHisto,AK4PuppiJets_eta->at(ijet), AK4PuppiJets_phi->at(ijet) )){
+                JetVetoed=true;
+                cout<<"event vetoed by jet maps"<<endl;
+                continue;
+              }
+            }
             bool match_hltjet=false;
             TVector3 AK4puppi_p3;
             AK4puppi_p3.SetPtEtaPhi(AK4PuppiJets_pt->at(ijet), AK4PuppiJets_eta->at(ijet), AK4PuppiJets_phi->at(ijet));
@@ -238,21 +370,21 @@ void myAnalizer::Loop_Hcc(TString type, TString datasetName)
             }       
 
             if(match_hltjet==true){
+              //cout<<"match hlt jets"<<endl;
               AK4puppi_p4.SetPtEtaPhiM(AK4PuppiJets_pt->at(ijet), AK4PuppiJets_eta->at(ijet), AK4PuppiJets_phi->at(ijet), AK4PuppiJets_mass->at(ijet));
              // cout<<"jet "<<ijet<<endl;
               float num= jet_pfParticleNetAK4JetTags_probc->at(ijet);
               float den= jet_pfParticleNetAK4JetTags_probc->at(ijet)+ jet_pfParticleNetAK4JetTags_probb->at(ijet) + jet_pfParticleNetAK4JetTags_probuds->at(ijet) + jet_pfParticleNetAK4JetTags_probg->at(ijet);
               //float CvsAll_val= (den!=0 || (num/den)<999)? num/den : -1;
               float CvsAll_val=num/den;
-              den = jet_pfParticleNetAK4JetTags_probc->at(ijet) + jet_pfParticleNetAK4JetTags_probuds->at(ijet) + jet_pfParticleNetAK4JetTags_probg->at(ijet);
+              /*den = jet_pfParticleNetAK4JetTags_probc->at(ijet) + jet_pfParticleNetAK4JetTags_probuds->at(ijet) + jet_pfParticleNetAK4JetTags_probg->at(ijet);
               float CvsL_val= den!=0 ? num/den : -1;
-              //float CvsL_val= num/den;
               den = jet_pfParticleNetAK4JetTags_probc->at(ijet) + jet_pfParticleNetAK4JetTags_probb->at(ijet);
               float CvsB_val= den!=0 ? num/den : -1;
-              //float CvsB_val= num/den;
               num = jet_pfParticleNetAK4JetTags_probuds->at(ijet);  
               den = jet_pfParticleNetAK4JetTags_probg->at(ijet)+ jet_pfParticleNetAK4JetTags_probuds->at(ijet);  
-              float qgl= den!=0 ? num/den : -1;
+              float QvsG_val= den!=0 ? num/den : -1;*/
+              float qgl=AK4PuppiJets_qgl->at(ijet);
               /*cout<<"probc: "<<jet_pfParticleNetAK4JetTags_probc->at(ijet)<<endl;
               cout<<"probb: "<<jet_pfParticleNetAK4JetTags_probb->at(ijet)<<endl;
               cout<<"probuds: "<<jet_pfParticleNetAK4JetTags_probuds->at(ijet)<<endl;
@@ -262,12 +394,12 @@ void myAnalizer::Loop_Hcc(TString type, TString datasetName)
               cout<<"CvsB: "<<CvsB_val<<endl;
               cout<<"QvsG: "<<qgl<<endl;*/
               //float CvsAll_val=jet_pfParticleNetAK4JetTags_CvsAll->at(ijet);
-              //float CvsB_val=jet_pfParticleNetAK4JetTags_CvsB->at(ijet);
-              //float CvsL_val=jet_pfParticleNetAK4JetTags_CvsL->at(ijet);
-              //float qgl=jet_pfParticleNetAK4JetTags_QvsG->at(ijet);
+              float CvsB_val=jet_pfParticleNetAK4JetTags_CvsB->at(ijet);
+              float CvsL_val=jet_pfParticleNetAK4JetTags_CvsL->at(ijet);
+              float QvsG_val=jet_pfParticleNetAK4JetTags_QvsG->at(ijet);
 
               if(fabs(AK4puppi_p4.Eta())<4.7){
-                jet_struct jet_i={AK4puppi_p4,CvsAll_val,CvsL_val,CvsB_val,qgl,false};
+                jet_struct jet_i={AK4puppi_p4,CvsAll_val,CvsL_val,CvsB_val,qgl,QvsG_val,false};
                 AK4puppi_sel.push_back(jet_i);
               }
 
@@ -281,7 +413,8 @@ void myAnalizer::Loop_Hcc(TString type, TString datasetName)
               }
             }//end condition on trigger matching
           }//end cycle on puppi
-          
+          if(JetVetoed==false){
+          cout<<"not vetoed by jet maps"<<endl;
           if(AK4puppi_sel.size()>=4){
             //resize the vector of selected jets, keeping only the first 4 of them (pt sorted)
             AK4puppi_sel.resize(4);
@@ -338,17 +471,21 @@ void myAnalizer::Loop_Hcc(TString type, TString datasetName)
                }
                //cout<<"CvsAll c1:"<<AK4puppi_cHiggs.at(0).CvsAll<<endl;
                if(AK4puppi_cHiggs.size()==2 && AK4puppi_VBF.size()==2){
-                 //if(AK4puppi_cHiggs.at(0).CvsAll>=0.5){ //condition on ctag verified
+                 //cout<<"CvsAll: "<<AK4puppi_cHiggs.at(0).CvsAll<<"     CvsL: "<<AK4puppi_cHiggs.at(0).CvsL<<"    CvsB: "<<AK4puppi_cHiggs.at(0).CvsB<<endl;
+                 //if(AK4puppi_cHiggs.at(0).CvsAll>=0.51){ 
+                 if(AK4puppi_cHiggs.at(0).CvsAll>=0.51 && AK4puppi_cHiggs.at(0).CvsL>=0.16 && AK4puppi_cHiggs.at(0).CvsB>=0.304 
+                    && AK4puppi_cHiggs.at(1).CvsL>=0.054 && AK4puppi_cHiggs.at(1).CvsB>=0.182 ){ //condition on ctag verified -- Medium WPs for 2022E (to be updated)
                  Eff_counter[4]=true;
                  TLorentzVector jet_VBF1=AK4puppi_VBF.at(0).jet_p4;
                  TLorentzVector jet_VBF2=AK4puppi_VBF.at(1).jet_p4;
                  if((jet_VBF1+jet_VBF2).M()>=500. && fabs(jet_VBF1.Eta()-jet_VBF2.Eta())>=3.8){
                    passed_selection=true;
                  }
-               //}
+               }
                }
              } 
            }
+         }
          }
        }
 
@@ -421,6 +558,8 @@ void myAnalizer::Loop_Hcc(TString type, TString datasetName)
          Alpha_qq = std::min(alpha_VBF1, alpha_VBF2);
          qgl_VBF1 = AK4puppi_VBF.at(0).QGL;
          qgl_VBF2 = AK4puppi_VBF.at(1).QGL;
+         QvsG_VBF1 = AK4puppi_VBF.at(0).QvsG;
+         QvsG_VBF2 = AK4puppi_VBF.at(1).QvsG;
          pz_4jets = jet_c1.Pz() + jet_c2.Pz() + jet_VBF1.Pz() + jet_VBF2.Pz();
          TLorentzVector p4_4jets = jet_c1 + jet_c2 + jet_VBF1 + jet_VBF2;
          pt_norm = p4_4jets.Pt()/(jet_c1.Pt() + jet_c2.Pt() + jet_VBF1.Pt() + jet_VBF2.Pt());
@@ -437,7 +576,7 @@ void myAnalizer::Loop_Hcc(TString type, TString datasetName)
      }
  } //end cycle on events
 
-
+   if(Apply_jetVeto==true) vetoFile->Close();
 
     TCanvas *canvEvt = new TCanvas("CutEfficiency_Nevents", "CutEfficiency_Nevents", 0, 0, 1200, 1000);
     Draw_CutEffCanvas(canvEvt, hCutEffEvt, cutevt, listCut);

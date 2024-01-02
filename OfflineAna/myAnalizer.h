@@ -78,6 +78,7 @@ public :
    vector<double>  *Ele_trackIso;
    vector<bool>    *Ele_isEB;
    vector<double>  *Ele_IsoCal;
+   vector<double>  *Ele_03_Neutral;
    vector<int>     *Muon_id;
    vector<double>  *Muon_pt;
    vector<double>  *Muon_eta;
@@ -99,6 +100,7 @@ public :
    vector<float>   *AK4PuppiJets_eta;
    vector<float>   *AK4PuppiJets_phi;
    vector<float>   *AK4PuppiJets_mass;
+   vector<float>   *AK4PuppiJets_qgl;
    vector<float>   *jet_pfParticleNetAK4JetTags_probb;
    vector<float>   *jet_pfParticleNetAK4JetTags_probc;
    vector<float>   *jet_pfParticleNetAK4JetTags_probuds;
@@ -212,6 +214,7 @@ public :
 
 
    // List of branches
+
    TBranch        *b_Run;   //!
    TBranch        *b_Event;   //!
    TBranch        *b_LumiSect;   //!
@@ -252,6 +255,7 @@ public :
    TBranch        *b_Ele_trackIso;   //!
    TBranch        *b_Ele_isEB;   //!
    TBranch        *b_Ele_IsoCal;   //!
+   TBranch        *b_Ele_03_Neutral;   //!
    TBranch        *b_Muon_id;   //!
    TBranch        *b_Muon_pt;   //!
    TBranch        *b_Muon_eta;   //!
@@ -273,6 +277,7 @@ public :
    TBranch        *b_AK4PuppiJets_eta;   //!
    TBranch        *b_AK4PuppiJets_phi;   //!
    TBranch        *b_AK4PuppiJets_mass;   //!
+   TBranch        *b_AK4PuppiJets_qgl;   //!
    TBranch        *b_jet_pfParticleNetAK4JetTags_probb;   //!
    TBranch        *b_jet_pfParticleNetAK4JetTags_probc;   //!
    TBranch        *b_jet_pfParticleNetAK4JetTags_probuds;   //!
@@ -396,7 +401,7 @@ public :
    virtual void     Show(Long64_t entry = -1);
    virtual void     Fill_CutName(TString listCut[NCUTS]);
    virtual void     Draw_CutEffCanvas(TCanvas *canv, TH1I *hist, Int_t cut[NCUTS], TString listCut[NCUTS]);
-   virtual void			TreeFin_Init(TTree *&tree, Double_t &isMC, Double_t &lumi, Double_t &run, Double_t &evt, int &entry,Double_t &puFactor, Double_t &pt_jetC1, Double_t &pt_jetC2, Double_t &pt_jetVBF1, Double_t &pt_jetVBF2, Double_t &eta_jetC1, Double_t &eta_jetC2, Double_t &eta_jetVBF1, Double_t &eta_jetVBF2, Double_t &CvsAll_jetC1, Double_t &CvsAll_jetC2, Double_t &CvsB_jetC1, Double_t &CvsB_jetC2, Double_t &CvsL_jetC1, Double_t &CvsL_jetC2, Double_t &mqq, Double_t &Deta_qq, Double_t &Dphi_qq, Double_t  &Alpha_qq, Double_t &qgl_VBF1, Double_t &qgl_VBF2, Double_t &pz_4jets, Double_t &pt_norm, Double_t &DR_HiggsVBF1, Double_t &DR_HiggsVBF2, Double_t &Dphi_qq_cc, int &njets, Double_t &jetEne_sum, Double_t  &jetPt_sum, Double_t &mCC);
+   virtual void			TreeFin_Init(TTree *&tree, Double_t &isMC, Double_t &lumi, Double_t &run, Double_t &evt, int &entry, Double_t &XS, Double_t &XS_err, Double_t &Lumi, Double_t &puFactor, Double_t &pt_jetC1, Double_t &pt_jetC2, Double_t &pt_jetVBF1, Double_t &pt_jetVBF2, Double_t &eta_jetC1, Double_t &eta_jetC2, Double_t &eta_jetVBF1, Double_t &eta_jetVBF2, Double_t &CvsAll_jetC1, Double_t &CvsAll_jetC2, Double_t &CvsB_jetC1, Double_t &CvsB_jetC2, Double_t &CvsL_jetC1, Double_t &CvsL_jetC2, Double_t &mqq, Double_t &Deta_qq, Double_t &Dphi_qq, Double_t  &Alpha_qq, Double_t &qgl_VBF1, Double_t &qgl_VBF2, Double_t &QvsG_VBF1, Double_t &QvsG_VBF2, Double_t &pz_4jets, Double_t &pt_norm, Double_t &DR_HiggsVBF1, Double_t &DR_HiggsVBF2, Double_t &Dphi_qq_cc, int &njets, Double_t &jetEne_sum, Double_t  &jetPt_sum, Double_t &mCC);
 };
 
 #endif
@@ -464,6 +469,7 @@ void myAnalizer::Init(TTree *tree)
    Ele_trackIso = 0;
    Ele_isEB = 0;
    Ele_IsoCal = 0;
+   Ele_03_Neutral = 0;
    Muon_id = 0;
    Muon_pt = 0;
    Muon_eta = 0;
@@ -482,6 +488,7 @@ void myAnalizer::Init(TTree *tree)
    AK4PuppiJets_eta = 0;
    AK4PuppiJets_phi = 0;
    AK4PuppiJets_mass = 0;
+   AK4PuppiJets_qgl = 0;
    jet_pfParticleNetAK4JetTags_probb = 0;
    jet_pfParticleNetAK4JetTags_probc = 0;
    jet_pfParticleNetAK4JetTags_probuds = 0;
@@ -630,6 +637,7 @@ void myAnalizer::Init(TTree *tree)
    fChain->SetBranchAddress("Ele_trackIso", &Ele_trackIso, &b_Ele_trackIso);
    fChain->SetBranchAddress("Ele_isEB", &Ele_isEB, &b_Ele_isEB);
    fChain->SetBranchAddress("Ele_IsoCal", &Ele_IsoCal, &b_Ele_IsoCal);
+   fChain->SetBranchAddress("Ele_03_Neutral", &Ele_03_Neutral, &b_Ele_03_Neutral);
    fChain->SetBranchAddress("Muon_id", &Muon_id, &b_Muon_id);
    fChain->SetBranchAddress("Muon_pt", &Muon_pt, &b_Muon_pt);
    fChain->SetBranchAddress("Muon_eta", &Muon_eta, &b_Muon_eta);
@@ -651,6 +659,7 @@ void myAnalizer::Init(TTree *tree)
    fChain->SetBranchAddress("AK4PuppiJets_eta", &AK4PuppiJets_eta, &b_AK4PuppiJets_eta);
    fChain->SetBranchAddress("AK4PuppiJets_phi", &AK4PuppiJets_phi, &b_AK4PuppiJets_phi);
    fChain->SetBranchAddress("AK4PuppiJets_mass", &AK4PuppiJets_mass, &b_AK4PuppiJets_mass);
+   fChain->SetBranchAddress("AK4PuppiJets_qgl", &AK4PuppiJets_qgl, &b_AK4PuppiJets_qgl);
    fChain->SetBranchAddress("jet_pfParticleNetAK4JetTags_probb", &jet_pfParticleNetAK4JetTags_probb, &b_jet_pfParticleNetAK4JetTags_probb);
    fChain->SetBranchAddress("jet_pfParticleNetAK4JetTags_probc", &jet_pfParticleNetAK4JetTags_probc, &b_jet_pfParticleNetAK4JetTags_probc);
    fChain->SetBranchAddress("jet_pfParticleNetAK4JetTags_probuds", &jet_pfParticleNetAK4JetTags_probuds, &b_jet_pfParticleNetAK4JetTags_probuds);
