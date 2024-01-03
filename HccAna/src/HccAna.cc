@@ -2178,6 +2178,9 @@ void HccAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSetup& 
       AK4PuppiJets_phi.push_back(AK4PuppiJets->at(ijet).phi());
       AK4PuppiJets_mass.push_back(AK4PuppiJets->at(ijet).mass());
 
+      // Tight JetID function defined at ../interface/HccJets.h
+      if(jetHelper.patjetID(AK4PuppiJets->at(ijet), year)!=2) continue;
+ 
       // Tight JetID
       /*double nhf   = AK4PuppiJets->at(ijet).neutralHadronEnergyFraction();
       double nef   = AK4PuppiJets->at(ijet).neutralEmEnergyFraction();

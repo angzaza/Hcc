@@ -76,10 +76,10 @@ int HccJets::patjetID(const pat::Jet& jet, int year)
   double NEMF = jet.neutralEmEnergyFraction();
   double CHF = jet.chargedHadronEnergyFraction();
   double CHM = jet.chargedMultiplicity(); 
-//  double CEMF = jet.chargedEmEnergyFraction();
+  double CEMF = jet.chargedEmEnergyFraction();
   double NumConst = jet.chargedMultiplicity()+jet.neutralMultiplicity();
   double NumNeutralParticle =jet.neutralMultiplicity();
-//  double MUF = jet.muonEnergyFraction();   //MUF  = pfjet->muonEnergyFraction();
+  double MUF = jet.muonEnergyFraction();   //MUF  = pfjet->muonEnergyFraction();
 
   bool looseJetID=false;
   bool tightJetID=false;
@@ -227,6 +227,61 @@ int HccJets::patjetID(const pat::Jet& jet, int year)
   }
 
 
+  if(year==2023 || year==20221  )  //era 2022FG and  2023BCD https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetID13p6TeV
+  {
+      //JetID = (abs(eta)<=2.6 && CEMF<0.8 && CHM>0 && CHF>0.01 && NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.99 );
+      //JetID = ( abs(eta)>2.6 && abs(eta)<=2.7 && CEMF<0.8 && NEMF<0.99 && MUF <0.8 && NHF < 0.9 );  
+      //JetID = ( NHF<0.99 && abs(eta)>2.7 && abs(eta)<=3.0 ) 
+      //JetID = (NEMF<0.40 && NumNeutralParticle>=2 && abs(eta)>3.0 ) 
+      if (eta<=2.6) {
+
+          looseJetID = ( CHM>0 && CHF>0.01 && CEMF<0.8 && NumConst>1 && NEMF<0.9 && MUF<0.8 && NHF < 0.99 );
+          tightJetID = ( CHM>0 && CHF>0.01 && CEMF<0.8 && NumConst>1 && NEMF<0.9 && MUF<0.8 && NHF < 0.99 );
+
+      } else if (eta>2.6 && eta<=2.7) {
+
+          looseJetID = ( CEMF<0.8 && NEMF<0.99 && MUF<0.8 && NHF < 0.9 );
+          tightJetID = ( CEMF<0.8 && NEMF<0.99 && MUF<0.8 && NHF < 0.9 );
+
+      } else if (eta>2.7 && eta<=3.0) {
+
+          looseJetID = ( NHF<0.99 );
+          tightJetID = ( NHF<0.99 );
+
+      } else if (eta>3.0) {
+
+          looseJetID = ( NEMF<0.40 && NumNeutralParticle>=2 );
+          tightJetID = ( NEMF<0.40 && NumNeutralParticle>=2 );
+      }
+  }
+  if(year==20220)  //era 2022BCDE https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetID13p6TeV
+  {
+      //JetID = (abs(eta)<=2.6 && CEMF<0.8 && CHM>0 && CHF>0.01 && NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 ); 
+      //JetID = ( abs(eta)>2.6 && abs(eta)<=2.7 && CEMF<0.8 && NEMF<0.99 && MUF <0.8 && NHF < 0.9 ); 
+      //JetID = ( NHF<0.9999 && abs(eta)>2.7 && abs(eta)<=3.0 ) 
+      // JetID = (NEMF<0.90 && NumNeutralParticle>2 && abs(eta)>3.0 )
+
+      if (eta<=2.6) {
+
+          looseJetID = ( CHM>0 && CHF>0.01 && CEMF<0.8 && NumConst>1 && NEMF<0.9 && MUF<0.8 && NHF < 0.9 );
+          tightJetID = ( CHM>0 && CHF>0.01 && CEMF<0.8 && NumConst>1 && NEMF<0.9 && MUF<0.8 && NHF < 0.9 );
+
+      } else if (eta>2.6 && eta<=2.7) {
+
+          looseJetID = ( CEMF<0.8 && NEMF<0.99 && MUF<0.8 && NHF < 0.9 );
+          tightJetID = ( CEMF<0.8 && NEMF<0.99 && MUF<0.8 && NHF < 0.9 );
+
+      } else if (eta>2.7 && eta<=3.0) {
+
+          looseJetID = ( NHF<0.9999 );
+          tightJetID = ( NHF<0.9999 );
+
+      } else if (eta>3.0) {
+
+          looseJetID = ( NEMF<0.90 && NumNeutralParticle>2 );
+          tightJetID = ( NEMF<0.90 && NumNeutralParticle>2 );
+      }
+  }
   if (tightJetID) {return 2;}
   else if (looseJetID) {return 1;}
   else {return 0;}
