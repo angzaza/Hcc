@@ -1,0 +1,3 @@
+/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/azaza-130X_mcRun3_2023_realistic_v14_MINIAODSIM-1e90bb35cab0bbe8d0257ba3a917b28e/USER 1.0
+/VBFHToBB_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/azaza-130X_mcRun3_2023_realistic_v14_MINIAODSIM-1e90bb35cab0bbe8d0257ba3a917b28e/USER 1.0
+/GluGluHtoCC_M-125_TuneCP5_13p6TeV-powheg-minlo-pythia8_Run3/apellecc-130X_mcRun3_2023_realistic_v14_MINIAODSIM-d64fdad665dd462e3a7629f4402c1a3e/USER 1.0
