@@ -2,7 +2,8 @@
 #-----------------------------------------------
 # Latest update: 2014.09.14
 #-----------------------------------------------
-import sys, os, pwd, commands
+#import sys, os, pwd, commands
+import sys, os, pwd, subprocess
 import optparse, shlex, re
 import time
 from time import gmtime, strftime
@@ -29,10 +30,10 @@ def parseOptions():
 # define function for processing the external os commands
 def processCmd(cmd, quite = 0):
     #    print cmd
-    status, output = commands.getstatusoutput(cmd)
+    status, output = subprocess.getstatusoutput(cmd)
     if (status !=0 and not quite):
-        print 'Error in processing command:\n   ['+cmd+']'
-        print 'Output:\n   ['+output+'] \n'
+        print('Error in processing command:\n   ['+cmd+']')
+        print('Output:\n   ['+output+'] \n')
         return "ERROR!!! "+output
     else:
         return output
@@ -58,7 +59,7 @@ def submitAnalyzer():
         processCmd(cmd)
 
     # get the datasets
-    print '[Gathering Dataset Information]'
+    print('[Gathering Dataset Information]')
     datasets = []
     cross_section = {}
     nfiles = {}
@@ -96,11 +97,11 @@ def submitAnalyzer():
             #nevents[dataset] = output
 
             #print dataset,'xs:',cross_section[dataset],'nfiles:',nfiles[dataset]#,'nevents:',nevents[dataset]
-            print dataset,'xs:',cross_section[dataset]
+            print(dataset,'xs:',cross_section[dataset])
 
 
     # submit the jobs
-    print '[Submitting jobs]'
+    print('[Submitting jobs]')
     jobCount=0
 
     for dataset in datasets:
@@ -132,7 +133,7 @@ def submitAnalyzer():
         if (len(filename)>99):
           #newfilename = filename.split('-PU')[0]
           newfilename = filename.split('-124X')[0]
-	  filename = newfilename
+          filename = newfilename
 
         cmd  = "sed -i 's~DUMMYFILENAME~"+filename+"~g' "+outDir+'/cfg/'+cfgfile
         output = processCmd(cmd)
@@ -179,23 +180,23 @@ def submitAnalyzer():
         output = processCmd(cmd)
 
         cmd = 'crab submit -c '+outDir+'/cfg/'+crabcfgfile
-        print cmd     
+        print(cmd)     
 
         output = processCmd(cmd)
         if ("ERROR!!!" in output):
-            print " "
-            print " "
-            print " "
-            print " Something when wrong submitting the last dataset. You should:"
-            print "     1) Remove the folder in your resultsAna directory"
-            print "     2) Comment out the datasets which have been submitted in the datasets txt file"
-            print "     3) Rerun the SubmitCrabJobs.py with the same arguments"
-            print " "
-            print " "
-            print " "
+            print(" ")
+            print(" ")
+            print(" ")
+            print(" Something when wrong submitting the last dataset. You should:")
+            print("     1) Remove the folder in your resultsAna directory")
+            print("     2) Comment out the datasets which have been submitted in the datasets txt file")
+            print("     3) Rerun the SubmitCrabJobs.py with the same arguments")
+            print(" ")
+            print(" ")
+            print(" ")
             break
         else:
-            print output
+            print(output)
 
 # run the submitAnalyzer() as main() 
 if __name__ == "__main__": 
