@@ -252,7 +252,7 @@ process.Ana = cms.EDAnalyzer('HccAna',
                               year = cms.untracked.int32(2023),####for year put 2022 use 20220 for preEE and 20221 for postEE
                               isCode4l = cms.untracked.bool(True), 
 
-payload = cms.string("AK4PFchs"),
+payload = cms.string("AK4PFPuppi"),
 
 
                              )
