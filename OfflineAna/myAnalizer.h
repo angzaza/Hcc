@@ -396,12 +396,13 @@ public :
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Init(TTree *tree);
-   virtual void     Loop_Hcc(TString type, TString datasetName);
+   virtual void     Loop_Hcc(TString type, TString datasetName, TString era);
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
    virtual void     Fill_CutName(TString listCut[NCUTS]);
    virtual void     Draw_CutEffCanvas(TCanvas *canv, TH1I *hist, Int_t cut[NCUTS], TString listCut[NCUTS]);
    virtual void			TreeFin_Init(TTree *&tree, Double_t &isMC, Double_t &lumi, Double_t &run, Double_t &evt, int &entry, Double_t &XS, Double_t &XS_err, Double_t &Lumi, Double_t &puFactor, Double_t &pt_jetC1, Double_t &pt_jetC2, Double_t &pt_jetVBF1, Double_t &pt_jetVBF2, Double_t &eta_jetC1, Double_t &eta_jetC2, Double_t &eta_jetVBF1, Double_t &eta_jetVBF2, Double_t &CvsAll_jetC1, Double_t &CvsAll_jetC2, Double_t &CvsB_jetC1, Double_t &CvsB_jetC2, Double_t &CvsL_jetC1, Double_t &CvsL_jetC2, Double_t &mqq, Double_t &Deta_qq, Double_t &Dphi_qq, Double_t  &Alpha_qq, Double_t &qgl_VBF1, Double_t &qgl_VBF2, Double_t &QvsG_VBF1, Double_t &QvsG_VBF2, Double_t &pz_4jets, Double_t &pt_norm, Double_t &DR_HiggsVBF1, Double_t &DR_HiggsVBF2, Double_t &Dphi_qq_cc, int &njets, Double_t &jetEne_sum, Double_t  &jetPt_sum, Double_t &mCC);
+   virtual std::pair<float, float> CrossSection(TString dataset);
 };
 
 #endif
@@ -799,4 +800,62 @@ Int_t myAnalizer::Cut(Long64_t entry)
 // returns -1 otherwise.
    return 1;
 }
+
+
+class Jet
+{
+public:
+    Jet(){};
+
+    Jet(double i_pt, double i_eta, double i_phi, double i_mass, double i_CvsAll, double i_CvsB, double i_CvsL, double i_QvsG, double i_QGL, bool i_ctagged)
+        : pt_(i_pt), eta_(i_eta), phi_(i_phi), mass_(i_mass), CvsAll_(i_CvsAll) , CvsB_(i_CvsB), CvsL_(i_CvsL), QvsG_(i_QvsG), QGL_(i_QGL) ,ctagged_(i_ctagged)
+    {}
+
+    Jet(const Jet & j){
+        pt_  = j.pt_;
+        eta_ = j.eta_;
+        phi_ = j.phi_;
+        mass_  = j.mass_;
+        CvsAll_ = j.CvsAll_;
+        CvsB_ = j.CvsB_;
+        CvsL_ = j.CvsL_;
+        QvsG_ = j.QvsG_;
+        QGL_ = j.QGL_;
+        ctagged_ = j.ctagged_;
+    }
+
+    double pt()  const { return pt_; }
+    double eta() const { return eta_; }
+    double phi() const { return phi_; }
+    double mass()  const { return mass_; }
+    double CvsAll()  const { return CvsAll_; }
+    double CvsB()  const { return CvsB_; }
+    double CvsL()  const { return CvsL_; }
+    double QvsG()  const { return QvsG_; }
+    double QGL()  const { return QGL_; }
+    double ctagged()  const { return ctagged_; }
+    double px() const { return (pt_ * cos(phi_ )); }
+    double py() const { return (pt_ * sin(phi_ )); }
+    double pz() const { return (pt_ * sinh(eta_)); }
+    void print();
+
+    void set_ctagged(bool ctag){ ctagged_=ctag; }
+
+
+    Jet& operator+=(const Jet& rjet);
+
+private:
+    double pt_ {0};
+    double eta_{0};
+    double phi_{0};
+    double mass_ {0};
+    double CvsAll_ {0};
+    double CvsB_ {0};
+    double CvsL_ {0};
+    double QvsG_ {0};
+    double QGL_ {0};
+    bool ctagged_ {false};
+
+};
+
 #endif // #ifdef myAnalizer_cxx

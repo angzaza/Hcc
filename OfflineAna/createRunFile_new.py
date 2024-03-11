@@ -8,15 +8,15 @@ import datetime
 import argparse
 parser = argparse.ArgumentParser(description="Options to give to the script")
 # Positional arguments
-parser.add_argument("dataset", type=str, choices=['data', 'data_control', 'MC', 'MC_control'], help="Specify if data or Monte Carlo")
-parser.add_argument("anatype", type=str, choices=['Hcc', 'control'], help="Specify analysis type")
+parser.add_argument("dataset", type=str, choices=['data', 'data_control','data_validate', 'MC', 'MC_control', 'MC_validate'], help="Specify if data or Monte Carlo")
+parser.add_argument("anatype", type=str, choices=['Hcc', 'control', 'validate'], help="Specify analysis type")
 #parser.add_argument("--run", type=str, default='', choices=['2022B', '2022C_0', '2022C_1', '2022C_2', '2022C_3', '2022C_4', '2022C_5', '2022C_6', '2022C_7', '2022D-v1_0', '2022D-v1_1', '2022D-v1_2', '2022D-v1_3', '2022D-v1_4', '2022D-v1_5', '2022D-v1_6', '2022D-v1_7', '2022D-v2_0', '2022D-v2_1', '2022D-v2_2', '2022D-v2_3', '2022D-v2_4', '2022D-v2_5', '2022D-v2_6', '2022D-v2_7', '2022E_0', '2022E_1', '2022E_2', '2022E_3', '2022E_4', '2022E_5', '2022E_6', '2022E_7', '2022F_0', '2022F_1', '2022F_2', '2022F_3', '2022F_4', '2022F_5', '2022F_6', '2022F_7', '2022G_0', '2022G_1', '2022G_2', '2022G_3', '2022G_4', '2022G_5', '2022G_6', '2022G_7'], help="run in data")
 parser.add_argument("--run", type=str, default='', choices=['2023D', '2023C', '2022B', '2022C', '2022D', '2022D', '2022E', '2022F', '2022G'], help="run in data")
 # Optional Arguments
 parser.add_argument("--outName", type=str, default="test", help="Specify name for output files")
 parser.add_argument("--n", type=int, default=255, help="number of .root files per job")
 #parser.add_argument("--EE",type=str, default='postEE', choices=['preEE','postEE'], help="specify if it is simulated with preEE or postEE conditions")
-parser.add_argument("--MCprocess", type=str, default='', choices=['VBFHCC', 'VBFHBB', 'ggHCC', 'QCD', 'Zqq_HT-200-400', 'Zqq_HT-400-600', 'Zqq_HT-600-800', 'Zqq_HT-800-inf', 'Wqq_HT-200-400', 'Wqq_HT-400-600', 'Wqq_HT-600-800', 'Wqq_HT-800-inf', 'TTto2L2Nu', 'QCD-4Jets_HT-100to200', 'QCD-4Jets_HT-200to400', 'QCD-4Jets_HT-400to600', 'QCD-4Jets_HT-600to800', 'QCD-4Jets_HT-800to1000','QCD-4Jets_HT-1000to1200',  'QCD-4Jets_HT-1200to1500', 'QCD-4Jets_HT-1500to2000', 'QCD-4Jets_HT-2000', 'QCD_PT-120-170', 'QCD_PT-170-300', 'QCD_PT-300-470', 'QCD_PT-470-600', 'QCD_PT-600-800', 'QCD_PT-800-1000', 'QCD_PT-1000-1400', 'QCD_PT-1400-1800', 'QCD_PT-1800-2400', 'QCD_PT-2400-3200'], help="process in Monte Carlo")
+parser.add_argument("--MCprocess", type=str, default='', choices=['VBFHCC', 'VBFHBB', 'ggHCC','ggHBB', 'QCD','VBFZqq', 'VBFWqq','Zqq_pt-100-200','Zqq_pt-200-400','Zqq_pt-400-600','Zqq_pt-600','Wqq_pt-100-200','Wqq_pt-200-400','Wqq_pt-400-600','Wqq_pt-600', 'Zqq_HT-200-400', 'Zqq_HT-400-600', 'Zqq_HT-600-800', 'Zqq_HT-800-inf', 'Wqq_HT-200-400', 'Wqq_HT-400-600', 'Wqq_HT-600-800', 'Wqq_HT-800-inf', 'TTto2L2Nu', 'QCD-4Jets_HT-100to200', 'QCD-4Jets_HT-200to400', 'QCD-4Jets_HT-400to600', 'QCD-4Jets_HT-600to800', 'QCD-4Jets_HT-800to1000','QCD-4Jets_HT-1000to1200',  'QCD-4Jets_HT-1200to1500', 'QCD-4Jets_HT-1500to2000', 'QCD-4Jets_HT-2000', 'QCD_PT-120-170', 'QCD_PT-170-300', 'QCD_PT-300-470', 'QCD_PT-470-600', 'QCD_PT-600-800', 'QCD_PT-800-1000', 'QCD_PT-1000-1400', 'QCD_PT-1400-1800', 'QCD_PT-1800-2400', 'QCD_PT-2400-3200'], help="process in Monte Carlo")
 args = parser.parse_args()
 
 #prepare output filename  and option string
@@ -28,6 +28,10 @@ elif args.dataset == 'data_control':
    out_filename = 'AnalysedTree_'+args.dataset+'_'+args.run+'_'+args.anatype
    temp = '_'+args.anatype
    option_string = ' "'+args.dataset+temp.replace("_control","")+'" "'+args.run+'" "'+args.run+'"'
+elif args.dataset == 'data_validate' :
+   out_filename = 'AnalysedTree_'+args.dataset+'_'+args.run+'_'+args.anatype
+   temp = '_'+args.anatype
+   option_string = ' "'+args.dataset+temp.replace("_validate","")+'" "'+args.run+'" "'+args.run+'"'
 elif args.dataset == 'MC':
    out_filename = 'AnalysedTree_'+args.dataset+'_'+args.MCprocess+'_'+args.anatype
    temp = '_'+args.anatype
@@ -36,11 +40,15 @@ elif args.dataset == 'MC_control':
    out_filename = 'AnalysedTree_'+args.dataset+'_'+args.MCprocess+'_'+args.anatype
    temp = '_'+args.anatype
    option_string = ' "'+args.dataset+temp.replace("_control","")+'" "'+args.MCprocess+'" "'+args.run+'"'
+elif args.dataset == 'MC_validate':
+   out_filename = 'AnalysedTree_'+args.dataset+'_'+args.MCprocess+'_'+args.anatype
+   temp = '_'+args.anatype
+   option_string = ' "'+args.dataset+temp.replace("_validate","")+'" "'+args.MCprocess+'" "'+args.run+'"'
 
 #startTime = datetime.datetime.now().strftime("%Y%m%d_%H%M")
 
 # Create target Directory if don't exist
-if args.dataset == 'MC' or args.dataset == 'MC_control':
+if args.dataset == 'MC' or args.dataset == 'MC_control' or args.dataset == 'MC_validate':
    output_name = args.MCprocess+"_"+args.anatype+"_"+args.outName
    #output_name = args.MCprocess+"_"+args.anatype+"_"+args.EE+"_"+args.outName
 else: 
@@ -78,31 +86,40 @@ if args.anatype == 'control':
    if args.dataset == 'MC_control':
       path = '/lustre/cms/store/user/azaza/QCD_Summer23_HT'
 
+if args.anatype == 'validate':
+   if args.dataset == 'data_validate' and args.run == '2023C':
+   #if args.dataset == 'data_control':
+      path = '/lustre/cms/store/user/azaza/Data2023C_rereco22Sep_26Jan24'
+   #if args.dataset == 'MC_validate':
+   #   path = '/lustre/cms/store/user/azaza/QCD_Summer23_HT'
+
 if args.run == '2023C':
    if args.dataset == 'MC' and args.MCprocess == 'VBFHCC':
       path =  '/lustre/cms/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/crab_VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3_azaza/240126_141842'
    if args.dataset == 'MC' and args.MCprocess == 'VBFHBB':
-      path = '/lustre/cms/store/user/azaza/VBFHToBB_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/crab_VBFHToBB_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3_azaza/240119_091148'
+      path = '/lustre/cms/store/user/azaza/VBFHToBB_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/crab_VBFHToBB_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3_azaza/240126_141912'
    if args.dataset == 'MC' and args.MCprocess == 'ggHCC':
-      path = '/lustre/cms/store/user/azaza/GluGluHtoCC_M-125_TuneCP5_13p6TeV-powheg-minlo-pythia8_Run3/crab_GluGluHtoCC_M-125_TuneCP5_13p6TeV-powheg-minlo-pythia8_Run3_apellecc/240119_091223'
-   if args.dataset == 'MC' and args.MCprocess == 'QCD-4Jets_HT-100to200':
-      path = '/lustre/cms/store/user/azaza/QCD_Summer23_HT/QCD-4Jets_HT-100to200_TuneCP5_13p6TeV_madgraphMLM-pythia8/crab_QCD-4Jets_HT-100to200_TuneCP5_13p6TeV_madgraphMLM-pythia8_Run3Summer23MiniAODv4/240122_144543/'
-   if args.dataset == 'MC' and args.MCprocess == 'QCD-4Jets_HT-200to400':
-      path = '/lustre/cms/store/user/azaza/QCD_Summer23_HT/QCD-4Jets_HT-200to400_TuneCP5_13p6TeV_madgraphMLM-pythia8/crab_QCD-4Jets_HT-200to400_TuneCP5_13p6TeV_madgraphMLM-pythia8_Run3Summer23MiniAODv4/240118_170353'
-   if args.dataset == 'MC' and args.MCprocess == 'QCD-4Jets_HT-400to600':
-      path = '/lustre/cms/store/user/azaza/QCD_Summer23_HT/QCD-4Jets_HT-400to600_TuneCP5_13p6TeV_madgraphMLM-pythia8/crab_QCD-4Jets_HT-400to600_TuneCP5_13p6TeV_madgraphMLM-pythia8_Run3Summer23MiniAODv4/240118_170417'
-   if args.dataset == 'MC' and args.MCprocess == 'QCD-4Jets_HT-600to800':
-      path = '/lustre/cms/store/user/azaza/QCD_Summer23_HT/QCD-4Jets_HT-600to800_TuneCP5_13p6TeV_madgraphMLM-pythia8/crab_QCD-4Jets_HT-600to800_TuneCP5_13p6TeV_madgraphMLM-pythia8_Run3Summer23MiniAODv4/240122_144616/'
-   if args.dataset == 'MC' and args.MCprocess == 'QCD-4Jets_HT-800to1000':
-      path = '/lustre/cms/store/user/azaza/QCD_Summer23_HT/QCD-4Jets_HT-800to1000_TuneCP5_13p6TeV_madgraphMLM-pythia8/crab_QCD-4Jets_HT-800to1000_TuneCP5_13p6TeV_madgraphMLM-pythia8_Run3Summer23MiniAODv4/240118_170504'
-   if args.dataset == 'MC' and args.MCprocess == 'QCD-4Jets_HT-1000to1200':
-      path = '/lustre/cms/store/user/azaza/QCD_Summer23_HT/QCD-4Jets_HT-1000to1200_TuneCP5_13p6TeV_madgraphMLM-pythia8/crab_QCD-4Jets_HT-1000to1200_TuneCP5_13p6TeV_madgraphMLM-pythia8_Run3Summer23MiniAODv4/240122_144652/'
-   if args.dataset == 'MC' and args.MCprocess == 'QCD-4Jets_HT-1200to1500':
-      path = '/lustre/cms/store/user/azaza/QCD_Summer23_HT/QCD-4Jets_HT-1200to1500_TuneCP5_13p6TeV_madgraphMLM-pythia8/crab_QCD-4Jets_HT-1200to1500_TuneCP5_13p6TeV_madgraphMLM-pythia8_Run3Summer23MiniAODv4/240118_170549/'
-   if args.dataset == 'MC' and args.MCprocess == 'QCD-4Jets_HT-1500to2000':
-      path = '/lustre/cms/store/user/azaza/QCD_Summer23_HT/QCD-4Jets_HT-1500to2000_TuneCP5_13p6TeV_madgraphMLM-pythia8/crab_QCD-4Jets_HT-1500to2000_TuneCP5_13p6TeV_madgraphMLM-pythia8_Run3Summer23MiniAODv4/240118_170612/'
-   if args.dataset == 'MC' and args.MCprocess == 'QCD-4Jets_HT-2000':
-      path = '/lustre/cms/store/user/azaza/QCD_Summer23_HT/QCD-4Jets_HT-2000_TuneCP5_13p6TeV_madgraphMLM-pythia8/crab_QCD-4Jets_HT-2000_TuneCP5_13p6TeV_madgraphMLM-pythia8_Run3Summer23MiniAODv4/240118_170635/'
+      path = '/lustre/cms/store/user/azaza/GluGluHtoCC_M-125_TuneCP5_13p6TeV-powheg-minlo-pythia8_Run3/crab_GluGluHtoCC_M-125_TuneCP5_13p6TeV-powheg-minlo-pythia8_Run3_apellecc/240126_141941'
+   if args.dataset == 'MC' and args.MCprocess == 'ggHBB':
+      path = '/lustre/cms/store/user/azaza/GluGluHtoBB_M-125_TuneCP5_13p6TeV-powheg-minlo-pythia8_Run3/crab_GluGluHtoBB_M-125_TuneCP5_13p6TeV-powheg-minlo-pythia8_Run3_llongo/240126_142011/'
+   if (args.dataset == 'MC' or args.dataset == 'MC_validate') and args.MCprocess == 'QCD-4Jets_HT-100to200':
+      path = '/lustre/cms/store/user/azaza/QCD_Summer23_HT/QCD-4Jets_HT-100to200_TuneCP5_13p6TeV_madgraphMLM-pythia8/crab_QCD-4Jets_HT-100to200_TuneCP5_13p6TeV_madgraphMLM-pythia8_Run3Summer23MiniAODv4/240126_143913'
+   if (args.dataset == 'MC' or args.dataset == 'MC_validate') and args.MCprocess == 'QCD-4Jets_HT-200to400':
+      path = '/lustre/cms/store/user/azaza/QCD_Summer23_HT/QCD-4Jets_HT-200to400_TuneCP5_13p6TeV_madgraphMLM-pythia8/crab_QCD-4Jets_HT-200to400_TuneCP5_13p6TeV_madgraphMLM-pythia8_Run3Summer23MiniAODv4/240126_143959'
+   if (args.dataset == 'MC' or args.dataset == 'MC_validate') and args.MCprocess == 'QCD-4Jets_HT-400to600':
+      path = '/lustre/cms/store/user/azaza/QCD_Summer23_HT/QCD-4Jets_HT-400to600_TuneCP5_13p6TeV_madgraphMLM-pythia8/crab_QCD-4Jets_HT-400to600_TuneCP5_13p6TeV_madgraphMLM-pythia8_Run3Summer23MiniAODv4/240126_144027'
+   if (args.dataset == 'MC' or args.dataset == 'MC_validate') and args.MCprocess == 'QCD-4Jets_HT-600to800':
+      path = '/lustre/cms/store/user/azaza/QCD_Summer23_HT/QCD-4Jets_HT-600to800_TuneCP5_13p6TeV_madgraphMLM-pythia8/crab_QCD-4Jets_HT-600to800_TuneCP5_13p6TeV_madgraphMLM-pythia8_Run3Summer23MiniAODv4/240126_144053'
+   if (args.dataset == 'MC' or args.dataset == 'MC_validate') and args.MCprocess == 'QCD-4Jets_HT-800to1000':
+      path = '/lustre/cms/store/user/azaza/QCD_Summer23_HT/QCD-4Jets_HT-800to1000_TuneCP5_13p6TeV_madgraphMLM-pythia8/crab_QCD-4Jets_HT-800to1000_TuneCP5_13p6TeV_madgraphMLM-pythia8_Run3Summer23MiniAODv4/240126_144118'
+   if (args.dataset == 'MC' or args.dataset == 'MC_validate') and args.MCprocess == 'QCD-4Jets_HT-1000to1200':
+      path = '/lustre/cms/store/user/azaza/QCD_Summer23_HT/QCD-4Jets_HT-1000to1200_TuneCP5_13p6TeV_madgraphMLM-pythia8/crab_QCD-4Jets_HT-1000to1200_TuneCP5_13p6TeV_madgraphMLM-pythia8_Run3Summer23MiniAODv4/240126_144144'
+   if (args.dataset == 'MC' or args.dataset == 'MC_validate') and args.MCprocess == 'QCD-4Jets_HT-1200to1500':
+      path = '/lustre/cms/store/user/azaza/QCD_Summer23_HT/QCD-4Jets_HT-1200to1500_TuneCP5_13p6TeV_madgraphMLM-pythia8/crab_QCD-4Jets_HT-1200to1500_TuneCP5_13p6TeV_madgraphMLM-pythia8_Run3Summer23MiniAODv4/240126_144210'
+   if (args.dataset == 'MC' or args.dataset == 'MC_validate') and args.MCprocess == 'QCD-4Jets_HT-1500to2000':
+      path = '/lustre/cms/store/user/azaza/QCD_Summer23_HT/QCD-4Jets_HT-1500to2000_TuneCP5_13p6TeV_madgraphMLM-pythia8/crab_QCD-4Jets_HT-1500to2000_TuneCP5_13p6TeV_madgraphMLM-pythia8_Run3Summer23MiniAODv4/240126_144237'
+   if (args.dataset == 'MC' or args.dataset == 'MC_validate') and args.MCprocess == 'QCD-4Jets_HT-2000':
+      path = '/lustre/cms/store/user/azaza/QCD_Summer23_HT/QCD-4Jets_HT-2000_TuneCP5_13p6TeV_madgraphMLM-pythia8/crab_QCD-4Jets_HT-2000_TuneCP5_13p6TeV_madgraphMLM-pythia8_Run3Summer23MiniAODv4/240126_144303'
    if args.dataset == 'MC' and args.MCprocess == 'Zqq_HT-200-400':
       path = '/lustre/cms/store/user/azaza/Zto2Q-4Jets_HT-200to400_TuneCP5_13p6TeV_madgraphMLM-pythia8/crab_Zto2Q-4Jets_HT-200to400_TuneCP5_13p6TeV_madgraphMLM-pythia8_Run3Summer23MiniAODv4/240118_165939/'
    if args.dataset == 'MC' and args.MCprocess == 'Zqq_HT-400-600':
@@ -119,8 +136,28 @@ if args.run == '2023C':
       path = '/lustre/cms/store/user/azaza/Wto2Q-3Jets_HT-600to800_TuneCP5_13p6TeV_madgraphMLM-pythia8/crab_Wto2Q-3Jets_HT-600to800_TuneCP5_13p6TeV_madgraphMLM-pythia8_Run3Summer23MiniAODv4/240118_170238/' 
    if args.dataset == 'MC' and args.MCprocess == 'Wqq_HT-800-inf':
       path = '/lustre/cms/store/user/azaza/Wto2Q-3Jets_HT-800_TuneCP5_13p6TeV_madgraphMLM-pythia8/crab_Wto2Q-3Jets_HT-800_TuneCP5_13p6TeV_madgraphMLM-pythia8_Run3Summer23MiniAODv4/240118_170302/'
+   if args.dataset == 'MC' and args.MCprocess == 'Zqq_pt-100-200':
+      path = '/lustre/cms/store/user/azaza/Zto2Q-2Jets_PTQQ-100to200_1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8/crab_Zto2Q-2Jets_PTQQ-100to200_1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8_Run3Summer23MiniAODv4/240220_115201/'
+   if args.dataset == 'MC' and args.MCprocess == 'Zqq_pt-200-400':
+      path = '/lustre/cms/store/user/azaza/Zto2Q-2Jets_PTQQ-200to400_1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8/crab_Zto2Q-2Jets_PTQQ-200to400_1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8_Run3Summer23MiniAODv4/240220_115405/'
+   if args.dataset == 'MC' and args.MCprocess == 'Zqq_pt-400-600':
+      path = '/lustre/cms/store/user/azaza/Zto2Q-2Jets_PTQQ-400to600_1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8/crab_Zto2Q-2Jets_PTQQ-400to600_1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8_Run3Summer23MiniAODv4/240220_115543/'
+   if args.dataset == 'MC' and args.MCprocess == 'Zqq_pt-600':
+      path = '/lustre/cms/store/user/azaza/Zto2Q-2Jets_PTQQ-600_1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8/crab_Zto2Q-2Jets_PTQQ-600_1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8_Run3Summer23MiniAODv4/240220_115720/'
+   if args.dataset == 'MC' and args.MCprocess == 'Wqq_pt-100-200':
+      path = '/lustre/cms/store/user/azaza/Wto2Q-2Jets_PTQQ-100to200_1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8/crab_Wto2Q-2Jets_PTQQ-100to200_1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8_Run3Summer23MiniAODv4/240220_120014/'
+   if args.dataset == 'MC' and args.MCprocess == 'Wqq_pt-200-400':
+      path = '/lustre/cms/store/user/azaza/Wto2Q-2Jets_PTQQ-200to400_1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8/crab_Wto2Q-2Jets_PTQQ-200to400_1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8_Run3Summer23MiniAODv4/240220_120138/'
+   if args.dataset == 'MC' and args.MCprocess == 'Wqq_pt-400-600':
+      path = '/lustre/cms/store/user/azaza/Wto2Q-2Jets_PTQQ-400to600_1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8/crab_Wto2Q-2Jets_PTQQ-400to600_1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8_Run3Summer23MiniAODv4/240220_120311'
+   if args.dataset == 'MC' and args.MCprocess == 'Wqq_pt-600':
+      path = '/lustre/cms/store/user/azaza/Wto2Q-2Jets_PTQQ-600_1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8/crab_Wto2Q-2Jets_PTQQ-600_1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8_Run3Summer23MiniAODv4/240220_120432/'
+   if args.dataset == 'MC' and args.MCprocess == 'VBFZqq':
+      path = '/lustre/cms/store/user/azaza/VBFZto2Q_TuneCP5_13p6TeV_madgraph-pythia8/crab_VBFZto2Q_TuneCP5_13p6TeV_madgraph-pythia8_Run3Summer23MiniAODv4-130X_mcRun3_2023_realistic_v14-v3/240220_115850/'
+   if args.dataset == 'MC' and args.MCprocess == 'VBFWqq':
+      path = '/lustre/cms/store/user/azaza/VBFWto2Q_TuneCP5_13p6TeV_madgraph-pythia8/crab_VBFWto2Q_TuneCP5_13p6TeV_madgraph-pythia8_Run3Summer23MiniAODv4-130X_mcRun3_2023_realistic_v14-v3/240220_120603/'
    if args.dataset == 'MC' and args.MCprocess == 'TTto2L2Nu':
-      path = '/lustre/cms/store/user/azaza/TTto2L2Nu_TuneCP5_13p6TeV_powheg-pythia8/crab_TTto2L2Nu_TuneCP5_13p6TeV_powheg-pythia8_Run3Summer23MiniAODv4-130X_mcRun3_2023_realistic_v14-v2/240118_170127/'
+      path = '/lustre/cms/store/user/azaza/TTto2L2Nu_TuneCP5_13p6TeV_powheg-pythia8/crab_TTto2L2Nu_TuneCP5_13p6TeV_powheg-pythia8_Run3Summer23MiniAODv4-130X_mcRun3_2023_realistic_v14-v2/240126_143700/'
 
 '''if args.EE == 'preEE':
    if args.dataset == 'MC' and args.MCprocess == 'QCD_PT-120-170':
