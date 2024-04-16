@@ -3,12 +3,12 @@
 #  submitAllJobs.sh
 
 
-echo -e "\npython createRunFile_new.py data Hcc --run 2023C --n 30 --outName ReReco22Sep_v1Mar24 "
-python createRunFile_new.py data Hcc --run 2023C --n 100 --outName ReReco22Sep_v1Mar24
+echo -e "\npython createRunFile_new.py data Hcc --run 2023C --n 30 --outName ReReco22Sep_v3Mar24 "
+python createRunFile_new.py data Hcc --run 2023C --n 100 --outName ReReco22Sep_v3Mar24
 sleep 1
 pwd
-echo -e "\nsubmit_analysis_2023C_Hcc_ReReco22Sep_v1Mar24.sh"
-source submit_analysis_2023C_Hcc_ReReco22Sep_v1Mar24.sh
+echo -e "\nsubmit_analysis_2023C_Hcc_ReReco22Sep_v3Mar24.sh"
+source submit_analysis_2023C_Hcc_ReReco22Sep_v3Mar24.sh
 cd ..
 sleep 1
 
@@ -19,102 +19,174 @@ sleep 1
 #    echo -e "\npython createRunFile_new.py MC Hcc --outName v1 --n 30 --EE preEE --MCprocess $i "
 #    python createRunFile_new.py MC Hcc --outName v1 --n 30 --EE preEE --MCprocess $i
 #    sleep 1
-#    echo -e "\nsubmit_analysis_${i}_Hcc_v1Mar24.sh"
-#    source submit_analysis_${i}_Hcc_v1Mar24.sh
+#    echo -e "\nsubmit_analysis_${i}_Hcc_v3Mar24.sh"
+#    source submit_analysis_${i}_Hcc_v3Mar24.sh
 #    cd ..
 #    sleep 1
 #done
 
 
-for j in Zqq_pt-100-200 Zqq_pt-200-400 Zqq_pt-400-600 Zqq_pt-600
+for j in Zqq1j_pt-100-200 Zqq1j_pt-200-400 Zqq1j_pt-400-600 Zqq1j_pt-600
 do
     echo -e "\nMC $j"
-    echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v1Mar24 --n 30 --run 2023C --MCprocess $j "
-    python createRunFile_new.py MC Hcc --outName Summer23_v1Mar24 --n 50 --run 2023C --MCprocess $j
+    echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 30 --run 2023C --MCprocess $j "
+    python createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 50 --run 2023C --MCprocess $j
     sleep 1
-    echo -e "\nsubmit_analysis_${j}_Hcc_Summer23_v1Mar24.sh"
-    source submit_analysis_${j}_Hcc_Summer23_v1Mar24.sh
+    echo -e "\nsubmit_analysis_${j}_Hcc_Summer23_v3Mar24.sh"
+    source submit_analysis_${j}_Hcc_Summer23_v3Mar24.sh
     cd ..
     sleep 1
 done
 
 
-for j in Wqq_pt-100-200 Wqq_pt-200-400 Wqq_pt-400-600 Wqq_pt-600
+for j in Wqq2j_pt-100-200 Wqq2j_pt-200-400 Wqq2j_pt-400-600 Wqq2j_pt-600
 do
     echo -e "\nMC $j"
-    echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v1Mar24 --n 30 --run 2023C --MCprocess $j "
-    python createRunFile_new.py MC Hcc --outName Summer23_v1Mar24 --n 50 --run 2023C --MCprocess $j
+    echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 30 --run 2023C --MCprocess $j "
+    python createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 50 --run 2023C --MCprocess $j
     sleep 1
-    echo -e "\nsubmit_analysis_${j}_Hcc_Summer23_v1Mar24.sh"
-    source submit_analysis_${j}_Hcc_Summer23_v1Mar24.sh
+    echo -e "\nsubmit_analysis_${j}_Hcc_Summer23_v3Mar24.sh"
+    source submit_analysis_${j}_Hcc_Summer23_v3Mar24.sh
     cd ..
     sleep 1
 done
 
+for j in Zqq2j_pt-100-200 Zqq2j_pt-200-400 Zqq2j_pt-400-600 Zqq2j_pt-600
+do
+    echo -e "\nMC $j"
+    echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 30 --run 2023C --MCprocess $j "
+    python createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 50 --run 2023C --MCprocess $j
+    sleep 1
+    echo -e "\nsubmit_analysis_${j}_Hcc_Summer23_v3Mar24.sh"
+   source submit_analysis_${j}_Hcc_Summer23_v3Mar24.sh
+    cd ..
+    sleep 1
+done
+
+
+for j in Wqq1j_pt-100-200 Wqq1j_pt-200-400 Wqq1j_pt-400-600 Wqq1j_pt-600
+do
+    echo -e "\nMC $j"
+    echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 30 --run 2023C --MCprocess $j "
+    python createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 50 --run 2023C --MCprocess $j
+    sleep 1
+    echo -e "\nsubmit_analysis_${j}_Hcc_Summer23_v3Mar24.sh"
+    source submit_analysis_${j}_Hcc_Summer23_v3Mar24.sh
+    cd ..
+    sleep 1
+done
 for j in QCD-4Jets_HT-100to200 QCD-4Jets_HT-200to400 QCD-4Jets_HT-400to600 QCD-4Jets_HT-600to800  QCD-4Jets_HT-800to1000 QCD-4Jets_HT-1000to1200 QCD-4Jets_HT-1200to1500 QCD-4Jets_HT-1500to2000 QCD-4Jets_HT-2000
 do
     echo -e "\nMC $j"
-    echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v1Mar24 --n 30 --run 2023C --MCprocess $j "
-    python createRunFile_new.py MC Hcc --outName Summer23_v1Mar24 --n 50 --run 2023C --MCprocess $j
+    echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 30 --run 2023C --MCprocess $j "
+    python createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 50 --run 2023C --MCprocess $j
     sleep 1
-    echo -e "\nsubmit_analysis_${j}_Hcc_Summer23_v1Mar24.sh"
-    source submit_analysis_${j}_Hcc_Summer23_v1Mar24.sh
+    echo -e "\nsubmit_analysis_${j}_Hcc_Summer23_v3Mar24.sh"
+    source submit_analysis_${j}_Hcc_Summer23_v3Mar24.sh
     cd ..
     sleep 1
 done
 
-echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v1Mar24 --n 30 --run 2023C --MCprocess VBFZqq"
-    python createRunFile_new.py MC Hcc --outName Summer23_v1Mar24 --n 50 --run 2023C --MCprocess VBFZqq
+echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 30 --run 2023C --MCprocess VBFZqq"
+    python createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 50 --run 2023C --MCprocess VBFZqq
     sleep 1
-    echo -e "\nsubmit_analysis_VBFZqq_Hcc_Summer23_v1Mar24.sh"
-    source submit_analysis_VBFZqq_Hcc_Summer23_v1Mar24.sh
+    echo -e "\nsubmit_analysis_VBFZqq_Hcc_Summer23_v3Mar24.sh"
+    source submit_analysis_VBFZqq_Hcc_Summer23_v3Mar24.sh
     cd ..
     sleep 1
 
-echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v1Mar24 --n 30 --run 2023C --MCprocess VBFWqq"
-    python createRunFile_new.py MC Hcc --outName Summer23_v1Mar24 --n 50 --run 2023C --MCprocess VBFWqq
+echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 30 --run 2023C --MCprocess VBFWqq"
+    python createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 50 --run 2023C --MCprocess VBFWqq
     sleep 1
-    echo -e "\nsubmit_analysis_VBFWqq_Hcc_Summer23_v1Mar24.sh"
-    source submit_analysis_VBFWqq_Hcc_Summer23_v1Mar24.sh
+    echo -e "\nsubmit_analysis_VBFWqq_Hcc_Summer23_v3Mar24.sh"
+    source submit_analysis_VBFWqq_Hcc_Summer23_v3Mar24.sh
     cd ..
     sleep 1
 
-echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v1Mar24 --n 30 --run 2023C --MCprocess TTto2L2Nu"
-    python createRunFile_new.py MC Hcc --outName Summer23_v1Mar24 --n 50 --run 2023C --MCprocess TTto2L2Nu
+echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 30 --run 2023C --MCprocess TTto2L2Nu"
+    python createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 50 --run 2023C --MCprocess TTto2L2Nu
     sleep 1
-    echo -e "\nsubmit_analysis_TTto2L2Nu_Hcc_Summer23_v1Mar24.sh"
-    source submit_analysis_TTto2L2Nu_Hcc_Summer23_v1Mar24.sh
+    echo -e "\nsubmit_analysis_TTto2L2Nu_Hcc_Summer23_v3Mar24.sh"
+    source submit_analysis_TTto2L2Nu_Hcc_Summer23_v3Mar24.sh
     cd ..
     sleep 1
 
-echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v1Mar24 --n 30 --run 2023C --MCprocess VBFHCC"
-    python createRunFile_new.py MC Hcc --outName Summer23_v1Mar24 --n 50 --run 2023C --MCprocess VBFHCC
+echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 30 --run 2023C --MCprocess TTto4Q"
+    python createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 50 --run 2023C --MCprocess TTto4Q
     sleep 1
-    echo -e "\nsubmit_analysis_VBFHCC_Hcc_Summer23_v1Mar24.sh"
-    source submit_analysis_VBFHCC_Hcc_Summer23_v1Mar24.sh
+    echo -e "\nsubmit_analysis_TTto4Q_Hcc_Summer23_v3Mar24.sh"
+    source submit_analysis_TTto4Q_Hcc_Summer23_v3Mar24.sh
     cd ..
     sleep 1
 
-echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v1Mar24 --n 30 --run 2023C --MCprocess VBFHBB"
-    python createRunFile_new.py MC Hcc --outName Summer23_v1Mar24 --n 50 --run 2023C --MCprocess VBFHBB
+echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 30 --run 2023C --MCprocess TTtoLNu2Q"
+    python createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 50 --run 2023C --MCprocess TTtoLNu2Q
     sleep 1
-    echo -e "\nsubmit_analysis_VBFHBB_Hcc_Summer23_v1Mar24.sh"
-    source submit_analysis_VBFHBB_Hcc_Summer23_v1Mar24.sh
+    echo -e "\nsubmit_analysis_TTtoLNu2Q_Hcc_Summer23_v3Mar24.sh"
+    source submit_analysis_TTtoLNu2Q_Hcc_Summer23_v3Mar24.sh
     cd ..
     sleep 1
 
-echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v1Mar24 --n 30 --run 2023C --MCprocess ggHCC"
-    python createRunFile_new.py MC Hcc --outName Summer23_v1Mar24 --n 50 --run 2023C --MCprocess ggHCC
+echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 30 --run 2023C --MCprocess TbarWplusto4Q"
+    python createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 50 --run 2023C --MCprocess TbarWplusto4Q
     sleep 1
-    echo -e "\nsubmit_analysis_ggHCC_Hcc_Summer23_v1Mar24.sh"
-    source submit_analysis_ggHCC_Hcc_Summer23_v1Mar24.sh
+    echo -e "\nsubmit_analysis_TbarWplusto4Q_Hcc_Summer23_v3Mar24.sh"
+    source submit_analysis_TbarWplusto4Q_Hcc_Summer23_v3Mar24.sh
     cd ..
     sleep 1
 
-echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v1Mar24 --n 30 --run 2023C --MCprocess ggHBB"
-    python createRunFile_new.py MC Hcc --outName Summer23_v1Mar24 --n 50 --run 2023C --MCprocess ggHBB
+echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 30 --run 2023C --MCprocess TbarWplustoLNu2Q"
+    python createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 50 --run 2023C --MCprocess TbarWplustoLNu2Q
     sleep 1
-    echo -e "\nsubmit_analysis_ggHBB_Hcc_Summer23_v1Mar24.sh"
-    source submit_analysis_ggHBB_Hcc_Summer23_v1Mar24.sh
+    echo -e "\nsubmit_analysis_TbarWplustoLNu2Q_Hcc_Summer23_v3Mar24.sh"
+    source submit_analysis_TbarWplustoLNu2Q_Hcc_Summer23_v3Mar24.sh
+    cd ..
+    sleep 1
+
+echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 30 --run 2023C --MCprocess TWminusto4Q"
+    python createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 50 --run 2023C --MCprocess TWminusto4Q
+    sleep 1
+    echo -e "\nsubmit_analysis_TWminusto4Q_Hcc_Summer23_v3Mar24.sh"
+    source submit_analysis_TWminusto4Q_Hcc_Summer23_v3Mar24.sh
+    cd ..
+    sleep 1
+
+#echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 30 --run 2023C --MCprocess TWminustoLNu2Q"
+#    python createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 50 --run 2023C --MCprocess TWminustoLNu2Q
+#    sleep 1
+#    echo -e "\nsubmit_analysis_TWminustoLNu2Q_Hcc_Summer23_v3Mar24.sh"
+#    source submit_analysis_TWminustoLNu2Q_Hcc_Summer23_v3Mar24.sh
+#    cd ..
+#    sleep 1
+
+echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 30 --run 2023C --MCprocess VBFHCC"
+    python createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 50 --run 2023C --MCprocess VBFHCC
+    sleep 1
+    echo -e "\nsubmit_analysis_VBFHCC_Hcc_Summer23_v3Mar24.sh"
+    source submit_analysis_VBFHCC_Hcc_Summer23_v3Mar24.sh
+    cd ..
+    sleep 1
+
+echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 30 --run 2023C --MCprocess VBFHBB"
+    python createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 50 --run 2023C --MCprocess VBFHBB
+    sleep 1
+    echo -e "\nsubmit_analysis_VBFHBB_Hcc_Summer23_v3Mar24.sh"
+    source submit_analysis_VBFHBB_Hcc_Summer23_v3Mar24.sh
+    cd ..
+    sleep 1
+
+echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 30 --run 2023C --MCprocess ggHCC"
+    python createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 50 --run 2023C --MCprocess ggHCC
+    sleep 1
+    echo -e "\nsubmit_analysis_ggHCC_Hcc_Summer23_v3Mar24.sh"
+    source submit_analysis_ggHCC_Hcc_Summer23_v3Mar24.sh
+    cd ..
+    sleep 1
+
+echo -e "\npython createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 30 --run 2023C --MCprocess ggHBB"
+    python createRunFile_new.py MC Hcc --outName Summer23_v3Mar24 --n 50 --run 2023C --MCprocess ggHBB
+    sleep 1
+    echo -e "\nsubmit_analysis_ggHBB_Hcc_Summer23_v3Mar24.sh"
+    source submit_analysis_ggHBB_Hcc_Summer23_v3Mar24.sh
     cd ..
     sleep 1

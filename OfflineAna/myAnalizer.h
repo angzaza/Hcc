@@ -58,6 +58,7 @@ public :
    Float_t         BeamWidth_xErr;
    Float_t         BeamWidth_yErr;
    Int_t           finalState;
+   Float_t         genWeight;
    string          *triggersPassed;
    Bool_t          passedTrig;
    Bool_t          passedZqqSelection;
@@ -88,6 +89,7 @@ public :
    vector<double>  *Muon_dxy;
    vector<double>  *Muon_dz;
    vector<bool>    *Muon_PassLooseID;
+   vector<bool>    *Muon_isPF;
    vector<int>     *AK4lep_id;
    vector<double>  *AK4lep_pt;
    vector<double>  *AK4lep_eta;
@@ -106,6 +108,9 @@ public :
    vector<float>   *jet_pfParticleNetAK4JetTags_probuds;
    vector<float>   *jet_pfParticleNetAK4JetTags_probg;
    vector<float>   *jet_pfParticleNetAK4JetTags_probtauh;
+   vector<float>   *jet_PNetRegPtRawCorr;
+   vector<float>   *jet_PNetRegPtRawCorrNeutrino;
+   vector<float>   *jet_PNetRegPtRawRes ;
    vector<float>   *jet_pfParticleNetAK4JetTags_CvsB;
    vector<float>   *jet_pfParticleNetAK4JetTags_CvsL;
    vector<float>   *jet_pfParticleNetAK4JetTags_CvsAll;
@@ -235,6 +240,7 @@ public :
    TBranch        *b_BeamWidth_xErr;   //!
    TBranch        *b_BeamWidth_yErr;   //!
    TBranch        *b_finalState;   //!
+   TBranch        *b_genWeight;   //!
    TBranch        *b_triggersPassed;   //!
    TBranch        *b_passedTrig;   //!
    TBranch        *b_passedZqqSelection;   //!
@@ -265,6 +271,7 @@ public :
    TBranch        *b_Muon_dxy;   //!
    TBranch        *b_Muon_dz;   //!
    TBranch        *b_Muon_PassLooseID;   //!
+   TBranch        *b_Muon_isPF;   //!
    TBranch        *b_AK4lep_id;   //!
    TBranch        *b_AK4lep_pt;   //!
    TBranch        *b_AK4lep_eta;   //!
@@ -283,6 +290,9 @@ public :
    TBranch        *b_jet_pfParticleNetAK4JetTags_probuds;   //!
    TBranch        *b_jet_pfParticleNetAK4JetTags_probg;   //!
    TBranch        *b_jet_pfParticleNetAK4JetTags_probtauh;   //!
+   TBranch        *b_jet_PNetRegPtRawCorr;   //!
+   TBranch        *b_jet_PNetRegPtRawCorrNeutrino;   //!
+   TBranch        *b_jet_PNetRegPtRawRes ;   //!
    TBranch        *b_jet_pfParticleNetAK4JetTags_CvsB;   //!
    TBranch        *b_jet_pfParticleNetAK4JetTags_CvsL;   //!
    TBranch        *b_jet_pfParticleNetAK4JetTags_CvsAll;   //!
@@ -480,6 +490,7 @@ void myAnalizer::Init(TTree *tree)
    Muon_dxy = 0;
    Muon_dz = 0;
    Muon_PassLooseID = 0;
+   Muon_isPF = 0;
    AK4lep_id = 0;
    AK4lep_pt = 0;
    AK4lep_eta = 0;
@@ -495,6 +506,9 @@ void myAnalizer::Init(TTree *tree)
    jet_pfParticleNetAK4JetTags_probuds = 0;
    jet_pfParticleNetAK4JetTags_probg = 0;
    jet_pfParticleNetAK4JetTags_probtauh = 0;
+   jet_PNetRegPtRawCorr = 0;
+   jet_PNetRegPtRawCorrNeutrino = 0;
+   jet_PNetRegPtRawRes  = 0;
    jet_pfParticleNetAK4JetTags_CvsB = 0;
    jet_pfParticleNetAK4JetTags_CvsL = 0;
    jet_pfParticleNetAK4JetTags_CvsAll = 0;
@@ -618,6 +632,7 @@ void myAnalizer::Init(TTree *tree)
    fChain->SetBranchAddress("BeamWidth_xErr", &BeamWidth_xErr, &b_BeamWidth_xErr);
    fChain->SetBranchAddress("BeamWidth_yErr", &BeamWidth_yErr, &b_BeamWidth_yErr);
    fChain->SetBranchAddress("finalState", &finalState, &b_finalState);
+   fChain->SetBranchAddress("genWeight", &genWeight, &b_genWeight);
    fChain->SetBranchAddress("triggersPassed", &triggersPassed, &b_triggersPassed);
    fChain->SetBranchAddress("passedTrig", &passedTrig, &b_passedTrig);
    fChain->SetBranchAddress("passedZqqSelection", &passedZqqSelection, &b_passedZqqSelection);
@@ -648,6 +663,7 @@ void myAnalizer::Init(TTree *tree)
    fChain->SetBranchAddress("Muon_dxy", &Muon_dxy, &b_Muon_dxy);
    fChain->SetBranchAddress("Muon_dz", &Muon_dz, &b_Muon_dz);
    fChain->SetBranchAddress("Muon_PassLooseID", &Muon_PassLooseID, &b_Muon_PassLooseID);
+   fChain->SetBranchAddress("Muon_isPF", &Muon_isPF, &b_Muon_isPF);
    fChain->SetBranchAddress("AK4lep_id", &AK4lep_id, &b_AK4lep_id);
    fChain->SetBranchAddress("AK4lep_pt", &AK4lep_pt, &b_AK4lep_pt);
    fChain->SetBranchAddress("AK4lep_eta", &AK4lep_eta, &b_AK4lep_eta);
@@ -666,6 +682,9 @@ void myAnalizer::Init(TTree *tree)
    fChain->SetBranchAddress("jet_pfParticleNetAK4JetTags_probuds", &jet_pfParticleNetAK4JetTags_probuds, &b_jet_pfParticleNetAK4JetTags_probuds);
    fChain->SetBranchAddress("jet_pfParticleNetAK4JetTags_probg", &jet_pfParticleNetAK4JetTags_probg, &b_jet_pfParticleNetAK4JetTags_probg);
    fChain->SetBranchAddress("jet_pfParticleNetAK4JetTags_probtauh", &jet_pfParticleNetAK4JetTags_probtauh, &b_jet_pfParticleNetAK4JetTags_probtauh);
+   fChain->SetBranchAddress("jet_PNetRegPtRawCorr", &jet_PNetRegPtRawCorr, &b_jet_PNetRegPtRawCorr);
+   fChain->SetBranchAddress("jet_PNetRegPtRawCorrNeutrino", &jet_PNetRegPtRawCorrNeutrino, &b_jet_PNetRegPtRawCorrNeutrino);
+   fChain->SetBranchAddress("jet_PNetRegPtRawRes ", &jet_PNetRegPtRawRes , &b_jet_PNetRegPtRawRes );
    fChain->SetBranchAddress("jet_pfParticleNetAK4JetTags_CvsB", &jet_pfParticleNetAK4JetTags_CvsB, &b_jet_pfParticleNetAK4JetTags_CvsB);
    fChain->SetBranchAddress("jet_pfParticleNetAK4JetTags_CvsL", &jet_pfParticleNetAK4JetTags_CvsL, &b_jet_pfParticleNetAK4JetTags_CvsL);
    fChain->SetBranchAddress("jet_pfParticleNetAK4JetTags_CvsAll", &jet_pfParticleNetAK4JetTags_CvsAll, &b_jet_pfParticleNetAK4JetTags_CvsAll);

@@ -1,5 +1,5 @@
 #define myAnalizer_cxx
-#define NCUTS 10
+#define NCUTS 11
 #include "myAnalizer.h"
 #include "Utilities.C"
 #include <TH2.h>
@@ -103,7 +103,7 @@ void myAnalizer::Loop_Hcc(TString type, TString datasetName, TString era)
 //    fChain->GetEntry(jentry);       //read all branches
 //by  b_branchname->GetEntry(ientry); //read only this branch
 
-   bool verbose=false;
+   bool verbose=true;
 
    //variable and histo declaration
    TLorentzVector hltjet_p4;
@@ -209,12 +209,12 @@ void myAnalizer::Loop_Hcc(TString type, TString datasetName, TString era)
    histo_CvsL_c1->Sumw2();
    histo_CvsL_c2->Sumw2();
    histo_CvsB_c1->Sumw2();
-   histo_CvsB_c1->Sumw2();
+   histo_CvsB_c2->Sumw2();
 
    TH1F* histo_QvsG_VBF1= new TH1F("PNet_QvsG_jetVBF1","PNet_QvsG_jetVBF1",50,-1,1);
-   TH1F* histo_QvsG_VBF2= new TH1F("PNet_QvsG_jetVBF2","PNet_QvsG_jetVBF2",50,1,1);
+   TH1F* histo_QvsG_VBF2= new TH1F("PNet_QvsG_jetVBF2","PNet_QvsG_jetVBF2",50,-1,1);
    histo_QvsG_VBF1->Sumw2();
-   histo_QvsG_VBF1->Sumw2();
+   histo_QvsG_VBF2->Sumw2();
 
    double isMC = -99;
    double run_n = 0, lumi_n = 0, evt_n = 0, pileupFactor=0;
@@ -315,8 +315,8 @@ void myAnalizer::Loop_Hcc(TString type, TString datasetName, TString era)
       Long64_t ientry = LoadTree(jentry);
       if (ientry < 0) break;
       entry=jentry;
-      if(verbose) cout<<"evt: "<<entry<<endl;
-      nb = fChain->GetEntry(jentry);   nbytes += nb;
+		if(verbose) cout<<"evt: "<<entry<<endl;
+		nb = fChain->GetEntry(jentry);   nbytes += nb;
       // if (Cut(ientry) < 0) continue;
       bool Eff_counter[NCUTS] = {false};
       goodAK4puppiJet.clear();
@@ -442,8 +442,9 @@ void myAnalizer::Loop_Hcc(TString type, TString datasetName, TString era)
             if(verbose) cout<<"jet "<<ijet<<endl;
             if(verbose) jet_i.print();
             AK4puppi_p3.SetPtEtaPhi(AK4PuppiJets_pt->at(ijet), AK4PuppiJets_eta->at(ijet), AK4PuppiJets_phi->at(ijet));
+            AK4puppi_p4.SetPtEtaPhiM(AK4PuppiJets_pt->at(ijet), AK4PuppiJets_eta->at(ijet), AK4PuppiJets_phi->at(ijet),AK4PuppiJets_mass->at(ijet));
             //check if the jet contains a muon in dR<0.2
-            /*float dRjmu_max=0.2;
+            float dRjmu_max=0.2;
             bool match_jmu=false;
             if(verbose) cout<<"matching with muons"<<endl;
             for(unsigned int j=0;j<Muon_pt->size();j++){
@@ -460,7 +461,7 @@ void myAnalizer::Loop_Hcc(TString type, TString datasetName, TString era)
             //if(match_jmu==true) continue; 
             if(match_jmu==true && ijet<4) break; //se uno dei primi 4 jet contiene un muone devo scartare l'evento
             else if(match_jmu==true && ijet>=4) continue; //se un altro dei jet dell'evento proviene da un muone, scarto solo il jet 
-           */
+           
             //goodAK4puppiJet.push_back(jet);
 
             //if a jet is vetoed by the jet veto map, the event is discarded 
@@ -503,9 +504,10 @@ void myAnalizer::Loop_Hcc(TString type, TString datasetName, TString era)
                if(verbose) cout<<" one of the first three offline jets doesn't match with an hlt object -- skipping current event"<< endl;
             }
             //if(match_hltjet==true){
-            if(fabs(AK4puppi_p4.Eta())<4.7) AK4puppi_sel.push_back(jet_i); 
+            if(fabs(AK4puppi_p3.Eta())<4.7) AK4puppi_sel.push_back(jet_i); 
 
-            if(AK4puppi_p4.Pt()>20. && fabs(AK4puppi_p4.Eta()<2.4)) njets++;
+            if(AK4puppi_p3.Pt()>20. && fabs(AK4puppi_p3.Eta()<2.4)) njets++;
+            if(verbose) cout<<"njets pt>20 eta<2.4: "<<njets<<endl;
           }//end cycle on puppi
           if(JetVetoed==true){
             for(int i=0; i<NCUTS; i++){
@@ -544,14 +546,14 @@ void myAnalizer::Loop_Hcc(TString type, TString datasetName, TString era)
           //if(pt0>=105.0 && pt1>= 90. && pt2>=75. && pt3>=35.){
           //  if(verbose) cout<<"pt threshold passed"<<endl;
           //PtThr_passed=true;
-          histo_pt_jet1->Fill(pt0, pu_weight);
-          histo_pt_jet2->Fill(pt1, pu_weight);
-          histo_pt_jet3->Fill(pt2, pu_weight);
-          histo_pt_jet4->Fill(pt3, pu_weight);
-          histo_eta_jet1->Fill(AK4puppi_sel[0].eta(), pu_weight);
-          histo_eta_jet2->Fill(AK4puppi_sel[1].eta(), pu_weight);
-          histo_eta_jet3->Fill(AK4puppi_sel[2].eta(), pu_weight);
-          histo_eta_jet4->Fill(AK4puppi_sel[3].eta(), pu_weight);
+          histo_pt_jet1->Fill(pt0, pu_weight*genWeight);
+          histo_pt_jet2->Fill(pt1, pu_weight*genWeight);
+          histo_pt_jet3->Fill(pt2, pu_weight*genWeight);
+          histo_pt_jet4->Fill(pt3, pu_weight*genWeight);
+          histo_eta_jet1->Fill(AK4puppi_sel[0].eta(), pu_weight*genWeight);
+          histo_eta_jet2->Fill(AK4puppi_sel[1].eta(), pu_weight*genWeight);
+          histo_eta_jet3->Fill(AK4puppi_sel[2].eta(), pu_weight*genWeight);
+          histo_eta_jet4->Fill(AK4puppi_sel[3].eta(), pu_weight*genWeight);
           //}
           //if(PtThr_passed==true){
           //Eff_counter[3]=true;
@@ -589,7 +591,8 @@ void myAnalizer::Loop_Hcc(TString type, TString datasetName, TString era)
               Eff_counter[7]=true;
               if(verbose){if(n_cjets!=2){cout<<"AAAAAAAA"<<endl;}} 
               if(AK4puppi_cHiggs[0].CvsAll()>=0.5 && AK4puppi_cHiggs[0].CvsL()>=0.16 && AK4puppi_cHiggs[0].CvsB()>=0.304 
-                 && AK4puppi_cHiggs[1].CvsL()>=0.054 && AK4puppi_cHiggs[1].CvsB()>=0.182 ){ //condition on ctag verified -- Medium WPs for 2022E (to be updated)
+                 && AK4puppi_cHiggs[1].CvsL()>=0.054 && AK4puppi_cHiggs[1].CvsB()>=0.182 ){ //condition on ctag verified -- Medium WPs for 2022E (to be updated)*/
+                //if(AK4puppi_cHiggs[0].CvsAll()>=0.85 && AK4puppi_cHiggs[1].CvsAll()>=0.7){
                 Eff_counter[8]=true;
                 if(verbose) cout<<"passed c tag selection"<<endl;
                 TLorentzVector jet_VBF1;
@@ -632,33 +635,33 @@ void myAnalizer::Loop_Hcc(TString type, TString datasetName, TString era)
          TLorentzVector jetc2_p4;
          jetc2_p4.SetPtEtaPhiM(AK4puppi_cHiggs[1].pt(),AK4puppi_cHiggs[1].eta(), AK4puppi_cHiggs[1].phi(), AK4puppi_cHiggs[1].mass());
 
-         histo_pt_jetC1->Fill(AK4puppi_cHiggs[0].pt(), pu_weight);
-         histo_pt_jetC2->Fill(AK4puppi_cHiggs[1].pt(), pu_weight);
+         histo_pt_jetC1->Fill(AK4puppi_cHiggs[0].pt(), pu_weight*genWeight);
+         histo_pt_jetC2->Fill(AK4puppi_cHiggs[1].pt(), pu_weight*genWeight);
 
-         histo_eta_jetC1->Fill(AK4puppi_cHiggs[0].eta(), pu_weight);
-         histo_eta_jetC2->Fill(AK4puppi_cHiggs[1].eta(), pu_weight);
+         histo_eta_jetC1->Fill(AK4puppi_cHiggs[0].eta(), pu_weight*genWeight);
+         histo_eta_jetC2->Fill(AK4puppi_cHiggs[1].eta(), pu_weight*genWeight);
 
-         histo_pt_jetVBF1->Fill(AK4puppi_VBF[0].pt(), pu_weight);
-         histo_pt_jetVBF2->Fill(AK4puppi_VBF[1].pt(),pu_weight);
+         histo_pt_jetVBF1->Fill(AK4puppi_VBF[0].pt(), pu_weight*genWeight);
+         histo_pt_jetVBF2->Fill(AK4puppi_VBF[1].pt(),pu_weight*genWeight);
 
-         histo_eta_jetVBF1->Fill(AK4puppi_VBF[0].eta(),pu_weight);
-         histo_eta_jetVBF2->Fill(AK4puppi_VBF[1].eta(),pu_weight);
-         histo_QvsG_VBF1->Fill(AK4puppi_VBF[0].QvsG()),pu_weight;
-         histo_QvsG_VBF2->Fill(AK4puppi_VBF[1].QvsG()),pu_weight;
-         histo_deltaEta_cjets->Fill(fabs(AK4puppi_cHiggs[0].eta()-AK4puppi_cHiggs[1].eta()),pu_weight);
-         histo_deltaEta_VBFjets->Fill(fabs(AK4puppi_VBF[1].eta()-AK4puppi_VBF[1].eta()),pu_weight);
+         histo_eta_jetVBF1->Fill(AK4puppi_VBF[0].eta(),pu_weight*genWeight);
+         histo_eta_jetVBF2->Fill(AK4puppi_VBF[1].eta(),pu_weight*genWeight);
+         histo_QvsG_VBF1->Fill(AK4puppi_VBF[0].QvsG(),pu_weight*genWeight);
+         histo_QvsG_VBF2->Fill(AK4puppi_VBF[1].QvsG(),pu_weight*genWeight);
+         histo_deltaEta_cjets->Fill(fabs(AK4puppi_cHiggs[0].eta()-AK4puppi_cHiggs[1].eta()),pu_weight*genWeight);
+         histo_deltaEta_VBFjets->Fill(fabs(AK4puppi_VBF[0].eta()-AK4puppi_VBF[1].eta()),pu_weight*genWeight);
 
-         histo_invMass_cjets->Fill((jetc1_p4+jetc2_p4).M(),pu_weight);
-         histo_invMass_VBFjets->Fill((jetVBF1_p4+jetVBF2_p4).M(),pu_weight);
+         histo_invMass_cjets->Fill((jetc1_p4+jetc2_p4).M(),pu_weight*genWeight);
+         histo_invMass_VBFjets->Fill((jetVBF1_p4+jetVBF2_p4).M(),pu_weight*genWeight);
 
-         histo_CvsAll_c1->Fill(AK4puppi_cHiggs[0].CvsAll(),pu_weight);
-         histo_CvsAll_c2->Fill(AK4puppi_cHiggs[1].CvsAll(),pu_weight);
+         histo_CvsAll_c1->Fill(AK4puppi_cHiggs[0].CvsAll(),pu_weight*genWeight);
+         histo_CvsAll_c2->Fill(AK4puppi_cHiggs[1].CvsAll(),pu_weight*genWeight);
 
-         histo_CvsL_c1->Fill(AK4puppi_cHiggs[0].CvsL(),pu_weight);
-         histo_CvsL_c2->Fill(AK4puppi_cHiggs[1].CvsL(),pu_weight);
+         histo_CvsL_c1->Fill(AK4puppi_cHiggs[0].CvsL(),pu_weight*genWeight);
+         histo_CvsL_c2->Fill(AK4puppi_cHiggs[1].CvsL(),pu_weight*genWeight);
 
-         histo_CvsB_c1->Fill(AK4puppi_cHiggs[0].CvsB(),pu_weight);
-         histo_CvsB_c2->Fill(AK4puppi_cHiggs[1].CvsB(),pu_weight);
+         histo_CvsB_c1->Fill(AK4puppi_cHiggs[0].CvsB(),pu_weight*genWeight);
+         histo_CvsB_c2->Fill(AK4puppi_cHiggs[1].CvsB(),pu_weight*genWeight);
 
          pt_jetC1 = AK4puppi_cHiggs[0].pt();
          pt_jetC2 = AK4puppi_cHiggs[1].pt();
@@ -667,7 +670,6 @@ void myAnalizer::Loop_Hcc(TString type, TString datasetName, TString era)
          eta_jetC2 = AK4puppi_cHiggs[1].eta();
 
          pt_jetVBF1 = AK4puppi_VBF[0].pt();
-         pt_jetVBF2 = AK4puppi_VBF[1].pt();
 
          eta_jetVBF1 = AK4puppi_VBF[0].eta();
          eta_jetVBF2 = AK4puppi_VBF[1].eta();
@@ -709,6 +711,7 @@ void myAnalizer::Loop_Hcc(TString type, TString datasetName, TString era)
          DR_HiggsVBF2 = Higgs_p4.DeltaR(jetVBF2_p4);
          Dphi_qq_cc = fabs(VBFsum.DeltaPhi(Higgs_p4));
          mCC= (jetc1_p4+jetc2_p4).M(); 
+         if(mCC>80. && mCC<200.) Eff_counter[10]=true;
          tree->Fill();
        }
      }//end condition on HLT
@@ -756,7 +759,9 @@ void myAnalizer::Loop_Hcc(TString type, TString datasetName, TString era)
    histo_CvsL_c2->Write();
    histo_CvsB_c1->Write();
    histo_CvsB_c2->Write();
-
+   histo_QvsG_VBF1->Write();
+   histo_QvsG_VBF2->Write();
+   
     fout->Write();
     fout->Close();
     
