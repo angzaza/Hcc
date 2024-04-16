@@ -22,14 +22,14 @@ using namespace TMVA;
 void TMVA_Classification(){
 
 	// Output file
-	TFile *fout = new TFile("TMVA_output_v1.root", "RECREATE");
+	TFile *fout = new TFile("TMVA_output_v3Mar24.root", "RECREATE");
 	
 	// SIGNAL tree	
-	TFile *f_sig = new TFile("AnalysedTree_MC_VBFHCC_Hcc_merged_v2.root");
+	TFile *f_sig = new TFile("/lustrehome/azaza/HccAnalysis/CMSSW_12_4_3/src/Analysis/mergedFiles/Hcc_v3Mar24/AnalysedTree_MC_VBFHCC_Hcc_merged.root");
 	TTree *signalTree     = (TTree*)f_sig->Get("FinalTree");
 
 	//BKG tree
-	TFile *f_bkg = new TFile("AnalysedTree_data_2023C_Hcc_merged_v2.root");
+	TFile *f_bkg = new TFile("/lustrehome/azaza/HccAnalysis/CMSSW_12_4_3/src/Analysis/mergedFiles/Hcc_v3Mar24/AnalysedTree_forTraining_data_2023C_Hcc.root");
 	TTree *bkgTree     = (TTree*)f_bkg->Get("FinalTree");
 	
 	//weights
@@ -38,7 +38,7 @@ void TMVA_Classification(){
     
     
   Factory *factory = new Factory("TMVA_new", fout, "");
-  DataLoader *dataloader = new DataLoader("dataset_v1");
+  DataLoader *dataloader = new DataLoader("dataset_v3Mar24");
     	
   dataloader->AddSignalTree(signalTree,sigWeight1);
   dataloader->AddBackgroundTree(bkgTree,bkgWeight1);
@@ -52,8 +52,8 @@ void TMVA_Classification(){
   dataloader->AddVariable("Deta_qq", 'D');
   dataloader->AddVariable("Dphi_qq", 'D');
   dataloader->AddVariable("Alpha_qq", 'D');
-  //dataloader->AddVariable("qgl_VBF1", 'D');
-  //dataloader->AddVariable("qgl_VBF2", 'D');
+  dataloader->AddVariable("QvsG_VBF1", 'D');
+  dataloader->AddVariable("QvsG_VBF2", 'D');
   dataloader->AddVariable("pz_4jets", 'D');
   dataloader->AddVariable("pt_norm", 'D');
   dataloader->AddVariable("DR_HiggsVBF1", 'D');
@@ -95,7 +95,7 @@ void TMVA_Classification(){
     
     // Launch the GUI for the root macros
     if (!gROOT->IsBatch()){
-        TMVAGui("TMVA_output_v1.root");
+        TMVAGui("TMVA_output_v3Mar24.root");
     	}
 
 
