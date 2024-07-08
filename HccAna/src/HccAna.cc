@@ -146,6 +146,9 @@
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 #include "JetMETCorrections/Objects/interface/JetCorrectionsRecord.h"
 
+// Jet flavour info
+//#include "SimDataFormats/JetMatching/interface/JetFlavourInfo.h"
+
 #include <vector>
 
 // Kinematic Fit
@@ -196,7 +199,7 @@ public:
   
 private:
     virtual void beginJob() ;
-    virtual void analyze(const edm::Event&, const edm::EventSetup&);
+    virtual void analyze(const edm::Event&, const edm::EventSetup& );
     virtual void endJob() ;
   
     virtual void beginRun(edm::Run const&, const edm::EventSetup& iSetup);
@@ -254,6 +257,13 @@ private:
                            //std::vector<float> goodJetaxis2, std::vector<float> goodJetptD, std::vector<int> goodJetmult,
                            //std::vector<pat::Jet> selectedMergedJets,
                            edm::Handle<edm::View<pat::Jet> > AK4PuppiJets,
+                           //edm::Handle<edm::View<pat::Jet> > AK4PuppiJetsJESUp,
+                           //edm::Handle<edm::View<pat::Jet> > AK4PuppiJetsJESDown,
+                           edm::Handle<edm::View<pat::Jet> > AK4PuppiJetsUncorr,
+                           JetCorrectionUncertainty *uncAK4,
+                           edm::Handle<edm::View<pat::Jet> > AK4PuppiJetsSmear,
+                           edm::Handle<edm::View<pat::Jet> > AK4PuppiJetsSmearUp,
+                           edm::Handle<edm::View<pat::Jet> > AK4PuppiJetsSmearDown,
                            edm::Handle<edm::View<pat::Jet> > AK8PuppiJets,
                            //const edm::TriggerNames trigNames,
                            //edm::Handle<pat::TriggerObjectStandAlone> triggerObjects,
@@ -311,7 +321,7 @@ private:
     //vector<double> ALLlep_pt; vector<double> ALLlep_eta; vector<double> ALLlep_phi; vector<double> ALLlep_mass; vector<int> ALLlep_id;
     vector<double> Ele_pt; vector<double> Ele_eta; vector<double> Ele_phi; vector<double> Ele_mass; vector<double> Ele_dxy; vector<double> Ele_dz; vector<int> Ele_id; vector<double> Ele_hcalIso; vector<double> Ele_ecalIso; vector<double> Ele_trackIso; vector<bool> Ele_isEB; vector<double> Ele_IsoCal; vector<double> Ele_03_Neutral; 
 /*vector<double> Ele_PF_Iso_R04;*/ vector<bool> Ele_isPassID;
-    vector<double> Muon_pt; vector<double> Muon_eta; vector<double> Muon_phi; vector<double> Muon_mass; vector<double> Muon_dxy; vector<double> Muon_dz; vector<int> Muon_id; vector<double> Muon_PF_Iso_R04; vector<bool> Muon_PassLooseID;
+    vector<double> Muon_pt; vector<double> Muon_eta; vector<double> Muon_phi; vector<double> Muon_mass; vector<double> Muon_dxy; vector<double> Muon_dz; vector<int> Muon_id; vector<bool> Muon_isPF; vector<double> Muon_PF_Iso_R04; vector<bool> Muon_PassLooseID;
     vector<double> AK4lep_pt; vector<double> AK4lep_eta; vector<double> AK4lep_phi; vector<double> AK4lep_mass; vector<int> AK4lep_id;
 
     // MET
@@ -349,12 +359,21 @@ private:
     // Puppi AK4jets with ParticleNet taggers
 
     vector<double> AK4PuppiJets_pt;
+    vector<double> AK4PuppiJetsJESUp_pt;
+    vector<double> AK4PuppiJetsJESDown_pt;
+    vector<double> AK4PuppiJetsSmear_pt;
+    vector<double> AK4PuppiJetsSmearUp_pt;
+    vector<double> AK4PuppiJetsSmearDown_pt;
+    vector<double> AK4PuppiJets_uncorrpt;
     vector<double> AK4PuppiJets_eta;
     vector<double> AK4PuppiJets_phi;
     vector<double> AK4PuppiJets_mass;
+    vector<int> AK4PuppiJets_hadrFlav;
+    vector<int> AK4PuppiJets_partFlav;
 
     vector<float> jet_pfParticleNetAK4JetTags_probb, jet_pfParticleNetAK4JetTags_probc, jet_pfParticleNetAK4JetTags_probuds,jet_pfParticleNetAK4JetTags_probg, jet_pfParticleNetAK4JetTags_probtauh;  
-    vector<float> jet_pfParticleNetAK4JetTags_CvsB, jet_pfParticleNetAK4JetTags_CvsL, jet_pfParticleNetAK4JetTags_CvsAll,jet_pfParticleNetAK4JetTags_BvsC, jet_pfParticleNetAK4JetTags_BvsL, jet_pfParticleNetAK4JetTags_BvsAll, jet_pfParticleNetAK4JetTags_QvsG;  
+    vector<float> jet_pfParticleNetAK4JetTags_CvsB, jet_pfParticleNetAK4JetTags_CvsL, jet_pfParticleNetAK4JetTags_CvsAll,jet_pfParticleNetAK4JetTags_BvsC, jet_pfParticleNetAK4JetTags_BvsL, jet_pfParticleNetAK4JetTags_BvsAll, jet_pfParticleNetAK4JetTags_QvsG; 
+    vector<float> jet_PNetRegPtRawCorr, jet_PNetRegPtRawCorrNeutrino, jet_PNetRegPtRawRes; 
 
 
     vector<float> jet_pfDeepJetAK4JetTags_probb, jet_pfDeepJetAK4JetTags_probbb, jet_pfDeepJetAK4JetTags_problepb, jet_pfDeepJetAK4JetTags_probc, jet_pfDeepJetAK4JetTags_probuds,jet_pfDeepJetAK4JetTags_probg; 
@@ -416,6 +435,12 @@ private:
     vector<float> L1muon_pt_float, L1muon_eta_float, L1muon_phi_float, L1muon_mass_float;
 
     vector<float> AK4PuppiJets_pt_float;
+    vector<float> AK4PuppiJetsJESUp_pt_float;
+    vector<float> AK4PuppiJetsJESDown_pt_float;
+    vector<float> AK4PuppiJetsSmear_pt_float;
+    vector<float> AK4PuppiJetsSmearUp_pt_float;
+    vector<float> AK4PuppiJetsSmearDown_pt_float;
+    vector<float> AK4PuppiJets_uncorrpt_float;
     vector<float> AK4PuppiJets_eta_float;
     vector<float> AK4PuppiJets_phi_float;
     vector<float> AK4PuppiJets_mass_float;
@@ -476,6 +501,12 @@ private:
     //edm::EDGetTokenT<edm::View<pat::Photon> > photonSrc_;
     //edm::EDGetTokenT<edm::View<pat::Jet> > jetSrc_;
     edm::EDGetTokenT<edm::View<pat::Jet> > AK4PuppiJetSrc_;
+    //edm::EDGetTokenT<edm::View<pat::Jet> > AK4PuppiJetJESUpSrc_;
+    //edm::EDGetTokenT<edm::View<pat::Jet> > AK4PuppiJetJESDownSrc_;
+    edm::EDGetTokenT<edm::View<pat::Jet> > AK4PuppiJetUncorrSrc_;
+    edm::EDGetTokenT<edm::View<pat::Jet> > AK4PuppiJetSmearSrc_;
+    edm::EDGetTokenT<edm::View<pat::Jet> > AK4PuppiJetSmearUpSrc_;
+    edm::EDGetTokenT<edm::View<pat::Jet> > AK4PuppiJetSmearDownSrc_;
     edm::EDGetTokenT<edm::View<pat::Jet> > AK8PuppiJetSrc_;
     //edm::EDGetTokenT<BXVector<l1t::Jet>> bxvCaloJetSrc_;
     //edm::EDGetTokenT<edm::View<reco::PFJet>> hltPFJetForBtagSrc_;
@@ -555,6 +586,9 @@ private:
     int year;///use to choose Muon BDT
     bool isCode4l;
 
+   std::string JECUncFileAK4;
+   std::vector<JetCorrectionUncertainty*> vsrc ;
+
 edm::ESGetToken<JetCorrectorParametersCollection, JetCorrectionsRecord> mPayloadToken;
 
 std::string res_pt_config;
@@ -576,6 +610,9 @@ std::string res_sf_config;
     string EleBDT_name_161718;
     string heepID_name_161718;
 
+    //JEC uncertainty files
+    JetCorrectorParameters *pAK4 = new JetCorrectorParameters(JECUncFileAK4.c_str(), "Total") ; 
+    JetCorrectionUncertainty *uncAK4 = new JetCorrectionUncertainty(*pAK4);
 };
 
 
@@ -588,6 +625,12 @@ HccAna::HccAna(const edm::ParameterSet& iConfig) :
     //photonSrc_(consumes<edm::View<pat::Photon> >(iConfig.getUntrackedParameter<edm::InputTag>("photonSrc"))),
     //jetSrc_(consumes<edm::View<pat::Jet> >(iConfig.getUntrackedParameter<edm::InputTag>("jetSrc"))),
     AK4PuppiJetSrc_(consumes<edm::View<pat::Jet> >(iConfig.getParameter<edm::InputTag>("AK4PuppiJetSrc"))),
+    //AK4PuppiJetJESUpSrc_(consumes<edm::View<pat::Jet> >(iConfig.getParameter<edm::InputTag>("AK4PuppiJetJESUpSrc"))),
+    //AK4PuppiJetJESDownSrc_(consumes<edm::View<pat::Jet> >(iConfig.getParameter<edm::InputTag>("AK4PuppiJetJESDownSrc"))),
+    AK4PuppiJetUncorrSrc_(consumes<edm::View<pat::Jet> >(iConfig.getParameter<edm::InputTag>("AK4PuppiJetUncorrSrc"))),
+    AK4PuppiJetSmearSrc_(consumes<edm::View<pat::Jet> >(iConfig.getParameter<edm::InputTag>("AK4PuppiJetSmearSrc"))),
+    AK4PuppiJetSmearUpSrc_(consumes<edm::View<pat::Jet> >(iConfig.getParameter<edm::InputTag>("AK4PuppiJetSmearUpSrc"))),
+    AK4PuppiJetSmearDownSrc_(consumes<edm::View<pat::Jet> >(iConfig.getParameter<edm::InputTag>("AK4PuppiJetSmearDownSrc"))),
     //AK4PuppiJetSrc_(consumes<edm::View<pat::Jet> >(iConfig.getUntrackedParameter<edm::InputTag>("AK4PuppiJetSrc"))),
 	AK8PuppiJetSrc_(consumes<edm::View<pat::Jet> >(iConfig.getUntrackedParameter<edm::InputTag>("AK8PuppiJetSrc"))),
     //bxvCaloJetSrc_(consumes<BXVector<l1t::Jet>>(iConfig.getParameter<edm::InputTag>("bxvCaloJetSrc"))),
@@ -690,6 +733,7 @@ HccAna::HccAna(const edm::ParameterSet& iConfig) :
     // 2018
     // to select correct training
     isCode4l(iConfig.getUntrackedParameter<bool>("isCode4l",true)),
+    JECUncFileAK4(iConfig.getParameter<std::string>("JECUncFileAK4Src")),
     mPayloadToken    {esConsumes(edm::ESInputTag("", iConfig.getParameter<std::string>("payload")))}
 {
   
@@ -755,6 +799,8 @@ HccAna::HccAna(const edm::ParameterSet& iConfig) :
     h_pileup = (TH1D*)f_pileup->Get("weights");
     h_pileupUp = (TH1D*)f_pileup->Get("weights_varUp");
     h_pileupDn = (TH1D*)f_pileup->Get("weights_varDn");
+
+
 
     /*string bTagEffi_name_161718[4] = {"bTagEfficiencies_2016.root", "bTagEfficiencies_2016.root", "bTagEfficiencies_2017.root", "bTagEfficiencies_2018.root"};
     edm::FileInPath BTagEffiInPath(("Hcc/HccAna/data/"+bTagEffi_name_161718[YEAR]).c_str());
@@ -892,9 +938,33 @@ HccAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     //edm::Handle<edm::View<pat::Jet> > jets;
     //iEvent.getByToken(jetSrc_,jets);
 		
+    // Puppi AK4jets with JESUp
+    //edm::Handle<edm::View<pat::Jet> > AK4PuppiJetsJESUp;
+    //iEvent.getByToken(AK4PuppiJetJESUpSrc_ ,AK4PuppiJetsJESUp);
+
+    // Puppi AK4jets with JESUp
+    //edm::Handle<edm::View<pat::Jet> > AK4PuppiJetsJESDown;
+    //iEvent.getByToken(AK4PuppiJetJESDownSrc_ ,AK4PuppiJetsJESDown);
+
     // Puppi AK4jets with ParticleNet taggers
     edm::Handle<edm::View<pat::Jet> > AK4PuppiJets;
     iEvent.getByToken(AK4PuppiJetSrc_ ,AK4PuppiJets);
+
+    // Puppi AK4jets with ParticleNet taggers
+    edm::Handle<edm::View<pat::Jet> > AK4PuppiJetsUncorr;
+    iEvent.getByToken(AK4PuppiJetUncorrSrc_ ,AK4PuppiJetsUncorr);
+    
+    // Puppi AK4jets  Smeared
+    edm::Handle<edm::View<pat::Jet> > AK4PuppiJetsSmear;
+    iEvent.getByToken(AK4PuppiJetSmearSrc_ ,AK4PuppiJetsSmear);
+
+    // Puppi AK4jets with SmearUp
+    edm::Handle<edm::View<pat::Jet> > AK4PuppiJetsSmearUp;
+    iEvent.getByToken(AK4PuppiJetSmearUpSrc_ ,AK4PuppiJetsSmearUp);
+
+    // Puppi AK4jets with SmearUp
+    edm::Handle<edm::View<pat::Jet> > AK4PuppiJetsSmearDown;
+    iEvent.getByToken(AK4PuppiJetSmearDownSrc_ ,AK4PuppiJetsSmearDown);
 
 	// Puppi AK8jets with ParticleNet taggers
 	     edm::Handle<edm::View<pat::Jet> > AK8PuppiJets;
@@ -1046,6 +1116,9 @@ jetCorrParameterSet.validKeys(keys);
 
     // Event Variables
     if (verbose) {cout<<"clear variables"<<endl;}
+
+
+
     nVtx = -1.0; nInt = -1.0;
     finalState = -1;
     triggersPassed="";
@@ -1067,7 +1140,7 @@ jetCorrParameterSet.validKeys(keys);
 	
 	//ALLlep_pt.clear(); ALLlep_eta.clear(); ALLlep_phi.clear(); ALLlep_mass.clear(); ALLlep_id.clear();
 	Ele_pt.clear(); Ele_eta.clear(); Ele_phi.clear(); Ele_mass.clear(); Ele_dxy.clear(); Ele_dz.clear(); Ele_id.clear(); Ele_hcalIso.clear(); Ele_ecalIso.clear(); Ele_trackIso.clear(); Ele_isEB.clear(); Ele_IsoCal.clear(); /*Ele_PF_Iso_R04.clear();*/ Ele_isPassID.clear(); Ele_03_Neutral.clear();
-    Muon_pt.clear(); Muon_eta.clear(); Muon_phi.clear(); Muon_mass.clear(); Muon_dxy.clear(); Muon_dz.clear(); Muon_id.clear(); Muon_PF_Iso_R04.clear(); Muon_PassLooseID.clear();
+    Muon_pt.clear(); Muon_eta.clear(); Muon_phi.clear(); Muon_mass.clear(); Muon_dxy.clear(); Muon_dz.clear(); Muon_id.clear(); Muon_isPF.clear(); Muon_PF_Iso_R04.clear(); Muon_PassLooseID.clear();
     AK4lep_pt.clear(); AK4lep_eta.clear(); AK4lep_phi.clear(); AK4lep_mass.clear(); AK4lep_id.clear();
 		
     //hlt Jets for b tag
@@ -1114,13 +1187,22 @@ jetCorrParameterSet.validKeys(keys);
     HLTAK4PFJet_phi.clear();
     // Puppi AK4jets with ParticleNet taggers
     AK4PuppiJets_pt.clear();
+    AK4PuppiJetsJESUp_pt.clear();
+    AK4PuppiJetsJESDown_pt.clear();
+    AK4PuppiJetsSmear_pt.clear();
+    AK4PuppiJetsSmearUp_pt.clear();
+    AK4PuppiJetsSmearDown_pt.clear();
+    AK4PuppiJets_uncorrpt.clear();
     AK4PuppiJets_eta.clear();
     AK4PuppiJets_phi.clear();
     AK4PuppiJets_mass.clear();
+    AK4PuppiJets_hadrFlav.clear();
+    AK4PuppiJets_partFlav.clear();
+    AK4PuppiJets_partFlav.clear();
 
     jet_pfParticleNetAK4JetTags_probb.clear(); jet_pfParticleNetAK4JetTags_probc.clear(); jet_pfParticleNetAK4JetTags_probuds.clear(); jet_pfParticleNetAK4JetTags_probg.clear(); jet_pfParticleNetAK4JetTags_probtauh.clear();
     jet_pfParticleNetAK4JetTags_CvsB.clear(); jet_pfParticleNetAK4JetTags_CvsL.clear(); jet_pfParticleNetAK4JetTags_CvsAll.clear(); jet_pfParticleNetAK4JetTags_BvsC.clear(); jet_pfParticleNetAK4JetTags_BvsL.clear(); jet_pfParticleNetAK4JetTags_BvsAll.clear();  jet_pfParticleNetAK4JetTags_QvsG.clear();
-
+    jet_PNetRegPtRawCorr.clear(); jet_PNetRegPtRawCorrNeutrino.clear(); jet_PNetRegPtRawRes.clear();
 
 
 
@@ -1186,7 +1268,9 @@ jetCorrParameterSet.validKeys(keys);
     L1jet_pt_float.clear(); L1jet_eta_float.clear(); L1jet_phi_float.clear(); L1jet_mass_float.clear();
     L1muon_pt_float.clear(); L1muon_eta_float.clear(); L1muon_phi_float.clear(); L1muon_mass_float.clear();
 
-    AK4PuppiJets_pt_float.clear(); AK4PuppiJets_eta_float.clear(); AK4PuppiJets_phi_float.clear(); AK4PuppiJets_mass_float.clear();
+    AK4PuppiJets_pt_float.clear(); 
+    AK4PuppiJetsJESUp_pt_float.clear();AK4PuppiJetsJESDown_pt_float.clear(); 
+    AK4PuppiJetsSmear_pt_float.clear(); AK4PuppiJetsSmearUp_pt_float.clear();AK4PuppiJetsSmearDown_pt_float.clear();  AK4PuppiJets_uncorrpt_float.clear(); AK4PuppiJets_eta_float.clear(); AK4PuppiJets_phi_float.clear(); AK4PuppiJets_mass_float.clear();
 	AK8PuppiJets_pt_float.clear(); AK8PuppiJets_eta_float.clear(); AK8PuppiJets_phi_float.clear(); AK8PuppiJets_mass_float.clear();
     AK4PuppiJets_qgl.clear();
 
@@ -1209,6 +1293,7 @@ jetCorrParameterSet.validKeys(keys);
     fsrmap.clear(); selectedFsrMap.clear(); selectedLeptons.clear();
 
     if (verbose) cout<<"start pileup reweighting"<<endl;
+
     // PU information
     if(isMC && reweightForPU) {        
        edm::Handle<std::vector< PileupSummaryInfo > >  PupInfo;
@@ -1449,7 +1534,7 @@ if(trigConditionData && verbose)
        
         if (verbose) cout<<"before vector assign"<<std::endl;
         //cout<<"event: "<<iEvent.id().event()<<endl;
-	    setTreeVariables(iEvent, iSetup,AK4PuppiJets, AK8PuppiJets,  AllMuons, AllElectrons, PV);
+	    setTreeVariables(iEvent, iSetup,AK4PuppiJets, AK4PuppiJetsUncorr, uncAK4,AK4PuppiJetsSmear, AK4PuppiJetsSmearUp,AK4PuppiJetsSmearDown, AK8PuppiJets,  AllMuons, AllElectrons, PV);
 		//setTreeVariables(iEvent, iSetup, goodJets, selectedMergedJets, AK4PuppiJets, AK8PuppiJets, bxvCaloJets, bxvCaloMuons, bxvCaloHT, AllMuons, AllElectrons, PV);		
         //setTreeVariables(iEvent, iSetup, goodJets, goodJetQGTagger,goodJetaxis2, goodJetptD, goodJetmult, selectedMergedJets, hltjetsForBTag,  hltAK4PFJetsCorrected, pfJetTagCollectionParticleNetprobc , pfJetTagCollectionParticleNetprobb , pfJetTagCollectionParticleNetprobuds , pfJetTagCollectionParticleNetprobg ,pfJetTagCollectionParticleNetprobtauh ,  bxvCaloJets, bxvCaloMuons, bxvCaloHT, AllMuons, AllElectrons);
 
@@ -1583,6 +1668,12 @@ if(trigConditionData && verbose)
         hltAK4PFJetsCorrected_mass_float.assign(hltAK4PFJetsCorrected_mass.begin(), hltAK4PFJetsCorrected_mass.end());
 
         AK4PuppiJets_pt_float.assign(AK4PuppiJets_pt.begin(), AK4PuppiJets_pt.end()); 
+        AK4PuppiJetsJESUp_pt_float.assign(AK4PuppiJetsJESUp_pt.begin(), AK4PuppiJetsJESUp_pt.end()); 
+        AK4PuppiJetsJESDown_pt_float.assign(AK4PuppiJetsJESDown_pt.begin(), AK4PuppiJetsJESDown_pt.end()); 
+        AK4PuppiJetsSmear_pt_float.assign(AK4PuppiJetsSmear_pt.begin(), AK4PuppiJetsSmear_pt.end()); 
+        AK4PuppiJetsSmearUp_pt_float.assign(AK4PuppiJetsSmearUp_pt.begin(), AK4PuppiJetsSmearUp_pt.end()); 
+        AK4PuppiJetsSmearDown_pt_float.assign(AK4PuppiJetsSmearDown_pt.begin(), AK4PuppiJetsSmearDown_pt.end()); 
+        AK4PuppiJets_uncorrpt_float.assign(AK4PuppiJets_uncorrpt.begin(), AK4PuppiJets_uncorrpt.end()); 
         AK4PuppiJets_eta_float.assign(AK4PuppiJets_eta.begin(), AK4PuppiJets_eta.end()); 
         AK4PuppiJets_phi_float.assign(AK4PuppiJets_phi.begin(), AK4PuppiJets_phi.end()); 
         AK4PuppiJets_mass_float.assign(AK4PuppiJets_mass.begin(), AK4PuppiJets_mass.end());
@@ -1770,6 +1861,7 @@ void HccAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("BeamWidth_xErr", &BeamWidth_xErr, "BeamWidth_xErr/F");
     tree->Branch("BeamWidth_yErr", &BeamWidth_yErr, "BeamWidth_yErr/F");
     tree->Branch("finalState",&finalState,"finalState/I");
+    tree->Branch("genWeight",&genWeight);
     tree->Branch("triggersPassed",&triggersPassed);
     tree->Branch("passedTrig",&passedTrig,"passedTrig/O");
     tree->Branch("passedZqqSelection",&passedZqqSelection);
@@ -1809,6 +1901,7 @@ void HccAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("Muon_dxy",&Muon_dxy);
     tree->Branch("Muon_dz",&Muon_dz);
     tree->Branch("Muon_PassLooseID", &Muon_PassLooseID);
+    tree->Branch("Muon_isPF",&Muon_isPF);
     tree->Branch("AK4lep_id",&AK4lep_id);
     tree->Branch("AK4lep_pt",&AK4lep_pt);
     tree->Branch("AK4lep_eta",&AK4lep_eta);
@@ -1834,9 +1927,17 @@ void HccAna::bookPassedEventTree(TString treeName, TTree *tree)
 
     // Puppi AK4jets with ParticleNet taggers
     tree->Branch("AK4PuppiJets_pt",&AK4PuppiJets_pt_float);
+    tree->Branch("AK4PuppiJetsJESUp_pt",&AK4PuppiJetsJESUp_pt_float);
+    tree->Branch("AK4PuppiJetsJESDown_pt",&AK4PuppiJetsJESDown_pt_float);
+    tree->Branch("AK4PuppiJetsSmear_pt",&AK4PuppiJetsSmear_pt_float);
+    tree->Branch("AK4PuppiJetsSmearUp_pt",&AK4PuppiJetsSmearUp_pt_float);
+    tree->Branch("AK4PuppiJetsSmearDown_pt",&AK4PuppiJetsSmearDown_pt_float);
+    tree->Branch("AK4PuppiJets_uncorrpt",&AK4PuppiJets_uncorrpt_float);
     tree->Branch("AK4PuppiJets_eta",&AK4PuppiJets_eta_float);
     tree->Branch("AK4PuppiJets_phi",&AK4PuppiJets_phi_float);
     tree->Branch("AK4PuppiJets_mass",&AK4PuppiJets_mass_float);   
+    tree->Branch("AK4PuppiJets_hadrFlav",&AK4PuppiJets_hadrFlav);   
+    tree->Branch("AK4PuppiJets_partFlav",&AK4PuppiJets_partFlav);   
     tree->Branch("AK4PuppiJets_qgl",&AK4PuppiJets_qgl);   
 
 
@@ -1846,6 +1947,9 @@ void HccAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("jet_pfParticleNetAK4JetTags_probuds", &jet_pfParticleNetAK4JetTags_probuds);	
     tree->Branch("jet_pfParticleNetAK4JetTags_probg", &jet_pfParticleNetAK4JetTags_probg);	
     tree->Branch("jet_pfParticleNetAK4JetTags_probtauh", &jet_pfParticleNetAK4JetTags_probtauh);
+    tree->Branch("jet_PNetRegPtRawCorr", &jet_PNetRegPtRawCorr);	
+    tree->Branch("jet_PNetRegPtRawCorrNeutrino", &jet_PNetRegPtRawCorrNeutrino);	
+    tree->Branch("jet_PNetRegPtRawRes ", &jet_PNetRegPtRawRes);	
 
     tree->Branch("jet_pfParticleNetAK4JetTags_CvsB", &jet_pfParticleNetAK4JetTags_CvsB);	
     tree->Branch("jet_pfParticleNetAK4JetTags_CvsL", &jet_pfParticleNetAK4JetTags_CvsL);	
@@ -2009,6 +2113,13 @@ void HccAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSetup& 
                                    //std::vector<float> goodJetaxis2, std::vector<float> goodJetptD, std::vector<int> goodJetmult,
                                    //std::vector<pat::Jet> selectedMergedJets,
                                    edm::Handle<edm::View<pat::Jet> > AK4PuppiJets,
+                                   //edm::Handle<edm::View<pat::Jet> > AK4PuppiJetsJESUp,
+                                   //edm::Handle<edm::View<pat::Jet> > AK4PuppiJetsJESDown,
+                                   edm::Handle<edm::View<pat::Jet> > AK4PuppiJetsUncorr,
+                                   JetCorrectionUncertainty *uncAK4,
+                                   edm::Handle<edm::View<pat::Jet> > AK4PuppiJetsSmear,
+                                   edm::Handle<edm::View<pat::Jet> > AK4PuppiJetsSmearUp,
+                                   edm::Handle<edm::View<pat::Jet> > AK4PuppiJetsSmearDown,
                                    edm::Handle<edm::View<pat::Jet> > AK8PuppiJets,
                                   // const edm::TriggerNames trigNames,
                                  // edm::Handle<pat::TriggerObjectStandAlone> triggerObjects,
@@ -2047,6 +2158,7 @@ void HccAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSetup& 
         Muon_dxy.push_back(AllMuons[jmu].innerTrack()->dxy(ver->position()));
         Muon_dz.push_back(AllMuons[jmu].innerTrack()->dz(ver->position()));
         Muon_id.push_back(AllMuons[jmu].pdgId());
+        Muon_isPF.push_back(AllMuons[jmu].isPFMuon());
         Muon_PF_Iso_R04.push_back((AllMuons[jmu].pfIsolationR04().sumChargedHadronPt + TMath::Max(AllMuons[jmu].pfIsolationR04().sumNeutralHadronEt + AllMuons[jmu].pfIsolationR04().sumPhotonEt - AllMuons[jmu].pfIsolationR04().sumPUPt/2.0,0.0))/AllMuons[jmu].pt());
         Muon_PassLooseID.push_back(AllMuons[jmu].isLooseMuon());
 //      if(AllMuons[jmu].pt()>20 && abs(AllMuons[jmu].eta())<2.4 && AllMuons[jmu].isLooseMuon() && Mu_PF_Iso_R04<0.4 ){Nmu=Nmu+1;}
@@ -2170,17 +2282,55 @@ void HccAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSetup& 
       
     }
 
+    //Uncorrected AK4jets puppi
+
+    //for(unsigned int ijet=0; ijet<AK4PuppiJetsUncorr->size(); ijet++){
+
+      // Tight JetID function defined at ../interface/HccJets.h
+      //if(jetHelper.patjetID(AK4PuppiJetsUncorr->at(ijet), year)!=2) continue;
+
+    //  AK4PuppiJets_uncorrpt.push_back(AK4PuppiJetsUncorr->at(ijet).pt());
+   // }
+     
     //Puppi AK4jets with ParticleNet taggers
 
+    //JetCorrectorParameters *pAK4 = new JetCorrectorParameters(JECUncFileAK4.c_str(), "Total") ; 
+    //JetCorrectionUncertainty *uncAK4 = new JetCorrectionUncertainty(*pAK4);
     for(unsigned int ijet=0; ijet<AK4PuppiJets->size(); ijet++){
-      AK4PuppiJets_pt.push_back(AK4PuppiJets->at(ijet).pt());
-      AK4PuppiJets_eta.push_back(AK4PuppiJets->at(ijet).eta());
-      AK4PuppiJets_phi.push_back(AK4PuppiJets->at(ijet).phi());
-      AK4PuppiJets_mass.push_back(AK4PuppiJets->at(ijet).mass());
 
       // Tight JetID function defined at ../interface/HccJets.h
       if(jetHelper.patjetID(AK4PuppiJets->at(ijet), year)!=2) continue;
- 
+
+      AK4PuppiJets_pt.push_back(AK4PuppiJets->at(ijet).pt());
+      //cout<<" jet pt: "<<AK4PuppiJets->at(ijet).pt()<<"   jet eta: "<<AK4PuppiJets->at(ijet).eta()<<endl;
+      AK4PuppiJets_uncorrpt.push_back(AK4PuppiJetsUncorr->at(ijet).pt()); //uncorrected pt 
+      // get jet energy scale Up and Down uncertainties 
+      //JetCorrectorParameters *pAK4 = new JetCorrectorParameters(JECUncFileAK4.c_str(), "Total") ; 
+      //JetCorrectionUncertainty *uncAK4 = new JetCorrectionUncertainty(*pAK4);
+      uncAK4->setJetPt(AK4PuppiJets->at(ijet).pt());
+      uncAK4->setJetEta(AK4PuppiJets->at(ijet).eta());
+      double vr = uncAK4->getUncertainty(true);
+      double vr_up = 1 + vr; //  variation
+      //cout<<"vr_up: "<<vr_up<<endl;
+      double jesUp= AK4PuppiJets->at(ijet).pt() * vr_up;
+      //cout<<"JESUp pt: "<<jesUp<<endl;
+      double vr_down = 1 - vr; //  variation
+      //cout<<"vr_down: "<<vr_down<<endl;
+      double jesDown= AK4PuppiJets->at(ijet).pt() * vr_down;
+	  //cout<<"JESDown pt: "<<jesDown<<endl;
+      AK4PuppiJetsJESUp_pt.push_back(jesUp);
+      AK4PuppiJetsJESDown_pt.push_back(jesDown);
+      // jet resolution smearing with Up and Down uncertainties
+      AK4PuppiJetsSmear_pt.push_back(AK4PuppiJetsSmear->at(ijet).pt());
+      AK4PuppiJetsSmearUp_pt.push_back(AK4PuppiJetsSmearUp->at(ijet).pt());
+      AK4PuppiJetsSmearDown_pt.push_back(AK4PuppiJetsSmearDown->at(ijet).pt());
+      //cout<<"smearUp pt: "<<AK4PuppiJetsSmearUp->at(ijet).pt()<<"   eta: "<<AK4PuppiJetsSmearUp->at(ijet).eta()<<endl;
+      AK4PuppiJets_eta.push_back(AK4PuppiJets->at(ijet).eta());
+      AK4PuppiJets_phi.push_back(AK4PuppiJets->at(ijet).phi());
+      AK4PuppiJets_mass.push_back(AK4PuppiJets->at(ijet).mass());     
+      AK4PuppiJets_hadrFlav.push_back(AK4PuppiJets->at(ijet).hadronFlavour());
+      AK4PuppiJets_partFlav.push_back(AK4PuppiJets->at(ijet).partonFlavour());
+      //cout<<"parton flavour: "<<AK4PuppiJets->at(ijet).partonFlavour()<<endl; 
       // Tight JetID
       /*double nhf   = AK4PuppiJets->at(ijet).neutralHadronEnergyFraction();
       double nef   = AK4PuppiJets->at(ijet).neutralEmEnergyFraction();
@@ -2201,7 +2351,18 @@ void HccAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSetup& 
         jet_pfParticleNetAK4JetTags_probuds.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralJetTags:probuds"));
         jet_pfParticleNetAK4JetTags_probg.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralJetTags:probg"));
         jet_pfParticleNetAK4JetTags_probtauh.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralJetTags:probtauh"));
-
+        float PNetRegPtRawCorr = AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralJetTags:ptcorr");
+        float PNetRegPtRawCorrNeutrino = AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralJetTags:ptnu");
+        float PNetRegPtRawRes = 0.5*(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralJetTags:ptreshigh")-AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralJetTags:ptreslow"));
+        if(fabs(AK4PuppiJets->at(ijet).eta())>=2.5){
+          PNetRegPtRawCorr = AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiForwardJetTags:ptcorr");
+          PNetRegPtRawCorrNeutrino = AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiForwardJetTags:ptnu");
+          PNetRegPtRawRes = 0.5*(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiForwardJetTags:ptreshigh")-AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiForwardJetTags:ptreslow"));
+        }
+        jet_PNetRegPtRawCorr.push_back(PNetRegPtRawCorr);
+        jet_PNetRegPtRawCorrNeutrino.push_back(PNetRegPtRawCorrNeutrino);
+        jet_PNetRegPtRawRes.push_back(PNetRegPtRawRes); 
+ 
         jet_pfParticleNetAK4JetTags_CvsB.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralDiscriminatorsJetTags:CvsB"));
         jet_pfParticleNetAK4JetTags_CvsL.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralDiscriminatorsJetTags:CvsL"));
         jet_pfParticleNetAK4JetTags_CvsAll.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetFromMiniAODAK4PuppiCentralDiscriminatorsJetTags:CvsAll"));
