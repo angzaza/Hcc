@@ -32,7 +32,7 @@ process.Timing = cms.Service("Timing",
                              )
 
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
 
 process.options = cms.untracked.PSet(
         numberOfThreads = cms.untracked.uint32(2),
@@ -55,9 +55,7 @@ myfilelist = cms.untracked.vstring(
 #'/store/mc/Run3Winter23MiniAOD/VBFHto2C_M-125_TuneCP5_13p6TeV_powheg-pythia8/MINIAODSIM/GTv3Digi_GTv3_MiniGTv3_126X_mcRun3_2023_forPU65_v3-v2/2810000/11d4a49f-0565-4dad-a0f0-b0d287889dcc.root',
 #'/store/mc/Run3Summer23MiniAODv4/Zto2Q-4Jets_HT-200to400_TuneCP5_13p6TeV_madgraphMLM-pythia8/MINIAODSIM/130X_mcRun3_2023_realistic_v14-v1/30000/011d1978-b670-4faa-b776-37783cc8f7f7.root',
 #'/store/mc/Run3Summer23MiniAODv4/Zto2Q-2Jets_PTQQ-100to200_1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8/MINIAODSIM/130X_mcRun3_2023_realistic_v14-v3/2810000/001e44af-bed4-4ffa-aca0-e7a0371e241f.root',
-#'/store/mc/Run3Summer23MiniAODv4/VBFHto2C_M-125_TuneCP5_13p6TeV_powheg-pythia8/MINIAODSIM/130X_mcRun3_2023_realistic_v14-v3/2550000/05cafea2-5726-42b5-aaea-432421ebcb8b.root'
-'file:/afs/cern.ch/work/a/azaza/MC_production/CMSSW_13_0_13/src/Run3Summer23_EWKZjets_step2.root'
-
+'/store/mc/Run3Summer23MiniAODv4/VBFHto2C_M-125_TuneCP5_13p6TeV_powheg-pythia8/MINIAODSIM/130X_mcRun3_2023_realistic_v14-v3/2550000/05cafea2-5726-42b5-aaea-432421ebcb8b.root'
 )
 
 
@@ -68,7 +66,7 @@ process.source = cms.Source("PoolSource",fileNames = myfilelist,
 
 process.TFileService = cms.Service("TFileService",
                                    #fileName = cms.string("prova.root',")
-                                   fileName = cms.string("out_MC_EWKZjets_privateSummer23_JECs.root")
+                                   fileName = cms.string("out_MC_Summer23_JECs.root")
 )
 
 # jet energy corrections
@@ -78,9 +76,10 @@ from CondCore.DBCommon.CondDBSetup_cfi import *
 process.jec = cms.ESSource("PoolDBESSource",
                            CondDBSetup,
                            #for execution in local
-                           connect = cms.string("sqlite_file:/afs/cern.ch/work/a/azaza/HccAna/CMSSW_13_0_13/src/Hcc/HccAna/python/Summer23Prompt23_V1_MC.db"),
+                           #connect = cms.string("sqlite_file:/afs/cern.ch/work/a/azaza/HccAna/CMSSW_13_0_13/src/Hcc/HccAna/python/Summer23Prompt23_V1_MC.db"),
                            #for crab
-                           #connect = cms.string("sqlite_file:src/Hcc/HccAna/python/Summer23Prompt23_V1_MC.db"),
+                           connect = cms.string("sqlite_file:src/Hcc/HccAna/python/Summer23Prompt23_V1_MC.db"),
+                           #connect = cms.string("sqlite_file:Summer23Prompt23_V1_MC.db"),
                            toGet =  cms.VPSet(
                               cms.PSet(
                                  record = cms.string("JetCorrectionsRecord"),
@@ -123,9 +122,9 @@ process.jer = cms.ESSource("PoolDBESSource",
                 label  = cms.untracked.string('AK4PFPuppi')
                 ),
             ),
-        connect = cms.string('sqlite:Summer23Prompt23_RunCv1234_JRV1_MC.db')
+        #connect = cms.string('sqlite:Summer23Prompt23_RunCv1234_JRV1_MC.db')
         #for crab
-        #connect = cms.string('sqlite:src/Hcc/HccAna/python/Summer23Prompt23_RunCv1234_JRV1_MC.db')
+        connect = cms.string('sqlite:src/Hcc/HccAna/python/Summer23Prompt23_RunCv1234_JRV1_MC.db')
         
         )
 
@@ -273,7 +272,7 @@ process.Ana = cms.EDAnalyzer('HccAna',
                               isMC         = cms.untracked.bool(True),
                               isHcc         = cms.untracked.bool(True),
                               isZqq         = cms.untracked.bool(False),
-                              isZcc         = cms.untracked.bool(True),
+                              isZcc         = cms.untracked.bool(False),
                               isZbb         = cms.untracked.bool(False),
                               isQCD         = cms.untracked.bool(False),
                               isSignal     = cms.untracked.bool(True),
@@ -329,11 +328,8 @@ process.Ana = cms.EDAnalyzer('HccAna',
                               skimTightLeptons = cms.untracked.int32(0),              
                               #bestCandMela = cms.untracked.bool(False),
                               year = cms.untracked.int32(2023),####for year put 2016,2017, or 2018 to select correct setting
-                              isCode4l = cms.untracked.bool(True),
-                              #for crab 
-                              #JECUncFileAK4Src = cms.string("src/Hcc/HccAna/python/Summer23Prompt23_V1_MC_UncertaintySources_AK4PFPuppi.txt"),
-                              #for execution in local 
-                              JECUncFileAK4Src = cms.string("/afs/cern.ch/work/a/azaza/HccAna/CMSSW_13_0_13/src/Hcc/HccAna/python/Summer23Prompt23_V1_MC_UncertaintySources_AK4PFPuppi.txt"),
+                              isCode4l = cms.untracked.bool(True), 
+                              JECUncFileAK4Src = cms.string("src/Hcc/HccAna/python/Summer23Prompt23_V1_MC_UncertaintySources_AK4PFPuppi.txt"),
 payload = cms.string("AK4PFPuppi"),
 
 

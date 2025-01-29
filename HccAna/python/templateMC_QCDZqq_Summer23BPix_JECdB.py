@@ -18,7 +18,7 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 process.load('Configuration.StandardSequences.Services_cff')
 #process.GlobalTag.globaltag='102X_upgrade2018_realistic_v15'
 #process.GlobalTag.globaltag='102X_upgrade2018_realistic_v18'
-process.GlobalTag.globaltag='130X_mcRun3_2023_realistic_v14' ### comment if you apply JECs
+process.GlobalTag.globaltag='130X_mcRun3_2023_realistic_postBPix_v2' ### comment if you apply JECs
 
 ### uncomment if you apply JECS ###########################
 #from Configuration.AlCa.GlobalTag import GlobalTag
@@ -32,7 +32,7 @@ process.Timing = cms.Service("Timing",
                              )
 
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(2000) )
 
 process.options = cms.untracked.PSet(
         numberOfThreads = cms.untracked.uint32(2),
@@ -55,9 +55,7 @@ myfilelist = cms.untracked.vstring(
 #'/store/mc/Run3Winter23MiniAOD/VBFHto2C_M-125_TuneCP5_13p6TeV_powheg-pythia8/MINIAODSIM/GTv3Digi_GTv3_MiniGTv3_126X_mcRun3_2023_forPU65_v3-v2/2810000/11d4a49f-0565-4dad-a0f0-b0d287889dcc.root',
 #'/store/mc/Run3Summer23MiniAODv4/Zto2Q-4Jets_HT-200to400_TuneCP5_13p6TeV_madgraphMLM-pythia8/MINIAODSIM/130X_mcRun3_2023_realistic_v14-v1/30000/011d1978-b670-4faa-b776-37783cc8f7f7.root',
 #'/store/mc/Run3Summer23MiniAODv4/Zto2Q-2Jets_PTQQ-100to200_1J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8/MINIAODSIM/130X_mcRun3_2023_realistic_v14-v3/2810000/001e44af-bed4-4ffa-aca0-e7a0371e241f.root',
-#'/store/mc/Run3Summer23MiniAODv4/VBFHto2C_M-125_TuneCP5_13p6TeV_powheg-pythia8/MINIAODSIM/130X_mcRun3_2023_realistic_v14-v3/2550000/05cafea2-5726-42b5-aaea-432421ebcb8b.root'
-'file:/afs/cern.ch/work/a/azaza/MC_production/CMSSW_13_0_13/src/Run3Summer23_EWKZjets_step2.root'
-
+'/store/mc/Run3Summer23BPixMiniAODv4/Zto2Q-2Jets_PTQQ-100to200_2J_TuneCP5_13p6TeV_amcatnloFXFX-pythia8/MINIAODSIM/130X_mcRun3_2023_realistic_postBPix_v2-v3/30000/045495db-0519-470c-927d-ae08c82baf76.root',
 )
 
 
@@ -68,7 +66,7 @@ process.source = cms.Source("PoolSource",fileNames = myfilelist,
 
 process.TFileService = cms.Service("TFileService",
                                    #fileName = cms.string("prova.root',")
-                                   fileName = cms.string("out_MC_EWKZjets_privateSummer23_JECs.root")
+                                   fileName = cms.string("out_MC_Summer23BPix_JECs.root")
 )
 
 # jet energy corrections
@@ -78,13 +76,14 @@ from CondCore.DBCommon.CondDBSetup_cfi import *
 process.jec = cms.ESSource("PoolDBESSource",
                            CondDBSetup,
                            #for execution in local
-                           connect = cms.string("sqlite_file:/afs/cern.ch/work/a/azaza/HccAna/CMSSW_13_0_13/src/Hcc/HccAna/python/Summer23Prompt23_V1_MC.db"),
+                           connect = cms.string("sqlite_file:/afs/cern.ch/work/a/azaza/HccAna/CMSSW_13_0_13/src/Hcc/HccAna/python/Summer23BPixPrompt23_V1_MC.db"),
                            #for crab
-                           #connect = cms.string("sqlite_file:src/Hcc/HccAna/python/Summer23Prompt23_V1_MC.db"),
+                           #connect = cms.string("sqlite_file:src/Hcc/HccAna/CMSSW_13_0_13/src/Hcc/HccAna/python/Summer23BPixPrompt23_V1_MC.db"),
+                           #connect = cms.string("sqlite_file:Summer23BPixPrompt23_V1_MC.db"),
                            toGet =  cms.VPSet(
                               cms.PSet(
                                  record = cms.string("JetCorrectionsRecord"),
-                                 tag = cms.string("JetCorrectorParametersCollection_Summer23Prompt23_V1_MC_AK4PFPuppi"),
+                                 tag = cms.string("JetCorrectorParametersCollection_Summer23BPixPrompt23_V1_MC_AK4PFPuppi"),
                                  label= cms.untracked.string("AK4PFPuppi")
                               ),
               )
@@ -112,21 +111,21 @@ process.jer = cms.ESSource("PoolDBESSource",
             # Resolution
             cms.PSet(
                 record = cms.string('JetResolutionRcd'),
-                tag    = cms.string('JR_Summer23Prompt23_RunCv1234_JRV1_MC_PtResolution_AK4PFPuppi'),
+                tag    = cms.string('JR_Summer23BPixPrompt23_RunD_JRV1_MC_PtResolution_AK4PFPuppi'),
                 label  = cms.untracked.string('AK4PFPuppi_pt')
                 ),
 
             # Scale factors
             cms.PSet(
                 record = cms.string('JetResolutionScaleFactorRcd'),
-                tag    = cms.string('JR_Summer23Prompt23_RunCv1234_JRV1_MC_SF_AK4PFPuppi'),
+                tag    = cms.string('JR_Summer23BPixPrompt23_RunD_JRV1_MC_SF_AK4PFPuppi'),
                 label  = cms.untracked.string('AK4PFPuppi')
                 ),
             ),
-        connect = cms.string('sqlite:Summer23Prompt23_RunCv1234_JRV1_MC.db')
+        #for local
+        connect = cms.string('sqlite:Summer23BPixPrompt23_RunD_JRV1_MC.db')
         #for crab
-        #connect = cms.string('sqlite:src/Hcc/HccAna/python/Summer23Prompt23_RunCv1234_JRV1_MC.db')
-        
+        #connect = cms.string("sqlite_file:src/Hcc/HccAna/CMSSW_13_0_13/src/Hcc/HccAna/python/Summer23BPixPrompt23_RunD_JRV1_MC.db"),
         )
 
 process.es_prefer_jer = cms.ESPrefer('PoolDBESSource', 'jer')
@@ -164,20 +163,20 @@ process.slimmedJetsSmearedUp=process.slimmedJetsSmeared.clone(variation=cms.int3
 
 
 ########################## JET SMEARING
-#process.slimmedJetsSmeared = cms.EDProducer('SmearedPATJetProducer',
-#        src = cms.InputTag('updatedPatJetsUpdatedJEC'),
-#        enabled = cms.bool(True),
-#        rho = cms.InputTag("fixedGridRhoFastjetAll"),
-#        algo = cms.string('AK4PFPuppi'),
-#        algopt = cms.string('AK4PFPuppi_pt'),
+process.slimmedJetsSmeared = cms.EDProducer('SmearedPATJetProducer',
+        src = cms.InputTag('updatedPatJetsUpdatedJEC'),
+        enabled = cms.bool(True),
+        rho = cms.InputTag("fixedGridRhoFastjetAll"),
+        algo = cms.string('AK4PFPuppi'),
+        algopt = cms.string('AK4PFPuppi_pt'),
 
-#        genJets = cms.InputTag('slimmedGenJets'),
-#        dRMax = cms.double(0.2),
-#        dPtMaxFactor = cms.double(3),
+        genJets = cms.InputTag('slimmedGenJets'),
+        dRMax = cms.double(0.2),
+        dPtMaxFactor = cms.double(3),
 
-#        debug = cms.untracked.bool(False),
-#        variation = cms.int32(0),  # If not specified, default to 0
-#)
+        debug = cms.untracked.bool(False),
+        variation = cms.int32(0),  # If not specified, default to 0
+)
 #patAlgosToolsTask.add(process.slimmedJetsSmeared)
 ###########################   PuJetID-Update
 from RecoJets.JetProducers.PileupJetID_cfi import pileupJetId
@@ -210,7 +209,6 @@ updateJetCollection(
    labelName = 'QGT',
    #jetSource = cms.InputTag('updatedPatJetsPileupJetID'),
    jetSource = cms.InputTag('updatedPatJetsUpdatedJEC'),
-   #jetSource = cms.InputTag('slimmedJetsSmeared'),
 )
 process.updatedPatJetsQGT.userData.userFloats.src = ['QGTagger:qgLikelihood']
 
@@ -242,9 +240,6 @@ process.Ana = cms.EDAnalyzer('HccAna',
                               #jetSrc       = cms.untracked.InputTag("slimmedJets"),
                               #AK4PuppiJetSrc       = cms.InputTag("updatedPatJetsUpdatedJEC"),
                               AK4PuppiJetSrc       = cms.InputTag("updatedPatJetsQGT"),
-                              AK4PuppiJetSmearSrc       = cms.InputTag("slimmedJetsSmeared"),
-                              AK4PuppiJetSmearUpSrc       = cms.InputTag("slimmedJetsSmearedUp"),
-                              AK4PuppiJetSmearDownSrc       = cms.InputTag("slimmedJetsSmearedDown"),
                               AK4PuppiJetUncorrSrc       = cms.InputTag("slimmedJetsPuppi"),
                               #AK4PuppiJetSrc       = cms.InputTag("updatedPatJetsPileupJetID"),
                               #AK4PuppiJetSrc       = cms.InputTag("slimmedJetsPuppi"),
@@ -273,7 +268,7 @@ process.Ana = cms.EDAnalyzer('HccAna',
                               isMC         = cms.untracked.bool(True),
                               isHcc         = cms.untracked.bool(True),
                               isZqq         = cms.untracked.bool(False),
-                              isZcc         = cms.untracked.bool(True),
+                              isZcc         = cms.untracked.bool(False),
                               isZbb         = cms.untracked.bool(False),
                               isQCD         = cms.untracked.bool(False),
                               isSignal     = cms.untracked.bool(True),
@@ -329,11 +324,8 @@ process.Ana = cms.EDAnalyzer('HccAna',
                               skimTightLeptons = cms.untracked.int32(0),              
                               #bestCandMela = cms.untracked.bool(False),
                               year = cms.untracked.int32(2023),####for year put 2016,2017, or 2018 to select correct setting
-                              isCode4l = cms.untracked.bool(True),
-                              #for crab 
-                              #JECUncFileAK4Src = cms.string("src/Hcc/HccAna/python/Summer23Prompt23_V1_MC_UncertaintySources_AK4PFPuppi.txt"),
-                              #for execution in local 
-                              JECUncFileAK4Src = cms.string("/afs/cern.ch/work/a/azaza/HccAna/CMSSW_13_0_13/src/Hcc/HccAna/python/Summer23Prompt23_V1_MC_UncertaintySources_AK4PFPuppi.txt"),
+                              isCode4l = cms.untracked.bool(True), 
+
 payload = cms.string("AK4PFPuppi"),
 
 
@@ -341,7 +333,7 @@ payload = cms.string("AK4PFPuppi"),
 
 
 process.p = cms.Path(process.jecSequence* 
-                     #process.slimmedJetsSmeared*  
+                     #process.slimmedJetsSmeared*  --uncomment--
                      #process.pileupJetIdUpdated*  --uncomment--
                      #process.updatedPatJetsPileupJetID*  --uncomment--
                      process.jerSequence*
