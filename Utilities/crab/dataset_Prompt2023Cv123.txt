@@ -1,0 +1,6 @@
+/JetMET0/Run2023C-PromptReco-v1/MINIAOD 1.0
+/JetMET1/Run2023C-PromptReco-v1/MINIAOD 1.0
+/JetMET0/Run2023C-PromptReco-v2/MINIAOD 1.0
+/JetMET1/Run2023C-PromptReco-v2/MINIAOD 1.0
+/JetMET0/Run2023C-PromptReco-v3/MINIAOD 1.0
+/JetMET1/Run2023C-PromptReco-v3/MINIAOD 1.0

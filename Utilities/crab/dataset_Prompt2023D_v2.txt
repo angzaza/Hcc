@@ -1,0 +1,11 @@
+/ParkingVBF2/Run2023D-PromptReco-v2/MINIAOD 1.0
+/ParkingVBF3/Run2023D-PromptReco-v1/MINIAOD 1.0
+/ParkingVBF3/Run2023D-PromptReco-v2/MINIAOD 1.0
+/ParkingVBF4/Run2023D-PromptReco-v1/MINIAOD 1.0
+/ParkingVBF4/Run2023D-PromptReco-v2/MINIAOD 1.0
+/ParkingVBF5/Run2023D-PromptReco-v1/MINIAOD 1.0
+/ParkingVBF5/Run2023D-PromptReco-v2/MINIAOD 1.0
+/ParkingVBF6/Run2023D-PromptReco-v1/MINIAOD 1.0
+/ParkingVBF6/Run2023D-PromptReco-v2/MINIAOD 1.0
+/ParkingVBF7/Run2023D-PromptReco-v1/MINIAOD 1.0
+/ParkingVBF7/Run2023D-PromptReco-v2/MINIAOD 1.0
