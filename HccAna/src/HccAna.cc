@@ -724,7 +724,7 @@ HccAna::HccAna(const edm::ParameterSet& iConfig) :
     triggerList(iConfig.getUntrackedParameter<std::vector<std::string>>("triggerList")),
     skimLooseLeptons(iConfig.getUntrackedParameter<int>("skimLooseLeptons",2)),    
     skimTightLeptons(iConfig.getUntrackedParameter<int>("skimTightLeptons",2)),    
-    verbose(iConfig.getUntrackedParameter<bool>("verbose",false)),
+    verbose(iConfig.getUntrackedParameter<bool>("verbose",true)),
     year(iConfig.getUntrackedParameter<int>("year",2018)),
     ////for year put 
     // 20160 for pre VFP
@@ -1052,7 +1052,7 @@ HccAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  }
       cout<<"haveJetTags"<<haveJetTags<<endl;*/
 		
-    if (!jecunc) {
+    /*if (!jecunc) {
 
 
 
@@ -1073,7 +1073,7 @@ jetCorrParameterSet.validKeys(keys);
 
 
         jecunc.reset(new JetCorrectionUncertainty(jetCorrParameters));
-    }
+    }*/
 
 
     // GEN collections
@@ -1533,7 +1533,7 @@ if(trigConditionData && verbose)
         recoPhotons = helper.goodPhotons2015(AllPhotons,_phoPtCut,year);*/
        
         if (verbose) cout<<"before vector assign"<<std::endl;
-        //cout<<"event: "<<iEvent.id().event()<<endl;
+        std::cout<<"event: "<<iEvent.id().event()<<std::endl;
 	    setTreeVariables(iEvent, iSetup,AK4PuppiJets, AK4PuppiJetsUncorr, uncAK4,AK4PuppiJetsSmear, AK4PuppiJetsSmearUp,AK4PuppiJetsSmearDown, AK8PuppiJets,  AllMuons, AllElectrons, PV);
 		//setTreeVariables(iEvent, iSetup, goodJets, selectedMergedJets, AK4PuppiJets, AK8PuppiJets, bxvCaloJets, bxvCaloMuons, bxvCaloHT, AllMuons, AllElectrons, PV);		
         //setTreeVariables(iEvent, iSetup, goodJets, goodJetQGTagger,goodJetaxis2, goodJetptD, goodJetmult, selectedMergedJets, hltjetsForBTag,  hltAK4PFJetsCorrected, pfJetTagCollectionParticleNetprobc , pfJetTagCollectionParticleNetprobb , pfJetTagCollectionParticleNetprobuds , pfJetTagCollectionParticleNetprobg ,pfJetTagCollectionParticleNetprobtauh ,  bxvCaloJets, bxvCaloMuons, bxvCaloHT, AllMuons, AllElectrons);
@@ -2635,10 +2635,13 @@ void HccAna::setGENVariables(edm::Handle<reco::GenParticleCollection> prunedgenP
   if(isZcc){
     for(genPart = prunedgenParticles->begin(); genPart != prunedgenParticles->end(); genPart++) {
       if(genPart->pdgId()==23 && genPart->numberOfDaughters()==2){
+        //std::cout<<"found Z candidate"<<std::endl;
         const reco::Candidate * da1 = genPart->daughter(0);
         const reco::Candidate * da2 = genPart->daughter(1);
+        //std::cout<<"daughters: "<<da1->pdgId()<<"   "<<da2->pdgId()<<std::endl;
         if(fabs(da1->pdgId())==fabs(da2->pdgId()) && fabs(da1->pdgId())==4){
           //c1
+          //std::cout<<"Zcc"<<endl;
           quark_pt.push_back(da1->pt());
           quark_eta.push_back(da1->eta());
           quark_phi.push_back(da1->phi());
