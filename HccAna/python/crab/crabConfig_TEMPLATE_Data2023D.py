@@ -10,6 +10,7 @@ config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = '/afs/cern.ch/work/a/azaza/HccAna/CMSSW_13_0_13/src/Hcc/HccAna/python/templateData_Prompt2023D_JECdB.py'
 #config.JobType.outputFiles = ['OUTFILENAME.root']
 #config.JobType.scriptExe = 'submitFileCrab.sh'
+config.JobType.inputFiles  = ['/afs/cern.ch/work/a/azaza/HccAna/CMSSW_13_0_13/src/Hcc/HccAna/python/Summer23BPixPrompt23_RunD_V1_DATA.db', '/afs/cern.ch/work/a/azaza/HccAna/CMSSW_13_0_13/src/Hcc/HccAna/python/Summer23BPixPrompt23_RunD_JRV1_DATA.db', '/afs/cern.ch/work/a/azaza/HccAna/CMSSW_13_0_13/src/Hcc/HccAna/python/Summer23BPixPrompt23_V1_MC_UncertaintySources_AK4PFPuppi.txt']
 config.Data.inputDBS = 'global'
 config.Data.inputDataset = 'DATASETNAME'
 config.Data.splitting = 'FileBased'

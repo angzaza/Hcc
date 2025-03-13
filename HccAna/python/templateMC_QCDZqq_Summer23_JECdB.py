@@ -78,8 +78,8 @@ process.jec = cms.ESSource("PoolDBESSource",
                            #for execution in local
                            #connect = cms.string("sqlite_file:/afs/cern.ch/work/a/azaza/HccAna/CMSSW_13_0_13/src/Hcc/HccAna/python/Summer23Prompt23_V1_MC.db"),
                            #for crab
-                           connect = cms.string("sqlite_file:src/Hcc/HccAna/python/Summer23Prompt23_V1_MC.db"),
-                           #connect = cms.string("sqlite_file:Summer23Prompt23_V1_MC.db"),
+                           #connect = cms.string("sqlite_file:src/Hcc/HccAna/python/Summer23Prompt23_V1_MC.db"),
+                           connect = cms.string("sqlite_file:Summer23Prompt23_V1_MC.db"),
                            toGet =  cms.VPSet(
                               cms.PSet(
                                  record = cms.string("JetCorrectionsRecord"),
@@ -122,9 +122,9 @@ process.jer = cms.ESSource("PoolDBESSource",
                 label  = cms.untracked.string('AK4PFPuppi')
                 ),
             ),
-        #connect = cms.string('sqlite:Summer23Prompt23_RunCv1234_JRV1_MC.db')
+        connect = cms.string('sqlite:Summer23Prompt23_RunCv1234_JRV1_MC.db')
         #for crab
-        connect = cms.string('sqlite:src/Hcc/HccAna/python/Summer23Prompt23_RunCv1234_JRV1_MC.db')
+        #connect = cms.string('sqlite:src/Hcc/HccAna/python/Summer23Prompt23_RunCv1234_JRV1_MC.db')
         
         )
 
@@ -270,9 +270,9 @@ process.Ana = cms.EDAnalyzer('HccAna',
                               beamSpotSrc  = cms.untracked.InputTag("offlineBeamSpot"),
                               conversionSrc  = cms.untracked.InputTag("reducedEgamma","reducedConversions"),
                               isMC         = cms.untracked.bool(True),
-                              isHcc         = cms.untracked.bool(True),
+                              isHcc         = cms.untracked.bool(False),
                               isZqq         = cms.untracked.bool(False),
-                              isZcc         = cms.untracked.bool(False),
+                              isZcc         = cms.untracked.bool(True),
                               isZbb         = cms.untracked.bool(False),
                               isQCD         = cms.untracked.bool(False),
                               isSignal     = cms.untracked.bool(True),
@@ -329,8 +329,10 @@ process.Ana = cms.EDAnalyzer('HccAna',
                               #bestCandMela = cms.untracked.bool(False),
                               year = cms.untracked.int32(2023),####for year put 2016,2017, or 2018 to select correct setting
                               isCode4l = cms.untracked.bool(True), 
-                              JECUncFileAK4Src = cms.string("src/Hcc/HccAna/python/Summer23Prompt23_V1_MC_UncertaintySources_AK4PFPuppi.txt"),
-payload = cms.string("AK4PFPuppi"),
+                              #for crab 
+                              JECUncFileAK4Src = cms.string("Summer23Prompt23_V1_MC_UncertaintySources_AK4PFPuppi.txt"),
+                              #JECUncFileAK4Src = cms.string("Summer23Prompt23_V1_MC_UncertaintySources_AK4PFPuppi.txt"),
+                              payload = cms.string("AK4PFPuppi"),
 
 
                              )

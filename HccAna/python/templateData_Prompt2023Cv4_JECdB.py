@@ -74,7 +74,8 @@ process.jec = cms.ESSource("PoolDBESSource",
                            #for local execution
                            #connect = cms.string("sqlite_file:/afs/cern.ch/work/a/azaza/HccAna/CMSSW_13_0_13/src/Hcc/HccAna/python/Summer23Prompt23_RunCv4_V1_DATA.db"),
                            #for crab
-                           connect = cms.string("sqlite_file:src/Hcc/HccAna/python/Summer23Prompt23_RunCv4_V1_DATA.db"),
+                           connect = cms.string("sqlite_file:Summer23Prompt23_RunCv4_V1_DATA.db"),
+                           #connect = cms.string("sqlite_file:src/Hcc/HccAna/python/Summer23Prompt23_RunCv4_V1_DATA.db"),
                            toGet =  cms.VPSet(
                               cms.PSet(
                                  record = cms.string("JetCorrectionsRecord"),
@@ -117,9 +118,9 @@ process.jer = cms.ESSource("PoolDBESSource",
                 label  = cms.untracked.string('AK4PFPuppi')
                 ),
             ),
-        #connect = cms.string('sqlite:Summer23Prompt23_RunCv4_JRV1_DATA.db')
+        connect = cms.string('sqlite:Summer23Prompt23_RunCv4_JRV1_DATA.db')
         #for crab
-        connect = cms.string('sqlite:src/Hcc/HccAna/python/Summer23Prompt23_RunCv4_JRV1_DATA.db')
+        #connect = cms.string('sqlite:src/Hcc/HccAna/python/Summer23Prompt23_RunCv4_JRV1_DATA.db')
 
         )
 

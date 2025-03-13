@@ -79,7 +79,8 @@ process.jec = cms.ESSource("PoolDBESSource",
                            #for execution in local
                            #connect = cms.string("sqlite_file:/afs/cern.ch/work/a/azaza/HccAna/CMSSW_13_0_13/src/Hcc/HccAna/python/Summer23BPixPrompt23_RunD_V1_DATA.db"),
                            #for crab
-                           connect = cms.string("sqlite_file:src/Hcc/HccAna/python/Summer23BPixPrompt23_RunD_V1_DATA.db"),
+                           #connect = cms.string("sqlite_file:src/Hcc/HccAna/python/Summer23BPixPrompt23_RunD_V1_DATA.db"),
+                           connect = cms.string("sqlite_file:Summer23BPixPrompt23_RunD_V1_DATA.db"),
                            toGet =  cms.VPSet(
                               cms.PSet(
                                  record = cms.string("JetCorrectionsRecord"),
@@ -124,7 +125,8 @@ process.jer = cms.ESSource("PoolDBESSource",
             ),
         #connect = cms.string('sqlite:Summer23BPixPrompt23_RunD_JRV1_DATA.db')
         #for crab
-        connect = cms.string('sqlite:src/Hcc/HccAna/python/Summer23BPixPrompt23_RunD_JRV1_DATA.db')
+        #connect = cms.string('sqlite:src/Hcc/HccAna/python/Summer23BPixPrompt23_RunD_JRV1_DATA.db')
+        connect = cms.string('sqlite:Summer23BPixPrompt23_RunD_JRV1_DATA.db')
 
         )
 
@@ -322,7 +324,7 @@ process.Ana = cms.EDAnalyzer('HccAna',
                               #bestCandMela = cms.untracked.bool(False),
                               year = cms.untracked.int32(2023),####for year put 2022 use 20220 for preEE and 20221 for postEE
                               isCode4l = cms.untracked.bool(True), 
-                              JECUncFileAK4Src = cms.string("src/Hcc/HccAna/python/Summer23BPixPrompt23_V1_MC_UncertaintySources_AK4PFPuppi.txt"),
+                              JECUncFileAK4Src = cms.string("Summer23BPixPrompt23_V1_MC_UncertaintySources_AK4PFPuppi.txt"),
 payload = cms.string("AK4PFPuppi"),
 
 

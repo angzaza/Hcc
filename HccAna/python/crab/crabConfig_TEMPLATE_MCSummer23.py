@@ -12,6 +12,7 @@ config.JobType.psetName = '/afs/cern.ch/work/a/azaza/HccAna/CMSSW_13_0_13/src/Hc
 #config.JobType.scriptExe = 'submitFileCrab.sh'
 config.Data.inputDBS = 'global'
 config.Data.inputDataset = 'DATASETNAME'
+config.JobType.inputFiles  = ['/afs/cern.ch/work/a/azaza/HccAna/CMSSW_13_0_13/src/Hcc/HccAna/python/Summer23Prompt23_V1_MC.db', '/afs/cern.ch/work/a/azaza/HccAna/CMSSW_13_0_13/src/Hcc/HccAna/python/Summer23Prompt23_RunCv1234_JRV1_MC.db', '/afs/cern.ch/work/a/azaza/HccAna/CMSSW_13_0_13/src/Hcc/HccAna/python/Summer23Prompt23_V1_MC_UncertaintySources_AK4PFPuppi.txt']
 config.Data.splitting = 'FileBased'
 config.Data.unitsPerJob = 3
 config.Data.allowNonValidInputDataset = True #to run over dataset in "PRODUCTION" status on dBS
